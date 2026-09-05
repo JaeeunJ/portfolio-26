@@ -1,0 +1,880 @@
+/*
+ * Case-study pages. Same background and type family as the home page, but this
+ * is a reading surface rather than a game, and it speaks quieter: text is
+ * white at three opacities — full for headings, softened for body, dim for
+ * labels and captions — and never coloured. Colour on these pages belongs to
+ * the artwork.
+ *
+ * Type stays at three sizes total (heading, subheading, body) plus one small
+ * caps size for labels. Anything that wants to look different does it with
+ * weight or opacity, not another font-size.
+ */
+@import './tokens.css';
+
+:root {
+  --ink: var(--white);
+  --ink-body: rgba(247, 247, 255, 0.78);
+  --ink-dim: rgba(247, 247, 255, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--void);
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  margin: 0;
+  color: var(--ink-body);
+  font-family: var(--font-body);
+  font-size: 16.5px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: var(--ink-body); }
+
+/* One column, one width. Everything reads at the same measure. */
+.cs {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* The small-caps label voice: section numbers, meta labels, card labels, the
+   contents heading. One size, one treatment, everywhere. */
+.cs-num,
+.cs-meta dt,
+.card-label,
+.cs-toc-label,
+.cs-next-label {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+/* --------------------------------------------------------------------- toc */
+
+/*
+ * Contents rail, fixed in the gutter left of the column. Below the width where
+ * it would crowd the prose it simply isn't there — the inline section numbers
+ * do the same job.
+ */
+.cs-toc {
+  position: fixed;
+  top: calc(var(--topbar-h) + clamp(3.5rem, 11vh, 7rem));
+  left: calc((100vw - 680px) / 2 - 216px);
+  display: none;
+  flex-direction: column;
+  width: 200px;
+}
+
+/* Stages read as clusters: tight within a group, a wider step between groups.
+   The gap alone does the dividing — no rules. */
+.cs-toc-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.cs-toc-group + .cs-toc-group {
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 1140px) {
+  .cs-toc { display: flex; }
+}
+
+.cs-toc-label {
+  margin-bottom: 0.4rem;
+}
+
+.cs-toc a {
+  color: var(--ink-dim);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.cs-toc a:hover { color: var(--ink-body); }
+
+.cs-toc a.is-here { color: var(--ink); }
+
+/* ---------------------------------------------------------------- masthead */
+
+.cs-top {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--topbar-h);
+  padding: 0 var(--gutter);
+  background: rgba(7, 7, 15, 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Same voice as the home page's masthead: dotted label face, uppercase,
+   tracked out, with the arcade selector on hover. */
+.cs-top a {
+  position: relative;
+  padding-left: 0.95em;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.cs-top a::before {
+  content: '\25B8';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.cs-top a:hover,
+.cs-top a:focus-visible {
+  color: var(--ink);
+  outline: none;
+}
+
+.cs-top a:hover::before,
+.cs-top a:focus-visible::before {
+  opacity: 1;
+}
+
+/* The back link carries its own arrow already — the selector would double it. */
+.cs-back {
+  padding-left: 0;
+}
+
+.cs-back::before {
+  content: none;
+}
+
+.cs-top-links {
+  display: flex;
+  gap: 1.3rem;
+}
+
+/* -------------------------------------------------------------------- hero */
+
+.cs-hero {
+  padding: clamp(3.5rem, 11vh, 7rem) 0 clamp(2rem, 5vh, 3rem);
+}
+
+.cs-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0 0 1.4rem;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.cs-eyebrow .dot {
+  width: 4px;
+  height: 4px;
+  background: var(--ink-dim);
+  border-radius: 50%;
+}
+
+.cs-hero h1 {
+  margin: 0;
+  font-family: var(--font-heavy);
+  font-weight: 700;
+  font-size: clamp(2rem, 5.4vw, 3.35rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.cs-lede {
+  margin: 1.6rem 0 0;
+}
+
+.cs-banner {
+  margin: clamp(2rem, 5vh, 3.5rem) 0 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--deep);
+}
+
+.cs-banner img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* ------------------------------------------------------------------- stats */
+
+/* The gallery pages' headline numbers. Big figures, dim labels — the one place
+   the page shouts, because the count IS the story. */
+.cs-stats {
+  display: flex;
+  gap: clamp(2rem, 6vw, 3.5rem);
+  margin: 2rem 0 0;
+}
+
+.cs-stats dt {
+  font-family: var(--font-heavy);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.cs-stats dd {
+  margin: 0.15rem 0 0;
+  color: var(--ink-dim);
+}
+
+/* ------------------------------------------------------------ placeholders */
+
+/*
+ * Screenshot placeholders. Deliberately unmistakable for finished artwork:
+ * dashed edge, dim centered brief describing the capture that belongs there.
+ * Delete the .ph and drop an <img> in its place.
+ */
+.ph {
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: var(--deep);
+  border: 1px dashed rgba(247, 247, 255, 0.22);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.ph span {
+  max-width: 34ch;
+  color: var(--ink-dim);
+}
+
+.ph--wide { aspect-ratio: 16 / 9; }
+.ph--half { aspect-ratio: 4 / 3; }
+.ph--tall { aspect-ratio: 4 / 5; }
+.ph--tile { aspect-ratio: 16 / 10; margin-bottom: 0.9rem; }
+
+/* The banner's placeholder fills the same frame its image will. */
+.cs-banner .ph {
+  border: none;
+  border-radius: 0;
+}
+
+/* ------------------------------------------------------------------- shots */
+
+/* A pair of figures sharing a row. Below the measure's comfortable split
+   point they stack, which is what phone readers want anyway. */
+.shots {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.shots figure {
+  margin: 0;
+}
+
+@media (max-width: 560px) {
+  .shots { grid-template-columns: 1fr; }
+}
+
+/* The caption-as-manifest under an exhibit: one dim line listing what
+   shipped, dot-separated, in place of prose that would restate the images. */
+.fig-note {
+  margin-top: 1rem;
+  color: var(--ink-dim);
+}
+
+/* -------------------------------------------------------------------- wall */
+
+/* The "everything else" grid: image-led tiles, two across, name and one line
+   under each. The picture does the talking; the text is a label. */
+.wall {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem 1.2rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 560px) {
+  .wall { grid-template-columns: 1fr; }
+}
+
+.wall b {
+  display: block;
+  font-family: var(--font-heavy);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.wall p {
+  margin: 0.25rem 0 0;
+  color: var(--ink-dim);
+}
+
+/* -------------------------------------------------------------------- meta */
+
+.cs-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.4rem 1.2rem;
+  margin: clamp(2rem, 5vh, 3.2rem) 0;
+  padding: 1.6rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.cs-meta dt {
+  margin-bottom: 0.35rem;
+}
+
+.cs-meta dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* The prototype row spans the strip: it is one fact, not a fifth column. */
+.cs-meta-wide {
+  grid-column: 1 / -1;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--rule);
+}
+
+/*
+ * Prototype link. A link, not a button: the page is a piece of writing, and a
+ * pill in display caps was the loudest object on it by a wide margin. Body
+ * voice, an underline to say it is clickable, and an arrow that leans on hover.
+ */
+.cs-proto {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(247, 247, 255, 0.28);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+}
+
+.cs-proto:hover { border-color: var(--ink); }
+
+.cs-proto .arrow {
+  color: var(--ink-dim);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.cs-proto:hover .arrow {
+  color: var(--ink);
+  transform: translateX(4px);
+}
+
+/* ---------------------------------------------------------------- sections */
+
+.cs-section {
+  padding: clamp(2.5rem, 7vh, 4.5rem) 0;
+}
+
+.cs-section + .cs-section {
+  border-top: 1px solid var(--rule);
+}
+
+/*
+ * Section eyebrows carry an icon chip and speak a step louder than the other
+ * labels: they are the wayfinding for the whole page, so they get the soft
+ * accent and a glyph saying what the section entails, not just its number.
+ */
+.cs-num {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+  font-size: 13px;
+  color: var(--soft);
+}
+
+.cs-num-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 10px;
+  background: rgba(110, 140, 255, 0.16);
+  color: var(--soft);
+  flex: none;
+}
+
+.cs-num-icon svg {
+  display: block;
+  width: 17px;
+  height: 17px;
+}
+
+.cs-section h2 {
+  margin: 0 0 1.2rem;
+  font-family: var(--font-heavy);
+  font-weight: 700;
+  font-size: clamp(1.45rem, 3.2vw, 2rem);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* Subheads are body-sized: weight and colour set them apart, not scale. */
+.cs-section h3 {
+  margin: 2.4rem 0 0.8rem;
+  font-family: var(--font-heavy);
+  font-weight: 500;
+  font-size: inherit;
+  color: var(--ink);
+}
+
+.cs-section p { margin: 0 0 1.1rem; }
+.cs-section p:last-child { margin-bottom: 0; }
+
+/* The one emphasis the page allows itself. Used on the phrase a paragraph is
+   actually about, never on half the sentence. */
+.cs-section strong {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.cs-list {
+  margin: 0 0 1.1rem;
+  padding-left: 1.1rem;
+}
+
+.cs-list li { margin-bottom: 0.5rem; }
+.cs-list li::marker { color: var(--ink-dim); }
+
+/* ------------------------------------------------------------------ figure */
+
+figure {
+  margin: 2rem 0;
+}
+
+figure img {
+  width: 100%;
+  border-radius: 14px;
+  background: var(--deep);
+}
+
+figcaption {
+  margin-top: 0.75rem;
+  color: var(--ink-dim);
+}
+
+/* --------------------------------------------------------------- the sprint */
+
+/*
+ * The week, as four stops. 2x2 at the reading measure — four across only ever
+ * fit by being wider than everything else, which is exactly what it shouldn't
+ * be.
+ *
+ * Separate cards on a slight fill rather than one ruled slab: the stops are
+ * discrete, and a shared outline read as a table asking to be compared
+ * cell-by-cell rather than four things that happened in order.
+ */
+.sprint {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.1rem;
+  margin: 2rem 0 0;
+  padding: 0;
+}
+
+.sprint li {
+  list-style: none;
+  padding: 1.5rem 1.35rem 1.6rem;
+  background: rgba(162, 180, 254, 0.06);
+  border-radius: 14px;
+}
+
+/* The stop's number, in a chip. */
+.sprint .sprint-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: rgba(110, 140, 255, 0.16);
+  color: var(--soft);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+}
+
+.sprint .sprint-what {
+  display: block;
+  margin: 1.1rem 0 0.5rem;
+  font-family: var(--font-heavy);
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.sprint p {
+  margin: 0;
+  color: var(--ink-dim);
+}
+
+/* ------------------------------------------------------------------- cards */
+
+/* Competitors and personas share a shape: a header, then a short read. At the
+   reading measure they stack — one thought per card, read in sequence. */
+.cards {
+  display: grid;
+  gap: 1rem;
+  margin: 1.8rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  padding: 1.4rem 1.5rem;
+  background: var(--deep);
+  border-radius: 14px;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.9rem;
+}
+
+/* --- collapsible cards ---------------------------------------------------
+ * Used where a card is supporting evidence rather than the argument itself.
+ * The header stays visible so the list still reads as a list of things; only
+ * the detail folds away.
+ */
+details.card {
+  padding: 0;
+}
+
+details.card summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  /* Both are needed: the second is Safari's, and without them the disclosure
+     triangle sits alongside our own chevron. */
+  list-style: none;
+}
+
+details.card summary::-webkit-details-marker {
+  display: none;
+}
+
+details.card summary:focus-visible {
+  outline: 1px solid var(--ink-dim);
+  outline-offset: -4px;
+  border-radius: 14px;
+}
+
+/* The header is the summary's own layout now, so it carries no gap of its own. */
+details.card .card-head {
+  margin-bottom: 0;
+}
+
+.card-chev {
+  flex: none;
+  width: 12px;
+  color: var(--ink-dim);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+details.card summary:hover .card-chev { color: var(--ink); }
+
+details.card[open] .card-chev { transform: rotate(180deg); }
+
+details.card > p {
+  margin: 0 1.5rem 1.2rem;
+}
+
+details.card > p + p {
+  margin-top: -0.3rem;
+}
+
+/* Height animation where the browser can interpolate to `auto`; elsewhere the
+   panel just appears, which is the correct fallback. */
+@supports (interpolate-size: allow-keywords) {
+  @media (prefers-reduced-motion: no-preference) {
+    details.card {
+      interpolate-size: allow-keywords;
+    }
+
+    details.card::details-content {
+      block-size: 0;
+      overflow: hidden;
+      transition: block-size 0.25s ease, content-visibility 0.25s allow-discrete;
+    }
+
+    details.card[open]::details-content {
+      block-size: auto;
+    }
+  }
+}
+
+.card-head img {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--white);
+}
+
+.card-name {
+  font-family: var(--font-heavy);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.card-where {
+  display: block;
+  color: var(--ink-dim);
+}
+
+.card p {
+  margin: 0 0 0.9rem;
+}
+
+.card p:last-child { margin-bottom: 0; }
+
+.card-label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/*
+ * Persona body: the read on the left, pain points as a compact bulleted rail
+ * on the right. 6:4, so the prose keeps most of the measure and the rail reads
+ * as an annotation on it rather than a second column of equal weight.
+ *
+ * minmax(0, …) on both, because an `fr` track's implicit minimum is min-content
+ * — a long unbreakable word in the bullets ("independence", "physically") was
+ * pushing the rail past its share and quietly breaking the ratio.
+ */
+.card-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+  gap: 1.6rem;
+  align-items: start;
+}
+
+.card-cols p {
+  margin: 0;
+}
+
+/*
+ * Both columns are headed the same way, so the prose and the bullets start on
+ * the same line — the rail used to sit a label's height above the paragraph
+ * beside it. They earn more than the shared label voice too: these are what a
+ * reader scans a persona card for, and at 12px dim grey they sank into the
+ * text under them. Icon, accent colour, and a rule beneath.
+ */
+.card-cols .card-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.7rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 12.5px;
+  color: var(--soft);
+}
+
+.card-label-icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--accent);
+}
+
+.card-label-icon svg {
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+
+.card-pains ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.card-pains li {
+  margin-bottom: 0.35rem;
+}
+
+.card-pains li:last-child {
+  margin-bottom: 0;
+}
+
+.card-pains li::marker {
+  color: var(--ink-dim);
+}
+
+/* Too narrow for a rail: back under the prose, where it was. */
+@media (max-width: 640px) {
+  .card-cols {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* ---------------------------------------------------------------- numbered */
+
+/* Takeaways and next steps: a claim per row, one line of why underneath. */
+.numbered {
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: n;
+}
+
+.numbered li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0 0.9rem;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--rule);
+  counter-increment: n;
+}
+
+.numbered li::before {
+  content: counter(n, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  padding-top: 0.35rem;
+}
+
+.numbered b {
+  font-family: var(--font-heavy);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.numbered p {
+  margin: 0.2rem 0 0;
+}
+
+/* -------------------------------------------------------------------- next */
+
+.cs-next {
+  margin-top: clamp(3rem, 8vh, 5rem);
+  padding: clamp(2.5rem, 7vh, 4rem) var(--gutter);
+  border-top: 1px solid var(--rule);
+  background:
+    radial-gradient(rgba(247, 247, 255, 0.07) 1px, transparent 1px) 0 0 / 26px 26px;
+}
+
+.cs-next-inner {
+  max-width: 648px;
+  margin: 0 auto;
+}
+
+.cs-next-label {
+  margin-bottom: 1rem;
+}
+
+.cs-next-link {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--font-heavy);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* A drawn arrow, matching the stroke icons everywhere else on these pages. */
+.cs-next-link .arrow {
+  color: var(--ink-dim);
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.cs-next-link .arrow svg {
+  display: block;
+  width: 0.8em;
+  height: 0.8em;
+}
+
+.cs-next-link:hover .arrow {
+  transform: translateX(8px);
+  color: var(--ink);
+}
+
+.cs-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1.6rem var(--gutter) 3rem;
+  color: var(--ink-dim);
+}
+
+.cs-foot a {
+  color: var(--ink-dim);
+  text-decoration: none;
+}
+
+.cs-foot a:hover { color: var(--ink); }
+
+/* ----------------------------------------------------------------- arrival */
+
+/* Sections fade in as they enter. Progressive: browsers without scroll-driven
+   animations simply get the page, already visible. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .cs-section,
+    .cs-banner {
+      animation: cs-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 22%;
+    }
+  }
+}
+
+@keyframes cs-rise {
+  from { opacity: 0; transform: translate3d(0, 26px, 0); }
+  to { opacity: 1; transform: none; }
+}

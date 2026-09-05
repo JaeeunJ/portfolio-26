@@ -1,0 +1,2807 @@
+/* Shared design tokens, split out so case-study pages read from the same
+   source as the home page rather than keeping their own copy. */
+@import './tokens.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--void);
+  /* Belt and braces with body's rule below: the document must never bounce
+     past the footer — the run ends on the game-over screen, full stop. */
+  overscroll-behavior-y: none;
+}
+
+body {
+  margin: 0;
+  /* Ours is the only rubber band. Without this, macOS bounces the document at
+     the same time and the two gestures fight over the same pixels. */
+  overscroll-behavior-y: none;
+  /*
+   * No background here on purpose — html carries it instead.
+   *
+   * The deep-space field sits at z-index -1 so every section in normal flow
+   * paints over it. A background on <body> is itself a normal block background,
+   * which paints *after* negative-z descendants and would hide the field
+   * completely. On <html> it becomes the canvas background, which paints first
+   * and so sits behind the field rather than in front of it.
+   */
+  color: var(--pale);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  /* No scrollbar at all. The intro drives scroll position itself and the page
+     below is a short read, so a native bar would be a grey OS widget sitting
+     against the void for the whole flight. */
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- ASCII stage --------------------------------------------------------- */
+
+#ascii-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: var(--void);
+  /*
+   * This fade *is* the hand-off. The impact used to blow out to an opaque wash
+   * that hid the canvas-to-hero swap; now the stage stays opaque through the
+   * swap and then clears, so the same moment is a quick dissolve rather than a
+   * flash. Eased rather than linear, and long enough to read as deliberate.
+   */
+  transition: opacity 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#ascii-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+body.intro-done #ascii-stage {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- impact white-out ---------------------------------------------------- */
+
+/*
+ * Above both the ASCII canvas (z 1) and the hero (z 2), so the white cover
+ * painted at the peak can mask the hand-off between them.
+ *
+ * The host itself is fully transparent and never animates: everything, fades
+ * included, is drawn into the canvas. A CSS transition here had nothing to
+ * interpolate from at the two moments that need one, because by then the frame
+ * loop had either stopped or was reporting zero.
+ */
+#impact-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+#warp-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- below-the-fold gating ----------------------------------------------- */
+
+/*
+ * Everything below the hero stays hidden until the intro hands over.
+ *
+ * The flight's scroll budget runs the document down past the hero's own slot,
+ * and the hero is fixed and out of flow for the whole flight — so the showcase's
+ * sticky pane was reaching the top of the viewport and filling it while the ball
+ * was still out in space, sliding up from the bottom edge on the way in.
+ *
+ * visibility, not display: collapsing these would change the document height,
+ * and the intro measures its progress and its landing position against that
+ * height. Hiding by visibility leaves every box exactly where it was.
+ */
+body:not(.intro-done) .showcase,
+body:not(.intro-done) .past,
+body:not(.intro-done) #earth {
+  visibility: hidden;
+}
+
+/* --- cockpit HUD --------------------------------------------------------- */
+
+/*
+ * Frame around the flight. Sits above the ASCII canvas (z 1) and the pinned hero
+ * (z 2) but below the white-out (z 5) on purpose — the impact should wipe it
+ * rather than leave it floating over the flash.
+ */
+/* --- retro title card ----------------------------------------------------- */
+
+/*
+ * Cartridge title screen over the flight. Above the ASCII stage, below the
+ * cockpit frame, so the HUD reads as glass in front of it.
+ */
+#game-title {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  /* The whole card rides up from below the fold on load. steps() rather than a
+     tween — the arrival should tick like a sprite, not glide. */
+  animation: gt-enter 1s steps(14) both;
+}
+
+body.intro-done #game-title {
+  display: none;
+}
+
+@keyframes gt-enter {
+  from { transform: translateY(70vh); }
+  to { transform: translateY(0); }
+}
+
+/*
+ * Both lines are anchored by viewport position + their own transform, with the
+ * SAME properties redeclared in the docked state — that is what lets one quick
+ * transition carry each of them from centre stage into its corner.
+ */
+.gt-name {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: left bottom;
+  margin: 0;
+  font-family: var(--font-arcade);
+  font-weight: 400;
+  /* Press Start 2P advances a full em per glyph with a lot of air in the box;
+     the negative tracking closes the letters up to a solid wordmark, and buys
+     back the size the tighter width allows. */
+  /* The extra 8.6vw ceiling is the phone fit: 13 glyphs at ~0.86em each need
+     ~11.2em, so past that the floor would push the wordmark off both edges. */
+  font-size: min(max(2.7rem, 6.8vw), 8vw, 5.8rem);
+  line-height: 1.2;
+  letter-spacing: -0.14em;
+  white-space: nowrap;
+  /* Arcade chrome: white-hot top edge, hot pink down to electric blue. The
+     opening planet is kept cool so this warm ramp owns the frame. */
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #ffb2e8 16%,
+    #ff7fd8 38%,
+    #b47fff 58%,
+    #6fa8f5 78%,
+    #2f5ede 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* Chunky offset slab for the 8-bit drop, plus a neon bloom to lift it off
+     the scene. */
+  filter: drop-shadow(0.06em 0.09em 0 rgba(10, 12, 44, 1))
+    drop-shadow(0 0 0.35em rgba(196, 127, 255, 0.55));
+  transition:
+    left 0.4s cubic-bezier(0.5, 0, 0.2, 1),
+    top 0.4s cubic-bezier(0.5, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.5, 0, 0.2, 1);
+}
+
+.gt-sub {
+  position: absolute;
+  left: 50%;
+  top: 50.5%;
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: right bottom;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  /* Same phone fit as the wordmark above. */
+  font-size: min(max(1.05rem, 2vw), 4vw, 1.5rem);
+  letter-spacing: 0.55em;
+  /* Trailing tracking would otherwise unbalance the centring. */
+  padding-left: 0.55em;
+  white-space: nowrap;
+  /* Arcade marquee gold, cut out from any background by a hard dark outline —
+     the retro-game answer to gold text over a gold planet. No box: a chip
+     here read as UI chrome, not a title screen. */
+  color: #ffd98a;
+  text-shadow:
+    0.12em 0 0 #0a0c2c, -0.12em 0 0 #0a0c2c, 0 0.12em 0 #0a0c2c, 0 -0.12em 0 #0a0c2c,
+    0.12em 0.12em 0 #0a0c2c, -0.12em 0.12em 0 #0a0c2c,
+    0.12em -0.12em 0 #0a0c2c, -0.12em -0.12em 0 #0a0c2c,
+    0.18em 0.2em 0 rgba(10, 12, 44, 0.95),
+    0 0 18px rgba(255, 200, 110, 0.75);
+  /* Classic press-start blink: hard on/off, no fade. */
+  animation: gt-blink 1.1s steps(2, jump-none) infinite;
+  transition:
+    left 0.4s cubic-bezier(0.5, 0, 0.2, 1),
+    top 0.4s cubic-bezier(0.5, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.5, 0, 0.2, 1);
+}
+
+@keyframes gt-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0.15; }
+}
+
+/* First scroll: shrink fast into the lower corners, clear of the scroll pill. */
+body.title-away .gt-name {
+  left: 2.6rem;
+  top: calc(100vh - 3rem);
+  transform: translate(0, -100%) scale(0.16);
+}
+
+body.title-away .gt-sub {
+  left: calc(100vw - 2.6rem);
+  top: calc(100vh - 3.2rem);
+  transform: translate(-100%, -100%) scale(0.8);
+  animation-play-state: running;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #game-title { animation: none; }
+  .gt-sub { animation: none; }
+  .gt-name, .gt-sub { transition: none; }
+}
+
+#hud {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+/*
+ * The 8-bit status row. Lives + hull bar + distance, drawn in hard pixels —
+ * no rounded corners, no blur — sized off one --px unit so the whole cluster
+ * scales together.
+ */
+.hud8 {
+  --px: 4px;
+  position: absolute;
+  top: 1.6rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/* The row is ~354px at full pixel size — wider than the smallest phones. One
+   step down on the pixel unit rescales every sprite in the row together. */
+@media (max-width: 420px) {
+  .hud8 {
+    --px: 3px;
+    top: 1.2rem;
+    left: 1rem;
+    gap: 0.8rem;
+  }
+}
+
+.hud8-hearts {
+  display: flex;
+  gap: calc(var(--px) * 2);
+}
+
+/* Pixel-art heart: one seed pixel, the rest of the sprite is box-shadow. */
+.hud8-heart {
+  position: relative;
+  display: block;
+  width: calc(var(--px) * 7);
+  height: calc(var(--px) * 6);
+  filter: drop-shadow(var(--px) var(--px) 0 rgba(10, 12, 44, 0.9));
+}
+
+.hud8-heart::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--px);
+  height: var(--px);
+  background: transparent;
+  --r: #e8443a;
+  --w: #ffd6d2;
+  box-shadow:
+    /* row 0: the two lobes */
+    calc(var(--px) * 1) 0 var(--r), calc(var(--px) * 2) 0 var(--r),
+    calc(var(--px) * 4) 0 var(--r), calc(var(--px) * 5) 0 var(--r),
+    /* row 1, with the white shine pixel */
+    0 var(--px) var(--r), calc(var(--px) * 1) var(--px) var(--w),
+    calc(var(--px) * 2) var(--px) var(--r), calc(var(--px) * 3) var(--px) var(--r),
+    calc(var(--px) * 4) var(--px) var(--r), calc(var(--px) * 5) var(--px) var(--r),
+    calc(var(--px) * 6) var(--px) var(--r),
+    /* row 2 */
+    0 calc(var(--px) * 2) var(--r), calc(var(--px) * 1) calc(var(--px) * 2) var(--r),
+    calc(var(--px) * 2) calc(var(--px) * 2) var(--r), calc(var(--px) * 3) calc(var(--px) * 2) var(--r),
+    calc(var(--px) * 4) calc(var(--px) * 2) var(--r), calc(var(--px) * 5) calc(var(--px) * 2) var(--r),
+    calc(var(--px) * 6) calc(var(--px) * 2) var(--r),
+    /* row 3 */
+    calc(var(--px) * 1) calc(var(--px) * 3) var(--r), calc(var(--px) * 2) calc(var(--px) * 3) var(--r),
+    calc(var(--px) * 3) calc(var(--px) * 3) var(--r), calc(var(--px) * 4) calc(var(--px) * 3) var(--r),
+    calc(var(--px) * 5) calc(var(--px) * 3) var(--r),
+    /* row 4 */
+    calc(var(--px) * 2) calc(var(--px) * 4) var(--r), calc(var(--px) * 3) calc(var(--px) * 4) var(--r),
+    calc(var(--px) * 4) calc(var(--px) * 4) var(--r),
+    /* row 5: the point */
+    calc(var(--px) * 3) calc(var(--px) * 5) var(--r);
+}
+
+/* Hull bar: hard 2px casing, fill snapped to 10% segments by scrollIntro. */
+.hud8-bar {
+  width: calc(var(--px) * 34);
+  height: calc(var(--px) * 4);
+  border: 2px solid var(--pale);
+  background: rgba(10, 12, 44, 0.85);
+  padding: 2px;
+}
+
+#hud8-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: repeating-linear-gradient(
+    90deg,
+    #ffd98a 0,
+    #ffd98a calc(var(--px) * 3),
+    rgba(10, 12, 44, 0.9) calc(var(--px) * 3),
+    rgba(10, 12, 44, 0.9) calc(var(--px) * 3 + 2px)
+  );
+}
+
+.hud8-pct {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.1em;
+  color: var(--white);
+  text-shadow: 0.08em 0.1em 0 rgba(10, 12, 44, 0.9);
+}
+
+/* Replaced by the hull bar and the title card; the intro JS still writes to
+   them, so they stay in the DOM and are only taken out of the render. */
+#scroll-nudge,
+#intro-progress {
+  display: none !important;
+}
+
+/* It belongs to the intro, not the page. */
+body.intro-done #hud {
+  opacity: 0;
+}
+
+.hud-frame {
+  position: absolute;
+  inset: var(--hud-inset);
+}
+
+.hud-line {
+  fill: none;
+  stroke: rgba(110, 140, 255, 0.42);
+  stroke-width: 1;
+}
+
+.hud-faint {
+  stroke: rgba(110, 140, 255, 0.15);
+}
+
+/* Corners are fixed-size so their curves stay circular at every viewport. */
+.hud-corner {
+  position: absolute;
+  width: var(--hud-corner-w);
+  height: var(--hud-corner-h);
+  overflow: visible;
+}
+
+.hud-c-tl { top: 0; left: 0; }
+/* The same artwork, flipped into place — one path, four corners. */
+.hud-c-tr { top: 0; right: 0; transform: scaleX(-1); }
+.hud-c-bl { bottom: 0; left: 0; transform: scaleY(-1); }
+.hud-c-br { bottom: 0; right: 0; transform: scale(-1); }
+
+/* Straight runs between the corners. Inset by exactly the corner footprint so
+   the joins are seamless at any size. */
+.hud-rail {
+  position: absolute;
+  --hud-stroke: rgba(110, 140, 255, 0.42);
+}
+
+.hud-rail-t,
+.hud-rail-b {
+  left: var(--hud-corner-w);
+  right: var(--hud-corner-w);
+  height: 1px;
+}
+
+.hud-rail-t {
+  top: 0;
+  background: var(--hud-stroke);
+}
+
+.hud-rail-b {
+  bottom: 0;
+  background: var(--hud-stroke);
+}
+
+/*
+ * Side rails break at the vertical midpoint. The gap is where the sight ticks
+ * sit, and a segmented frame reads as instrumentation where a closed rectangle
+ * reads as a border.
+ */
+.hud-rail-l,
+.hud-rail-r {
+  top: var(--hud-corner-h);
+  bottom: var(--hud-corner-h);
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    var(--hud-stroke) 0,
+    var(--hud-stroke) 38%,
+    transparent 38%,
+    transparent 62%,
+    var(--hud-stroke) 62%
+  );
+}
+
+.hud-rail-l { left: 0; }
+.hud-rail-r { right: 0; }
+
+/*
+ * Sized in percentages, not pixels. At a fixed 60px the arc's crown sat at a
+ * different height on every viewport and cut straight through the name on short
+ * screens; proportional keeps it below the name at any aspect.
+ */
+.hud-horizon {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 2%;
+  height: 7%;
+}
+
+/*
+ * Sight marks at the vertical midpoint, sitting in the gap the rails leave for
+ * them. Left and right rather than top and bottom, which are already taken by
+ * the progress bar and the scroll pill.
+ */
+.hud-tick {
+  position: absolute;
+  top: 50%;
+  width: 11px;
+  height: 1px;
+  background: rgba(110, 140, 255, 0.45);
+}
+
+/* Straddle the rail so the mark reads as crossing it, not butting against it. */
+.hud-tick-l {
+  left: calc(var(--hud-inset) - 5px);
+}
+
+.hud-tick-r {
+  right: calc(var(--hud-inset) - 5px);
+}
+
+/*
+ * Shared chip. Solid rather than translucent, and unbordered, because neither
+ * survives the goo: the filter composites the crisp source back over an opaque
+ * silhouette, so a translucent fill lands on top of its own blob and reads solid
+ * anyway, and a border would ring each chip while leaving the neck between them
+ * bare. A flat fill is the only treatment that stays continuous across the seam.
+ */
+.hud-chip {
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: #141426;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--white);
+}
+
+/*
+ * A run of chips that fuse. The gap is the whole trick: wide enough to read as
+ * two objects, tight enough that the blur bridges it.
+ *
+ * Both this and the filter's stdDeviation were tuned by eye against each other,
+ * because the arithmetic does not predict them. Chrome approximates a Gaussian
+ * with three box blurs, whose tails are far shorter than the real thing — a
+ * spread that the normal distribution says should bridge an 8px gap does not
+ * come close. Blur wide enough to bridge, then close the gap until the neck is a
+ * pinch rather than a waist; too much blur and the pills bow into lozenges,
+ * since the radius is a large fraction of a 30px chip height.
+ */
+.hud-cluster {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  filter: url(#hud-goo);
+}
+
+/* Off-screen host for the filter definition. */
+.hud-goo-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/*
+ * Centre of the instrument row. Horizontally it tracks the viewport centre;
+ * vertically it shares --hud-row-top with the clock and the tag, so the three
+ * cannot drift out of alignment with each other.
+ */
+.hud-id {
+  position: absolute;
+  top: var(--hud-row-top);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/*
+ * The label is the quiet half of the pair. It keeps the wider tracking it had as
+ * a standalone eyebrow, which is what still reads it as a caption for the name
+ * beside it now that the two are the same size and sit on one line.
+ */
+.hud-label {
+  letter-spacing: 0.34em;
+  color: rgba(204, 215, 255, 0.7);
+}
+
+.hud-name {
+  letter-spacing: 0.16em;
+}
+
+/*
+ * Left member of the top instrument row, opposite .hud-tag, with the pilot ID
+ * centred between them. Tabular figures are load-bearing rather than cosmetic:
+ * the seconds tick every second, and proportional digits would make the readout
+ * change width — and so appear to twitch — on every update.
+ */
+.hud-time {
+  position: absolute;
+  left: var(--hud-row-side);
+  top: var(--hud-row-top);
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-tag {
+  position: absolute;
+  right: var(--hud-row-side);
+  top: var(--hud-row-top);
+}
+
+/*
+ * The corners are fixed pixels, so on a small screen they stop being a detail
+ * in the frame and become most of it — two 120px corners on a 390px phone leave
+ * almost no rail between them. Scaling the whole frame's metrics keeps the same
+ * proportions instead of letting the curves swallow the edge.
+ */
+@media (max-width: 700px) {
+  :root {
+    --hud-inset: 13px;
+    --hud-corner-w: 72px;
+    --hud-corner-h: 56px;
+  }
+}
+
+/* Landscape phones: short rather than narrow, so height is what runs out. */
+@media (max-height: 560px) {
+  :root {
+    --hud-corner-h: 52px;
+  }
+}
+
+/* Both flankers go before the centred ID does — it is the one that matters. */
+@media (max-width: 640px) {
+  .hud-tag,
+  .hud-time { display: none; }
+}
+
+/* --- progress + nudge ---------------------------------------------------- */
+
+#intro-progress {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  z-index: 9000;
+  pointer-events: none;
+}
+
+#intro-progress-bar {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: opacity 0.2s ease;
+}
+
+body.intro-done #intro-progress {
+  opacity: 0;
+}
+
+/* Shared shell for both pills. */
+.nudge-pill {
+  position: fixed;
+  /* Opposite the instrument row, which now holds the top of the canopy. */
+  bottom: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9000;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 22px;
+  border: 1px solid rgba(110, 140, 255, 0.5);
+  border-radius: 999px;
+  /* Kept dark, and darker than before: the glow reads as emitted light only if
+     what sits under it stays black. Lightening the fill would wash it out. */
+  background: rgba(7, 7, 15, 0.82);
+  backdrop-filter: blur(6px);
+  /*
+   * Three layers: a wide soft halo, a tight bright rim, and an inner bloom that
+   * stops the fill reading as a flat hole punched in the middle of the glow.
+   */
+  box-shadow:
+    0 0 22px rgba(110, 140, 255, 0.22),
+    0 0 7px rgba(110, 140, 255, 0.28),
+    inset 0 0 12px rgba(110, 140, 255, 0.08);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--pale);
+  text-shadow: 0 0 10px rgba(162, 180, 254, 0.45);
+  transition: opacity 0.6s ease;
+}
+
+/* Only shown mid-struggle, so it fades rather than sitting there. */
+/*
+ * The two pill labels are stacked in the same box and crossfaded, rather than
+ * one replacing the other. Width is set from JS off measured label widths and
+ * transitions between them — swapping the text alone still snapped the pill
+ * from one size to the other, which was most of what read as abrupt.
+ */
+.nudge-swap {
+  position: relative;
+  display: block;
+  align-self: stretch;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nudge-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/*
+ * Staggered, not simultaneous. Fading both at once left the two labels visibly
+ * overlapping at half opacity — it read as a smear rather than a swap. The
+ * outgoing one leaves immediately; the incoming one waits for it to clear.
+ */
+.nudge-state.is-hidden {
+  transition-delay: 0s;
+}
+
+.nudge-state:not(.is-hidden) {
+  transition-delay: 0.17s;
+}
+
+/* Outgoing label lifts away, incoming rises into place — the pair reads as one
+   roll rather than two independent fades. */
+#nudge-scroll.is-hidden {
+  opacity: 0;
+  transform: translateY(-9px);
+}
+
+#nudge-incoming.is-hidden {
+  opacity: 0;
+  transform: translateY(9px);
+}
+
+/* Fixed slot with tabular figures: the percentage changes every frame, and
+   proportional digits would resize the label continuously. */
+#nudge-percent,
+.nudge-count {
+  display: inline-block;
+  min-width: 3.1em;
+  margin-left: 0.75em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nudge-swap,
+  .nudge-state {
+    transition: none;
+  }
+}
+
+.nudge-arrow {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  animation: nudge-bob 1.9s ease-in-out infinite;
+}
+
+@keyframes nudge-bob {
+  0%, 100% { transform: translateY(1px); opacity: 0.55; }
+  50% { transform: translateY(-2px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nudge-arrow { animation: none; }
+}
+
+body.intro-done #scroll-nudge {
+  opacity: 0;
+}
+
+/* --- flyby nameplates ----------------------------------------------------- */
+
+/*
+ * The captions that introduce the pilot, pinned beneath the book / cursor /
+ * hard hat as the flight passes them. Styled as nameplates — the same voice
+ * the flight-log cards use to print a name under each pixel device — rather
+ * than as HUD tooltips: no dot, no chrome, just the label fading in under the
+ * silhouette it belongs to.
+ *
+ * Above the ASCII stage (1), below the streak cover and the title chrome —
+ * they belong to space, so anything that covers space covers them too.
+ */
+#scene-tags {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+body.intro-done #scene-tags {
+  display: none;
+}
+
+/* A zero-size anchor: scrollIntro puts the projected point here every frame,
+   and the caption hangs centred beneath it. */
+.scene-tag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  will-change: transform;
+}
+
+/*
+ * A pixel-art speech bubble, straight out of the site's 8-bit sticker sheet:
+ * light fill, stepped corners, a staircase tail pointing back at the ball.
+ * The card is the positioning/appearing wrapper; the bubble body is an inner
+ * span because the corner clip-path would otherwise scissor off the tail.
+ */
+.scene-tag-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  /*
+   * Sprouts from the tail's tip: the origin sits where the tail's staircase
+   * bottoms out, so scaling up IS the bubble growing out of the ball — and
+   * shrinking back on close is it being swallowed again. Translation is
+   * origin-independent, so the -50% centring is untouched by this.
+   */
+  transform: translate(-50%, 0) scale(0.1);
+  transform-origin: 24px calc(100% + 20px);
+  /*
+   * The drawn outline from the sticker sheet. drop-shadow follows the
+   * clip-path silhouette — bubble, notched corners, AND the tail — so four of
+   * them, one per direction, trace the whole shape in the void colour where a
+   * border would be scissored off by the clip.
+   */
+  filter:
+    drop-shadow(3px 0 0 #07070f)
+    drop-shadow(-3px 0 0 #07070f)
+    drop-shadow(0 3px 0 #07070f)
+    drop-shadow(0 -3px 0 #07070f);
+  transition: opacity 0.22s ease, transform 0.32s cubic-bezier(0.5, 0, 0.75, 0.6);
+}
+
+.scene-tag.is-near .scene-tag-card {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+  /* Growing gets the springy back-out; shrinking keeps the quicker ease-in. */
+  transition: opacity 0.18s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Tail on the other side: the sprout origin moves with it. */
+.scene-tag.is-flip .scene-tag-card {
+  transform-origin: calc(100% - 24px) calc(100% + 20px);
+}
+
+.scene-tag-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1em;
+  padding: 0.5em 0.9em 0.55em;
+  background: var(--white);
+  /* The flight log's voice: heavy Rubik, tight, sentence case — but inked
+     dark on the bubble, the way the sticker sheet does it. */
+  font-family: var(--font-heavy);
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--void);
+  /* Pixel corners: one 8px step notched out of each, same trick as the
+     break-orbit button. */
+  clip-path: polygon(
+    0 8px, 8px 8px, 8px 0,
+    calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+    100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%,
+    8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)
+  );
+}
+
+/*
+ * The tail: a pixel staircase stepping down toward the ball. It lives on
+ * whichever side of the bubble faces the ball — scrollIntro floats the bubble
+ * to whichever side of the disc has room and flips the tail to match.
+ */
+.scene-tag-card::after {
+  content: '';
+  position: absolute;
+  left: 22px;
+  top: calc(100% - 1px);
+  width: 24px;
+  height: 20px;
+  background: var(--white);
+  clip-path: polygon(
+    0 0, 100% 0,
+    100% 25%, 75% 25%,
+    75% 50%, 50% 50%,
+    50% 75%, 25% 75%,
+    25% 100%, 0 100%
+  );
+}
+
+/* Mirrored staircase for the bubble sitting left of the ball. */
+.scene-tag.is-flip .scene-tag-card::after {
+  left: auto;
+  right: 22px;
+  clip-path: polygon(
+    100% 0, 0 0,
+    0 25%, 25% 25%,
+    25% 50%, 50% 50%,
+    50% 75%, 75% 75%,
+    75% 100%, 100% 100%
+  );
+}
+
+/* The kaomoji above the line — each bubble gets its own face. System glyphs
+   fill in whatever Rubik lacks, which is exactly the ASCII-emoji look. */
+.scene-tag-bubble i {
+  font-style: normal;
+  font-size: 0.72em;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-tag-card {
+    transition: opacity 0.4s ease;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* --- boot shutter --------------------------------------------------------- */
+
+/*
+ * Holds the void for the first beat of a load. The renderer, the fonts, and
+ * the first ASCII frame all arrive within a few hundred ms of each other, and
+ * uncovered that read as a hard pop into deep space. Two thick slabs cover
+ * the screen and part vertically — top up, bottom down — once the first frame
+ * has actually painted (scrollIntro sets body.booted), so the scene is
+ * revealed complete, through an opening rather than a fade.
+ *
+ * Below the cursor layer (9000+) — the pointer is the reader's — and above
+ * everything belonging to the page.
+ */
+#boot {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  pointer-events: none;
+  /* The halves carry the cover; the container is just the stage for them. */
+  transition: visibility 0s linear 1s;
+}
+
+body.booted #boot {
+  visibility: hidden;
+}
+
+.boot-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* A hair past half, so no seam of scene shows between the closed slabs. */
+  height: 50.5%;
+  background: var(--void);
+  transition: transform 0.85s cubic-bezier(0.65, 0, 0.35, 1) 0.1s;
+}
+
+/* The slabs' meeting edges — a faint hairline, so the seam reads as a crack of
+   light about to open rather than a drawn rule across the screen. */
+.boot-half--top {
+  top: 0;
+  border-bottom: 1px solid rgba(110, 140, 255, 0.35);
+  box-shadow: 0 1px 10px rgba(110, 140, 255, 0.18);
+}
+
+.boot-half--bottom {
+  bottom: 0;
+  border-top: 1px solid rgba(110, 140, 255, 0.35);
+  box-shadow: 0 -1px 10px rgba(110, 140, 255, 0.18);
+}
+
+body.booted .boot-half--top {
+  transform: translateY(-102%);
+}
+
+body.booted .boot-half--bottom {
+  transform: translateY(102%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-half {
+    transition: opacity 0.4s ease 0.1s;
+  }
+  body.booted .boot-half--top,
+  body.booted .boot-half--bottom {
+    transform: none;
+    opacity: 0;
+  }
+}
+
+/* --- scroll spacer ------------------------------------------------------- */
+
+/* Empty by design. Its only job is to give the flight a scroll budget. */
+#intro-scroll {
+  position: relative;
+  /* Overwritten from CONFIG.scrollLengthVh at runtime; kept in sync here so the
+     first paint before JS runs is not a different length. */
+  height: 330vh;
+}
+
+/* --- hero ---------------------------------------------------------------- */
+
+/*
+ * Pinned at opacity 0 for the whole flight, crossfaded in at the end, then
+ * released into normal flow so the rest of the page scrolls as usual.
+ * #hero-spacer holds its place in the layout while it is fixed.
+ */
+#hero-pin {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  /* Clip the over-tall rail while the hero is a fixed, viewport-sized box. */
+  overflow: hidden;
+}
+
+body.intro-done #hero-pin {
+  position: relative;
+  inset: auto;
+  opacity: 1;
+  pointer-events: auto;
+  overflow: visible;
+}
+
+#hero-spacer {
+  height: 100vh;
+}
+
+body.intro-done #hero-spacer {
+  display: none;
+}
+
+/*
+ * Landed, the hero gives up its flow height too. Everything it appears to hold
+ * is fixed — the masthead and the break-orbit control take no flow space — so
+ * the band was pure slack between the landing and the showcase's pin: the
+ * reader's first scroll spent itself moving the "Selected work" banner up
+ * instead of driving the reel. With it gone the showcase is the top of the
+ * document and its sticky pin is engaged from the first pixel.
+ */
+body.intro-done #hero {
+  display: none;
+}
+
+#hero {
+  position: relative;
+  /*
+   * No min-height: the hero is a masthead and a control, not a screen.
+   *
+   * At 100vh it filled the landing viewport by itself and pushed the showcase —
+   * and so the device — exactly one screen down, so the reader arrived from the
+   * flight to a page that looked like it had no work on it. Sized to its content
+   * it now ends just below the topbar, dropping the reader straight into the
+   * work.
+   *
+   * The pin is unaffected. #hero-spacer still holds a viewport-sized gap while
+   * the hero is fixed, and the landing snap reads heroPin.offsetTop live, after
+   * the swap back into flow, so it lands exactly wherever the hero now starts.
+   */
+  /* Right gutter is wider than the others: the scroll rail lives in it. */
+  padding: var(--topbar-h) var(--rail-gutter) 3vh var(--gutter);
+}
+
+/*
+ * The hero's backdrop, moved onto a pseudo-element so it can be faded
+ * independently of the text sitting on it.
+ *
+ * The footer dissolves into the field by masking itself, but the same trick at
+ * the top would take the masthead with it — up here the content has to stay at
+ * full strength while only the surface behind it thins out. Hence the two ends
+ * are built differently despite reading as the same effect: the bottom masks the
+ * section, the top masks only the section's backdrop.
+ */
+#hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 20% 10%, var(--deep), var(--void) 70%);
+  /*
+   * Proportional, not a fixed length. The hero is short — the break-orbit
+   * control is fixed and takes no flow space, so this is barely more than the
+   * masthead — and any absolute fade long enough to read as smooth would exceed
+   * the element and wash the backdrop out entirely. Ramping across the hero's
+   * own height gives the longest dissolve actually available, and keeps working
+   * if the hero ever grows.
+   *
+   * Nothing below can lengthen it either: .showcase paints its own opaque
+   * background over anything this extends into.
+   */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 100%);
+}
+
+/* --- masthead ------------------------------------------------------------ */
+
+/*
+ * Sticky, not fixed: during the flight the hero is a fixed, clipped box and a
+ * fixed bar inside it would escape that clip and sit over the ASCII scene. Once
+ * the hero is released into flow, sticky resolves against the viewport anyway.
+ */
+#topbar {
+  /*
+   * Fixed at body level rather than sticky inside the hero. Sticky is only
+   * sticky within its containing block, and the hero is a ~160px band — so it
+   * held for the hero's own height and then left with it.
+   *
+   * Below the scroll pill and the cursor (9000/10000) and above the page's own
+   * layers, which top out at 2.
+   */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  height: var(--topbar-h);
+  /* Gutters directly: the negative margins existed only to break back out of
+     the hero's padding, and there is no hero padding to escape out here. */
+  padding: 0 var(--rail-gutter) 0 var(--gutter);
+  /* The label voice the rest of the page speaks: dotted display face, small,
+     uppercase, tracked out — the same treatment as the bento eyebrows and the
+     HUD chips, instead of a plain lowercase row that reads as a default. */
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition: opacity 0.45s ease;
+}
+
+/*
+ * It belongs to the page, not the flight. The hero's own opacity used to hide it
+ * for free; out at body level it has to be told.
+ */
+body:not(.intro-done) #topbar {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/*
+ * A solid backdrop with a hairline rule, matching the case-study pages' bar.
+ *
+ * This used to be a gradient fading to transparent — right when the only thing
+ * under the bar was the hero's own dark field, where a solid tint read as a
+ * darker block ending on a hard seam. Now the bento tiles scroll underneath,
+ * and some of them are bright: the half-faded band turned into a smudge over
+ * light artwork, with the labels losing contrast in the transparent tail. A
+ * defined bar over content is the honest shape, and the rule is what the
+ * case-study header already draws.
+ */
+#topbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(7, 7, 15, 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+
+#topbar a {
+  position: relative;
+  /* Reserved room for the selector, so appearing does not shove the label. */
+  padding-left: 0.95em;
+  color: var(--slate);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+/* The arcade selector — the same glyph the end screen's menu points with. */
+#topbar a::before {
+  content: '\25B8';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+#topbar a:hover,
+#topbar a:focus-visible {
+  color: var(--white);
+  outline: none;
+}
+
+#topbar a:hover::before,
+#topbar a:focus-visible::before {
+  opacity: 1;
+}
+
+.topbar-name {
+  color: var(--white) !important;
+  font-weight: 500;
+}
+
+/* Centre group is centred against the viewport, not against what is left over
+   after the name — the name and the right-hand links are different widths. */
+.topbar-nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1.1rem;
+}
+
+/* Below this the centred group lands on the name. The section links are a
+   convenience on a page that is one scroll anyway — the name and the outbound
+   links are the parts that must survive. */
+@media (max-width: 720px) {
+  .topbar-nav {
+    display: none;
+  }
+}
+
+.topbar-links {
+  margin-left: auto;
+  display: flex;
+  gap: 1.1rem;
+}
+
+/* --- statement ----------------------------------------------------------- */
+
+/*
+ * Leads the page on its own now. It used to be pinned beside a column of work;
+ * the work is a pinned showcase of its own below, and two competing pins in a
+ * row read as a page that will not move on.
+ */
+/*
+ * Padding is the hero's height, near enough — the statement is the only thing
+ * in it — so this is the dial for how much of the phone clears the fold. Every
+ * 1vh removed here lifts the device 1vh higher on the landing screen.
+ */
+/*
+ * Holds the break-orbit control alone, now that the headline has gone. It still
+ * reserves a band because the button keeps its box while hidden — that is what
+ * stops the showcase jumping when the control surfaces.
+ */
+.statement {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2.4vh 0 0;
+  text-align: center;
+}
+
+/*
+ * Break orbit — back into the flight.
+ *
+ * Styled off the HUD chips rather than the page, on purpose: it is the one
+ * control on the site that belongs to the intro, so it should look like it came
+ * from the cockpit rather than from the page it is sitting in.
+ */
+#break-orbit {
+  /*
+   * Fixed just under the masthead. There is no strip of deep space for it to
+   * park in any more — pushing above the top of the work simply surfaces the
+   * control over the page, briefly, and it withdraws on its own.
+   *
+   * Above the masthead (30) in stacking, so nothing covers it while offered.
+   */
+  position: fixed;
+  top: calc(var(--topbar-h) + 1.6vh);
+  left: 50%;
+  margin-left: -8.9rem;
+  width: 17.8rem;
+  justify-content: center;
+  z-index: 40;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 20px 15px 16px;
+  /*
+   * A pixel-art game button: solid candy fill, a bright bevel along the top,
+   * a darker bevel as the bottom edge, notched pixel corners, and a dark
+   * outline traced around the whole silhouette by drop-shadows (a border
+   * would be scissored off by the clip). The bottom bevel is padding-thick so
+   * the face's content sits a step above centre, like something pressable.
+   */
+  border: none;
+  border-radius: 0;
+  /* Two-step corners — the softer, rounder pixel silhouette from the
+     reference sheets, instead of a single hard notch. */
+  clip-path: polygon(
+    0 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0,
+    calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+    100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px),
+    calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%,
+    8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px)
+  );
+  /*
+   * Muted candy, matte: a flat fill with only the darker bottom bevel — the
+   * sprite-sheet shine ticks read as gloss and are gone.
+   */
+  background-color: #5b6cc2;
+  background-image: linear-gradient(#3d4a96, #3d4a96);
+  background-repeat: no-repeat;
+  background-position: bottom 0 center;
+  background-size: 100% 6px;
+  /* Two-ring outline: the dark ink line first, then a faint light rim outside
+     it. On a near-black page a dark outline alone disappears — the rim is
+     what gives it something to be dark against, so the ink reads like the
+     reference's black edge. */
+  filter:
+    drop-shadow(3px 0 0 #070810)
+    drop-shadow(-3px 0 0 #070810)
+    drop-shadow(0 3px 0 #070810)
+    drop-shadow(0 -3px 0 #070810)
+    drop-shadow(1px 0 0 rgba(162, 180, 254, 0.75))
+    drop-shadow(-1px 0 0 rgba(162, 180, 254, 0.75))
+    drop-shadow(0 1px 0 rgba(162, 180, 254, 0.75))
+    drop-shadow(0 -1px 0 rgba(162, 180, 254, 0.75));
+  font-family: var(--font-display);
+  /* Big and heavy — the label is the button. The synthetic bold fattens the
+     dot-matrix glyphs into near-solid strokes, which is the point. */
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-shadow: 0 2px 0 rgba(7, 7, 15, 0.45);
+
+  /*
+   * Hidden until the reader actually tries to scroll above the hero. There is no
+   * reason to advertise a way back out to someone who has just arrived.
+   *
+   * It keeps its box while hidden, so appearing does not shove the work below it
+   * down — the reveal should feel like something surfacing, not the page
+   * reflowing. visibility rather than opacity alone so it is neither clickable
+   * nor focusable until offered, stepped at the end of the fade on the way out.
+   */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.45s, color 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.35s ease, background-color 0.25s ease;
+}
+
+/*
+ * Offered: surfaces in place, sliding down the few pixels the hidden state
+ * holds it up by. The offer is granted by scrollIntro on an upward push against
+ * the top of the work, and withdrawn by its own timer (or by scrolling back
+ * down), so visibility is the intro's state alone now — there is no band whose
+ * stretch it needs to track.
+ */
+#break-orbit.is-offered {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s, color 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.35s ease, background-color 0.25s ease;
+}
+
+/*
+ * Hard state change, no glow — a pixel button lights up by swapping paint:
+ * lighter fill, a bright bevel ticks on along the top, the bottom bevel stays.
+ * Each layer declares its own position and size — one shared "bottom / 6px"
+ * pair painted every layer into the same strip and read as a loose white slab
+ * under the button.
+ */
+#break-orbit:hover,
+#break-orbit:focus-visible {
+  background-color: #6a7bd0;
+  background-image:
+    linear-gradient(#aebdf5, #aebdf5),
+    linear-gradient(#4654a4, #4654a4);
+  background-position: top 0 center, bottom 0 center;
+  background-size: 100% 4px, 100% 6px;
+  outline: none;
+}
+
+/* Pressed: drops onto its own base — the depth shadow collapses to match. */
+#break-orbit.is-offered:active {
+  transform: translateY(2px);
+  filter:
+    drop-shadow(3px 0 0 #070810)
+    drop-shadow(-3px 0 0 #070810)
+    drop-shadow(0 3px 0 #070810)
+    drop-shadow(0 -3px 0 #070810)
+    drop-shadow(1px 0 0 rgba(162, 180, 254, 0.75))
+    drop-shadow(-1px 0 0 rgba(162, 180, 254, 0.75))
+    drop-shadow(0 1px 0 rgba(162, 180, 254, 0.75))
+    drop-shadow(0 -1px 0 rgba(162, 180, 254, 0.75));
+}
+
+.bo-glyph {
+  display: block;
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+.bo-glyph svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #break-orbit { transition: none; }
+}
+
+/* --- section banners ------------------------------------------------------ */
+
+/*
+ * Ghost section labels: large display type that fades out toward its own
+ * baseline. The gradient is clipped to the glyphs, so the fade is made of the
+ * letters themselves rather than a scrim laid over them.
+ */
+.section-banner {
+  margin: 0;
+  /* The wordmark face. Heavy and instantly legible where the arcade face made
+     the reader decode the label — a section marker has one job. */
+  font-family: var(--font-heavy);
+  font-weight: 900;
+  /* The 10.2vw ceiling is the phone fit: the banner is nowrap, and below
+     ~404px the 2.6rem floor sets a line wider than the screen — which on
+     mobile doesn't clip, it stretches the whole layout viewport. */
+  font-size: min(max(2.6rem, 6.5vw), 10.2vw, 5.6rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  background: linear-gradient(
+    180deg,
+    rgba(162, 180, 254, 0.42) 0%,
+    rgba(162, 180, 254, 0.14) 62%,
+    rgba(162, 180, 254, 0) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.sc-banner {
+  margin-bottom: clamp(2.4rem, 6vh, 4.5rem);
+}
+
+/* --- project showcase ---------------------------------------------------- */
+
+/*
+ * Bento grid, replacing the pinned reel. The reel spent six viewports of
+ * scroll revealing one project at a time; the grid puts all six on screen at
+ * once and spends grid AREA instead of scroll to say which matters most.
+ */
+.showcase {
+  position: relative;
+  z-index: 2;
+  /* Slim frame left/right — the grid runs the full screen, the reference's
+     whole move. The top is different: the masthead is a fixed, solid bar now,
+     so its height comes out of any padding declared here — 6vh flat left the
+     ghost banner pressed against its rule. Cleared explicitly, plus real air. */
+  padding: calc(var(--topbar-h) + clamp(3rem, 8vh, 5.5rem)) 12px 4vh;
+  background: var(--void);
+  background-image: radial-gradient(rgba(110, 140, 255, 0.13) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+.showcase-inner {
+  width: 100%;
+}
+
+/* The landing entrance rides on this wrapper (see sc-arrive below). */
+@media (prefers-reduced-motion: no-preference) {
+  body.intro-done .showcase-inner {
+    animation: sc-arrive 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes sc-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24vh, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * The weighting. Tempo is the flagship and holds the 2x2; Callie and Project
+ * Vitality carry tall art so they take full-height columns; the rest split
+ * the remainder. Areas rather than spans so the arrangement is one legible
+ * picture here instead of arithmetic spread across six rules.
+ */
+.bento {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: clamp(220px, 32vh, 360px);
+  grid-template-areas:
+    'tempo tempo callie pv'
+    'tempo tempo callie pv'
+    'lg    lg    uw     ctrl';
+}
+
+.bento--tempo { grid-area: tempo; }
+.bento--callie { grid-area: callie; }
+.bento--pv { grid-area: pv; }
+.bento--lg { grid-area: lg; }
+.bento--uw { grid-area: uw; }
+.bento--ctrl { grid-area: ctrl; }
+
+/*
+ * Media tiles, after the reference: the image IS the card — rounded, unframed,
+ * filling the cell — and the copy sits ON it over a scrim instead of in a
+ * strip beside it. The pixel casing the flight-log devices wear stops here on
+ * purpose: these tiles are windows onto the work, not objects on the shelf.
+ */
+.bento-card a {
+  position: relative;
+  display: block;
+  height: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--deep);
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+
+.bento-card a:hover,
+.bento-card a:focus-visible {
+  transform: translateY(-4px);
+  outline: none;
+}
+
+.bento-media {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: var(--deep);
+}
+
+.bento-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.bento-card a:hover .bento-media img {
+  transform: scale(1.05);
+}
+
+/* No art yet: the striped placeholder, labelled, same as the old reel's. */
+.bento-media:not(:has(img))::after {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgba(110, 140, 255, 0.05) 0 10px,
+      transparent 10px 20px
+    ),
+    var(--deep);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+/*
+ * The copy, overlaid on the tile's foot. The scrim is part of the copy block
+ * rather than the media so it always sits exactly behind the text it exists
+ * to protect, whatever the card's height.
+ */
+/*
+ * The whole copy block waits behind a hover: at rest the card is the artwork,
+ * and the reading — index, name, the problem line, chips — arrives with the
+ * scrim when the reader leans in. Absolutely positioned, so there is no space
+ * to reserve and nothing reflows.
+ */
+.bento-copy {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 3.2rem 1.1rem 1rem;
+  /* Stops approximate an eased curve — two stops put a visible band across
+     light artwork where the ramp snapped from clear to dark. */
+  background: linear-gradient(
+    180deg,
+    rgba(7, 7, 15, 0) 0%,
+    rgba(7, 7, 15, 0.12) 18%,
+    rgba(7, 7, 15, 0.34) 36%,
+    rgba(7, 7, 15, 0.58) 56%,
+    rgba(7, 7, 15, 0.78) 76%,
+    rgba(7, 7, 15, 0.92) 100%
+  );
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.bento-card a:hover .bento-copy,
+.bento-card a:focus-visible .bento-copy {
+  opacity: 1;
+  transform: none;
+}
+
+/* No hover to lean on: the copy is simply on, or the cards are mute tiles. */
+@media (hover: none) {
+  .bento-copy {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bento-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  /* This row sits at the clear top of the scrim, so it carries its own halo —
+     darkening the ramp enough to cover it up there brings back the band. */
+  text-shadow: 0 1px 6px rgba(7, 7, 15, 0.95), 0 0 2px rgba(7, 7, 15, 0.95);
+}
+
+.bento-index { color: var(--accent); }
+/* The project's name — the headline slot now belongs to the problem it solved. */
+.bento-proj { color: var(--pale); text-align: right; }
+
+/* One line on what was solved, not the name: the name is metadata above, the
+   problem is the pitch. */
+.bento-name {
+  font-family: var(--font-heavy);
+  /* A sentence, not a wordmark: the black weight that suited a one-word name
+     clogs at a full line, so this sets bigger and lighter. */
+  font-weight: 700;
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+  /* Negative, where the dot-matrix wanted positive: this face sets tight, and
+     the loose tracking that opened up the dotted glyphs only smears this one. */
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--white);
+  max-width: 28ch;
+  text-wrap: balance;
+}
+
+/* Discipline chips — what the project IS, so they outrank the role line. */
+.bento-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.bento-tags span {
+  display: inline-block;
+  padding: 0.3em 0.65em;
+  border: 2px solid var(--slate);
+  background: rgba(25, 25, 46, 0.55);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pale);
+}
+
+/* Narrow: two columns, flagship on top. */
+@media (max-width: 900px) {
+  .bento {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'tempo tempo'
+      'tempo tempo'
+      'callie pv'
+      'lg     lg'
+      'uw     ctrl';
+  }
+}
+
+@media (max-width: 540px) {
+  .bento {
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(230px, auto);
+    grid-template-areas: 'tempo' 'callie' 'pv' 'lg' 'uw' 'ctrl';
+  }
+}
+
+/* --- flight log ---------------------------------------------------------- */
+
+/*
+ * A character-select screen, not a ledger: the ghost banner over one compact
+ * grid of cards. Short on purpose — it follows the showcase directly, with no
+ * seam band between them.
+ */
+.past {
+  position: relative;
+  z-index: 2;
+  /*
+   * Shallow on top on purpose. The section no longer opens with a banner — the
+   * pile of devices IS the opener — and a short lead-in means the consoles are
+   * already peeking up while the last project is still on screen, which is what
+   * pulls the reader over the seam.
+   */
+  /* The pile is a shelf of objects — it needs air on both sides to read as one,
+     and the bands above and below are matched so it sits centred in its own
+     space rather than drifting toward whichever neighbour is closer. */
+  padding: 12vh var(--gutter) 14vh;
+  background: var(--void);
+}
+
+.past-inner {
+  position: relative;
+  /*
+   * Wider than the old 1240 so all six numbered consoles hold one row. It is the
+   * only thing in this section now that the notes are gone, and the bento above
+   * already runs the full width — a narrow well here was the odd one out.
+   */
+  max-width: 1560px;
+  margin: 0 auto;
+}
+
+/*
+ * The pile. Not a grid on purpose: seven handhelds dumped on a shelf, each at
+ * its own slight angle and height, the way a drawer of old consoles actually
+ * sits. flex-wrap keeps it responsive — the disorder is per-item transforms on
+ * top of an ordinary wrapping row, so nothing needs media-query choreography
+ * and nothing can overlap so far it hides a neighbour.
+ */
+.log-cards {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  /*
+   * Tight row gap on purpose. Each card reserves ~50px under its name for the
+   * role and date it reveals on hover, so that reserved band is already most of
+   * the space between rows — a row gap sized as if it were the whole thing
+   * doubles up and leaves the shelf looking like two unrelated shelves.
+   */
+  gap: 0.5rem 1.4rem;
+}
+
+/* Forces the row break before Freelance. See ALONE in scripts/pixelDevices.py. */
+.log-break {
+  flex-basis: 100%;
+  height: 0;
+  margin: 0;
+}
+
+.log-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  /* Slight tuck so neighbouring devices shoulder into each other. */
+  margin: 0 -0.35rem;
+  transition: transform 0.18s ease;
+}
+
+/*
+ * Counted `of .log-card` throughout, so the row-break items the generator
+ * inserts do not shift every card's index by one — the scatter and the mirrored
+ * sparkles both key off position in the SEQUENCE, not position in the list.
+ *
+ * The scatter. Rotations alternate side and never repeat a magnitude, and every
+ * other device sits a little higher or lower than the row line — enough that no
+ * three tops align, which is what "not orderly" needs. Indices are stable, so
+ * the pile lands the same way on every visit.
+ */
+.log-card:nth-child(1 of .log-card) { transform: rotate(-7deg) translateY(4px); }
+.log-card:nth-child(2 of .log-card) { transform: rotate(4deg) translateY(18px); }
+.log-card:nth-child(3 of .log-card) { transform: rotate(-3deg) translateY(-6px); }
+.log-card:nth-child(4 of .log-card) { transform: rotate(8deg) translateY(10px); }
+.log-card:nth-child(5 of .log-card) { transform: rotate(-5deg) translateY(20px); }
+.log-card:nth-child(6 of .log-card) { transform: rotate(3deg) translateY(-2px); }
+.log-card:nth-child(7 of .log-card) { transform: rotate(-9deg) translateY(12px); }
+
+/*
+ * Picking one up: it straightens and lifts out of the pile.
+ *
+ * The extra ancestor class is load-bearing, not decoration: the scatter rules
+ * above select with :nth-child(n of .log-card), whose `of` argument adds a
+ * class worth of specificity — a bare .log-card:hover loses to them and the
+ * lift never fires.
+ */
+.log-cards .log-card:hover {
+  transform: rotate(0deg) translateY(-4px) scale(1.06);
+  z-index: 2;
+}
+
+/*
+ * The devices themselves. Height-led sizing so portrait machines stand tall and
+ * landscape ones run wide from the same knob, like real hardware on one shelf.
+ * The cartridge is deliberately smaller — it is a game, not a machine.
+ */
+.log-dev {
+  /* Trimmed a little at the top end: the row has to seat six machines, and the
+     landscape ones are ~2.4x as wide as they are tall, so the ceiling here is
+     what actually decides whether the shelf fits. */
+  height: clamp(80px, 9vw, 122px);
+  width: auto;
+  display: block;
+  margin-bottom: 0.55rem;
+}
+
+.log-dev--gba,
+.log-dev--gamegear,
+.log-dev--gamewatch {
+  height: clamp(60px, 6.9vw, 92px);
+}
+
+.log-dev--cart {
+  height: clamp(64px, 7.2vw, 92px);
+}
+
+.log-card-where {
+  margin: 0;
+  /* Sans, like the title under it. Employer and role are the two things being
+     read here, so they share a voice; the dot-matrix is spent on the date. */
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: var(--white);
+}
+
+/*
+ * The job title, between the employer and the dates. Quiet body face where the
+ * date below is arcade caps — three different registers stacked (heavy name,
+ * plain role, instrument date) is what lets three lines sit this close without
+ * reading as one blur. Wraps rather than truncates: CI carries two titles.
+ */
+/*
+ * Role + date are the hover reveal: at rest a card is the console and its
+ * name; who-and-when arrives when the reader leans in. Both set in the body
+ * face at clearly stepped sizes — the dot-matrix date next to a Rubik role
+ * read as two different signs. In flow with reserved space, so the shelf of
+ * consoles never reflows under the cursor.
+ */
+.log-card-role,
+.log-card-when {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.log-card:hover .log-card-role,
+.log-card:hover .log-card-when,
+.log-card:focus-within .log-card-role,
+.log-card:focus-within .log-card-when {
+  opacity: 1;
+  transform: none;
+}
+
+.log-card-role {
+  margin: 0;
+  max-width: 24ch;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--white);
+}
+
+.log-card-when {
+  margin: 0;
+  /* The dot-matrix, alone on the card now — a readout under two lines of plain
+     type, which is what makes it read as stamped rather than written. Tracked
+     out because the dotted glyphs collide at their natural fit. */
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-align: center;
+  /* --soft, not --slate: at this size the slate was a squint against the void. */
+  color: var(--soft);
+  white-space: nowrap;
+}
+
+/*
+ * On touch the reveal rides on focus instead of hover: the cards carry
+ * tabindex, so a tap opens one card and tapping elsewhere closes it. Always-on
+ * was the old answer here, and seven cards' worth of roles and dates stacked
+ * into one column read as noise.
+ */
+.log-cards .log-card:focus-within {
+  transform: rotate(0deg) translateY(-4px) scale(1.06);
+  z-index: 2;
+  outline: none;
+}
+
+/*
+ * The guides.
+ *
+ * The tracks mirror .past-inner rather than being three equal thirds. As thirds,
+ * the interior line landed at 66% of the section — which is the middle of the
+ * list column and a boundary nothing uses, so it cut straight through the role
+ * and the summary beneath it.
+ *
+ * Stretched past the content vertically by exactly the section's own padding, so
+ * they run edge to edge like ruled paper rather than starting where the text
+ * happens to.
+ */
+.log-grid {
+  position: absolute;
+  top: -6vh;
+  bottom: -18vh;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  pointer-events: none;
+}
+
+.log-grid span {
+  position: relative;
+  border-left: 1px dotted var(--rule);
+}
+
+.log-grid span:last-child {
+  border-right: 1px dotted var(--rule);
+}
+
+/*
+ * The interior line, on the row's own role/date boundary — the same
+ * --log-when-col the records are ruled by, offset into the middle of the gap
+ * between the two tracks so it falls in the gutter rather than against a glyph.
+ */
+.log-grid span:last-child::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /* Includes the record's right inset, or it would mark a boundary the columns
+     no longer sit on. */
+  right: calc(var(--row-inset) + var(--log-when-col) + var(--log-gap) / 2);
+  border-left: 1px dotted var(--rule);
+}
+
+/* Content sits above the guides it is measured against. */
+.log-intro,
+.log-list {
+  position: relative;
+  z-index: 1;
+}
+
+.log-intro {
+  padding-right: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+/*
+ * Sticky, so the section keeps its label for the whole scroll. Bounded by the
+ * grid row, so it releases at the end of the list rather than following the
+ * reader into the footer.
+ */
+.log-intro {
+  position: sticky;
+  top: 14vh;
+  /* Inset from the left guide by the same amount the rows are from theirs. */
+  padding-left: var(--row-inset);
+}
+
+.log-eyebrow {
+  margin: 0 0 1.1rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.log-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/*
+ * Dotted, matching the guides exactly — the horizontals and the verticals are
+ * one ruling, not two decorations, and a different dash pattern on each reads as
+ * a mistake. On the top edge of every row plus the bottom of the last, so the
+ * list is closed at both ends.
+ *
+ * The row is not padded, so these run the full width of the list columns and
+ * meet the vertical guide at each end. The inset that keeps the text off the
+ * line lives on the row's contents instead.
+ */
+.log-row {
+  border-top: 1px dotted var(--rule);
+}
+
+.log-row:last-child {
+  border-bottom: 1px dotted var(--rule);
+}
+
+.log-h {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+ * One record. Four columns: index, employer, role, dates — the sign column went
+ * with the disclosure, and the button resets went with the button.
+ */
+.log-rec {
+  position: relative;
+  width: 100%;
+  display: grid;
+  /* Fixed index track: an `auto` one is sized by "L01" vs "—" and would put the
+     employer in a different place on the row that uses the dash. */
+  grid-template-columns: var(--log-index-col) minmax(0, var(--log-name-col)) 1fr;
+  /* start, not center: a two-term entry is taller than the employer beside it,
+     and centring would float the name against neither of its lines. */
+  align-items: start;
+  gap: var(--log-gap);
+  /*
+   * Right inset only. The dates are right-aligned in the last track, so without
+   * it they set flush against the closing rule and read as touching it. The left
+   * stays flush on purpose — the index hangs in the gutter and crosses the rule
+   * like a tick mark, which is a detail rather than an accident.
+   */
+  padding: 1.5rem var(--row-inset) 1.5rem 0;
+}
+
+/*
+ * Tick where the row meets the guide beside it. Sits astride the line rather
+ * than beside it, which is what makes the two rulings read as one grid with
+ * registration marks instead of a list that happens to sit near some lines.
+ */
+.log-rec::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 50%;
+  width: 7px;
+  height: 1px;
+  background: rgba(162, 180, 254, 0.45);
+}
+
+.log-index {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: var(--slate);
+}
+
+/*
+ * Employer and role, deliberately matched.
+ *
+ * They had swapped extremes — the employer at 0.78rem slate small-caps, the role
+ * at 1.28rem white — and the pair read as a label and a headline rather than as
+ * two halves of one fact. Both now sit midway between where each was: one face,
+ * one size, one colour.
+ *
+ * The employer also loses its uppercase and wide tracking. At a shared size
+ * those alone make it the louder of the two, which is the imbalance being
+ * removed — just pointing the other way.
+ */
+.log-where {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.15vw, 1.03rem);
+  letter-spacing: -0.005em;
+  line-height: var(--log-line);
+  color: var(--pale);
+  text-align: left;
+  transition: color 0.3s ease;
+}
+
+/* Multi-term entries stack; single-term ones are unaffected. */
+
+
+.log-row:hover .log-where {
+  color: var(--white);
+}
+
+.log-when {
+  /* Right-aligned in its fixed track, so the spans end on one line down the
+     list however long each one is. */
+  text-align: right;
+  /* Matches --log-line so a stacked span sits level with the role beside it. */
+  line-height: var(--log-line);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--slate);
+  transition: color 0.3s ease;
+}
+
+.log-row:hover .log-when {
+  color: var(--soft);
+}
+
+/*
+ * One employer, one or more entries. Each is a summary and the span it covers,
+ * on one line — so a two-term employer reads as two records under one name
+ * rather than one record with a compound date.
+ */
+.log-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.log-entry {
+  display: grid;
+  grid-template-columns: 1fr var(--log-when-col);
+  align-items: baseline;
+  gap: var(--log-gap);
+}
+
+.log-what {
+  margin: 0;
+  /* No max-width: the column is the measure now, and a cap here would leave the
+     dates stranded away from the text they belong to. */
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--slate);
+  /* Same 0.3s as the employer and the span, so the row lifts as one thing. */
+  transition: color 0.3s ease;
+}
+
+/*
+ * Hovering lifts all three, but not to the same place: the employer goes to
+ * white, the summary to pale, the span to soft. Taking the summary to white too
+ * would flatten the row into one uniform block at the moment it is being read —
+ * this keeps the same order of emphasis the row has at rest, just louder.
+ */
+.log-row:hover .log-what {
+  color: var(--pale);
+}
+
+@media (max-width: 860px) {
+  .past-inner {
+    grid-template-columns: 1fr;
+  }
+
+  /*
+   * One column, so the interior divisions have nothing to divide. The extra
+   * cells have to be removed, not just re-flowed: in a single-column grid they
+   * stack as *rows*, which put the closing border on the bottom third of the
+   * section instead of down its full height. One cell, bordered both sides.
+   */
+  .log-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .log-grid span:not(:first-child) {
+    display: none;
+  }
+
+  .log-grid span:first-child {
+    border-right: 1px dotted var(--rule);
+  }
+
+  .log-intro {
+    position: static;
+    padding: 0 0 3rem var(--row-inset);
+  }
+
+  /*
+   * The date is the first thing to go: the name and the summary carry the row.
+   *
+   * The index track stays --log-index-col rather than reverting to `auto`. The
+   * body indents by that same variable, so sizing it to content here pulled the
+   * name off the summary's left edge by whatever "L01" happened to measure.
+   */
+  .log-rec {
+    grid-template-columns: var(--log-index-col) 1fr auto;
+  }
+
+  .log-when {
+    display: none;
+  }
+
+  /* One column here, so the explicit placement above would invent a second. */
+  .log-aside {
+    grid-column: 1;
+  }
+
+  /* The title drops below the name rather than beside it; there is no room for
+     a fixed name track and a role column on the same line. */
+  .log-rec {
+    grid-template-columns: var(--log-index-col) 1fr auto;
+  }
+}
+
+/*
+ * Freelance, set apart from the numbered run. Enough of a gap to read as its own
+ * thing, not so much that it looks like a different section.
+ */
+.log-aside {
+  /* Explicit, because .past-inner is a two-column grid and the list occupies
+     the second. Left to auto-placement this dropped into row two of the *first*
+     column, under the heading, in a third of the width it needs. */
+  grid-column: 2;
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+}
+
+.log-aside-label {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+/* Its index slot is an em dash, so the column still lines up with the run above
+   without implying a position in it. */
+.log-list--aside .log-index {
+  opacity: 0.5;
+}
+
+/* --- game-over screen ----------------------------------------------------- */
+
+/*
+ * The end of the run. Hearts (mostly spent), GAME OVER in arcade gold, the
+ * replay prompt, and the name as the closing wordmark — the Discord sign-off,
+ * in cartridge type.
+ */
+.go-screen {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  text-align: center;
+}
+
+/*
+ * The run's hearts, fallen out of the HUD and come to rest on the wordmark —
+ * each at its own angle, half-sunk behind the letter tops. Decoration now, so
+ * they overlay instead of taking a slot in the stack.
+ */
+.go-title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-arcade);
+  /* A footnote under the contact menu — replay is the flourish, not the ask. */
+  font-size: clamp(0.62rem, 1vw, 0.8rem);
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  /* Steady, not blinking: an invitation you can read at leisure. The press-
+     start idiom survives in the key caps, not in a strobe. */
+  color: var(--slate);
+}
+
+.go-title:hover,
+.go-title:focus-visible {
+  color: #fff;
+  outline: none;
+}
+
+/* Pixel key caps. The bottom-heavy border is the key's depth; pressing the
+   prompt anywhere pushes them down, which is the whole joke of the control. */
+.go-title kbd {
+  display: inline-block;
+  margin: 0 0.18em;
+  padding: 0.14em 0.5em;
+  border: 3px solid var(--slate);
+  border-bottom-width: 6px;
+  font: inherit;
+  color: var(--white);
+  background: rgba(25, 25, 46, 0.6);
+}
+
+.go-title:active kbd {
+  border-bottom-width: 3px;
+  transform: translateY(3px);
+}
+
+/*
+ * Hosts the wordmark; carries the breakout from the surface's 8vw side padding
+ * so the name runs edge to edge.
+ *
+ * The top margin is on top of the stack's flex gap, and only this one line gets
+ * it: the wordmark's line-height is trimmed below 1 to kill its leading, which
+ * also takes away the air a cap-height name of this size wants above it. The
+ * gap alone measured the same here as everywhere else and looked tighter.
+ */
+.go-end {
+  position: relative;
+  margin: 1.4rem -8vw 0;
+}
+
+/* The sign-off, Discord-sized and Discord-solid: a heavy geometric sans with
+   softened corners — the closest open face to the Ginto wordmark in the
+   reference — filling the viewport edge to edge. Both pixel faces were tried
+   here first: the arcade one only spanned the width under tracking that made
+   the letters collide, and the dot-matrix reads as texture before it reads as
+   a name. The sign-off's job is the name, so it gets a face whose only job is
+   weight and clarity. */
+.go-wordmark {
+  margin: 0;
+  font-family: var(--font-heavy);
+  font-weight: 900;
+  font-size: 10.4vw;
+  letter-spacing: -0.03em;
+  /*
+   * Below 1, to trim the half-leading. This is all caps with no descenders, so
+   * at line-height 1 the box carried ~0.3em of empty air split above and below
+   * the glyphs — at this size that is 40-odd pixels of gap on each side that no
+   * flex `gap` can see or close. Cap height is ~0.71em; this sits just above it.
+   */
+  line-height: 0.76;
+  white-space: nowrap;
+  background: linear-gradient(180deg, var(--pale) 0%, rgba(162, 180, 254, 0.35) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* --- earth footer -------------------------------------------------------- */
+
+/* Sky the ball needs to arc through as it peels off the rail onto the horizon. */
+#earth {
+  position: relative;
+  /* Opaque so the deep-space field never shows through the document's tail. */
+  background: var(--void);
+}
+
+/*
+ * Flat and ruled like the rest of the game: the same dot grid the showcase
+ * sits on, one hard rule for a horizon — no curve, no gradient, no glow.
+ */
+.earth-surface {
+  position: relative;
+  background-color: var(--void);
+  /*
+   * Content-sized, borderless, flush against the flight log above. This was a
+   * screen-height canvas with its own top rule — a destination. As the run-out
+   * of the job history it keeps only the sign-off, so it keeps only the
+   * sign-off's height, and the missing divider is what makes the two read as
+   * one section.
+   */
+  padding: 2vh 8vw 4vh;
+  overflow: hidden;
+}
+
+.earth-inner {
+  position: relative;
+  /* Above the field, and given its own stacking context so the objects cannot
+     land on top of the one thing here anybody needs to click. */
+  z-index: 1;
+  max-width: 52ch;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* --- the landing field ---------------------------------------------------- */
+
+/*
+ * The old portfolio's hero objects, rehoused.
+ *
+ * They are not repositioned decoration: each one is pinned to the same dotted
+ * ruling the flight log uses and carries an index, so the arrangement reads as a
+ * chart of catalogued objects rather than as art scattered behind text. That is
+ * what carries them from a flat blue hero into this site without redrawing them.
+ */
+.earth-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Clipped by .earth-surface, so objects can sit past the edges and be cut by
+     the horizon rather than stopping politely inside it. */
+}
+
+/* The same four-line ruling as the flight log, on the same token. */
+.earth-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.earth-grid span {
+  border-left: 1px dotted var(--rule);
+}
+
+.earth-grid span:last-child {
+  border-right: 1px dotted var(--rule);
+}
+
+.earth-obj {
+  position: absolute;
+  margin: 0;
+  /*
+   * The drawings were made for a saturated blue field and are correspondingly
+   * bright. Held back here so they sit *in* the dark rather than glowing on top
+   * of it — the page's own contrast belongs to the text, and an untouched asset
+   * at full strength out-shouted the only sentence in the section.
+   */
+  opacity: 0.72;
+}
+
+.earth-obj img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/*
+ * Index tag, hung off each object by a hairline. Same face and tracking as the
+ * flight log's numbers, so the two sections are counting in the same voice.
+ */
+.earth-tag {
+  position: absolute;
+  left: 0;
+  bottom: -1.6rem;
+  padding-left: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  color: var(--slate);
+}
+
+.earth-tag::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 1.1rem;
+  height: 1px;
+  background: var(--rule);
+}
+
+/*
+ * Placement. Percentages, so the group holds its arrangement as the surface
+ * changes shape, and widths in vw with clamps so an object never becomes either
+ * a stamp or a wall. Roughly the old hero's composition: tools above the line,
+ * the portrait rising into it from below.
+ */
+.earth-obj--hat    { left: 7%;  top: 12%;    width: clamp(78px, 10vw, 158px); }
+.earth-obj--laptop { right: 8%; top: 8%;     width: clamp(88px, 11.5vw, 186px); }
+.earth-obj--book   { left: 11%; bottom: 20%; width: clamp(84px, 11vw, 176px); }
+.earth-obj--paint  { right: 10%; bottom: 24%; width: clamp(74px, 9.5vw, 152px); }
+
+/*
+ * The portrait anchors the composition, as it did in the original — centred, and
+ * running off the bottom edge rather than sitting above it. The clip is the
+ * point: she is coming up over the horizon the ball just landed on.
+ */
+.earth-obj--face {
+  isolation: isolate;
+  left: 50%;
+  bottom: -6%;
+  width: clamp(140px, 19vw, 300px);
+  transform: translateX(-50%);
+  opacity: 0.8;
+}
+
+/*
+ * Backlight, so the portrait has an edge to be seen against.
+ *
+ * The drawing was made for a saturated blue field, where its black hair read as
+ * a silhouette. Over the void that hair is very nearly the background — the
+ * pale face survives and everything around it dissolves into a smudge. A glow
+ * behind gives the dark mass something to be dark against, and reads as her
+ * coming up lit over the horizon rather than as a fix.
+ */
+.earth-obj--face::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  width: 132%;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(110, 140, 255, 0.22) 0%,
+    rgba(110, 140, 255, 0.09) 42%,
+    transparent 70%
+  );
+  z-index: -1;
+}
+
+.earth-obj--face .earth-tag {
+  left: 50%;
+  bottom: auto;
+  top: -1.9rem;
+  padding-left: 0;
+  padding-top: 1.4rem;
+  transform: translateX(-50%);
+}
+
+.earth-obj--face .earth-tag::before {
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 1rem;
+}
+
+/*
+ * A slow drift, at a different period per object so they never line up into a
+ * single pulse. Small — this is a chart breathing, not a mobile spinning.
+ */
+@keyframes earth-drift {
+  from { transform: translateY(-5px); }
+  to   { transform: translateY(5px); }
+}
+
+.earth-obj--hat    { animation: earth-drift 7.5s ease-in-out infinite alternate; }
+.earth-obj--laptop { animation: earth-drift 9s   ease-in-out infinite alternate -2s; }
+.earth-obj--book   { animation: earth-drift 8.2s ease-in-out infinite alternate -4s; }
+.earth-obj--paint  { animation: earth-drift 10s  ease-in-out infinite alternate -1s; }
+
+/* Its own keyframes: the shared one would drop the centring translate. */
+@keyframes earth-drift-face {
+  from { transform: translate(-50%, -4px); }
+  to   { transform: translate(-50%, 4px); }
+}
+
+.earth-obj--face { animation: earth-drift-face 11s ease-in-out infinite alternate; }
+
+/*
+ * Below the point where the objects would crowd the text rather than frame it.
+ * The portrait stays — it is the composition's anchor and the only one that
+ * still reads at this width.
+ */
+@media (max-width: 760px) {
+  .earth-obj--hat,
+  .earth-obj--laptop,
+  .earth-obj--book,
+  .earth-obj--paint {
+    display: none;
+  }
+
+  .earth-obj--face {
+    width: clamp(120px, 34vw, 190px);
+    opacity: 0.55;
+  }
+
+  .earth-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .earth-grid span:not(:first-child) { display: none; }
+  .earth-grid span:first-child { border-right: 1px dotted var(--rule); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .earth-obj {
+    animation: none;
+  }
+}
+
+#earth h2 {
+  margin: 0 0 1.6rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.7rem, 4vw, 3rem);
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+
+/*
+ * Arcade menu. Three rows on one line, each with the classic selector arrow
+ * parked beside it — invisible until the row is pointed at, exactly like
+ * moving the cursor down a cartridge title screen. The arrow's slot is
+ * reserved either way so rows do not shuffle sideways on hover.
+ */
+.go-menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.go-menu a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding-left: 1em;
+  font-family: var(--font-heavy);
+  font-weight: 900;
+  /* The headline of the end screen — these are the actions that matter;
+     replay is the footnote beneath. */
+  font-size: clamp(1.05rem, 1.8vw, 1.5rem);
+  /* This face sets tight; the arcade one's airy tracking only smears it. */
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--pale);
+}
+
+/* Pixel icons, drawn on the glyph grid and inked by the row's own colour. */
+.go-ico {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
+}
+
+.go-menu a::before {
+  content: '\25B8';
+  position: absolute;
+  left: 0;
+  /* Centred on the row, not left at the flex line's static position — which is
+     where a taller glyph drifts off the text's midline. */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.35em;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0;
+}
+
+.go-menu a:hover,
+.go-menu a:focus-visible {
+  color: #fff;
+  outline: none;
+}
+
+.go-menu a:hover::before,
+.go-menu a:focus-visible::before {
+  opacity: 1;
+}
+
+/* One line on phones too: the row is ~394px at full size, so below that the
+   type and gaps step down together instead of wrapping to a 2+1 stack. */
+@media (max-width: 440px) {
+  .go-menu {
+    gap: 0.9rem;
+  }
+
+  .go-menu a {
+    /* Fluid below the breakpoint so the row keeps fitting down to 320. */
+    font-size: min(0.92rem, 4vw);
+  }
+}
+
+/* --- content below the fold --------------------------------------------- */
+
+#after {
+  position: relative;
+  z-index: 2;
+  padding: 12vh 8vw 20vh;
+  background: var(--void);
+  border-top: 1px solid var(--mid);
+}
+
+#after h2 {
+  margin: 0 0 2rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+
+#after p {
+  max-width: 60ch;
+  line-height: 1.7;
+  color: var(--slate);
+}
+
+/* Anchors in the masthead should not land flush under the bar itself. */
+:target {
+  scroll-margin-top: 60px;
+}
+
+/* --- cursor -------------------------------------------------------------- */
+
+/*
+ * Above every other layer, the white-out included. The reticle belongs to the
+ * reader rather than to the page, so nothing the page paints should cover it.
+ */
+#cursor-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+/* Set from JS once the pointer is actually in the window, so the reticle fades
+   in where it enters instead of sitting at 0,0 until the first move. */
+#cursor-layer.is-visible {
+  opacity: 1;
+}
+
+#cursor-layer canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * The class is added by JS, and only on devices that passed the hover/fine
+ * pointer test — a touch device or a browser where the canvas failed to come up
+ * keeps its native cursor rather than losing the pointer entirely.
+ *
+ * The universal selector is deliberate: link and button rules would otherwise
+ * reinstate `cursor: pointer` on exactly the elements the lock-on is for.
+ */
+body.has-custom-cursor,
+body.has-custom-cursor * {
+  cursor: none;
+}
+
+
+/* --- deep space ---------------------------------------------------------- */
+
+/*
+ * Behind the entire document.
+ *
+ * Negative, and it has to be: at z-index 0 this is in the same painting group
+ * as the positioned sections above it and comes later in the DOM, so it would
+ * paint over the footer instead of behind it. At -1 it drops below every
+ * normal-flow background and above the canvas, which is exactly the one layer
+ * that both the page can cover and the empty band cannot.
+ */
+#deep-space {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/*
+ * The wrapper the overscroll spring translates. No styles at rest on purpose —
+ * see the note in index.html: any transform here becomes a containing block and
+ * an offsetParent for the whole document, which the intro's landing depends on.
+ */
+#page {
+  /*
+   * Scroll anchoring off. It exists to keep your place when content above you
+   * resizes, which is the opposite of what is wanted here: the band deliberately
+   * moves the whole page, and an anchor fighting to hold something still turns a
+   * smooth spring into a shove. This is the belt to the margin compensation's
+   * braces — that keeps the extent from moving, this keeps the browser from
+   * reacting if it ever does.
+   */
+  overflow-anchor: none;
+
+  /*
+   * No position and no z-index, deliberately. `position: relative` would make
+   * this an offsetParent for every section inside it, and the intro's landing
+   * reads heroPin.offsetTop — it happens to still measure 0 here because every
+   * preceding sibling is fixed, but that is a coincidence of the current markup
+   * and not something to build the landing on. A static wrapper changes nothing.
+   */
+}
+
+/*
+ * The footer dissolves into the field instead of ending at a line.
+ *
+ * A mask, not a gradient overlay: an overlay would have to fade toward some
+ * colour, and the thing underneath is a live render, not a colour. Masking
+ * makes the last stretch of the footer progressively transparent, so what shows
+ * through is whatever the field is actually drawing at that moment.
+ *
+ * The fade sits entirely inside the footer's bottom padding, so it eats empty
+ * space rather than text.
+ */
+#earth {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 12vh), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 12vh), transparent 100%);
+}
+
+/*
+ * The field is only worth compositing while it is uncovered. Opacity rather
+ * than visibility so the first pull fades it up instead of snapping it on.
+ */
+#deep-space {
+  opacity: 0;
+  /* Must match FADE_MS in deepSpace.ts — the loop stays alive for exactly this
+     long after the band closes so the teardown lands on an invisible field. */
+  transition: opacity 0.15s ease;
+}
+
+#deep-space.is-open {
+  opacity: 1;
+}
+
+#deep-space canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

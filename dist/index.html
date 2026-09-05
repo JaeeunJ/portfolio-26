@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ASCII Space Flight — Scroll Intro</title>
+
+    <!-- The page's colour before any stylesheet arrives, so even a slow load
+         opens on the void rather than flashing white. -->
+    <style>
+      html { background: #07070f; }
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@400;500&family=Press+Start+2P&family=Rubik:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <!--
+      Linked here rather than imported from main.ts: an import only delivers the
+      CSS after the module graph loads, so the raw HTML painted first — the
+      unstyled flash. A link in the head blocks the first paint on the
+      stylesheet, in dev and in the build alike.
+    -->
+
+    <script>
+      // Always replay the intro from the top, even on reload or back-navigation.
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+      window.scrollTo(0, 0)
+    </script>
+    <script type="module" crossorigin src="./assets/index-BTbdC3Qh.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-P2Xu9kJm.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-CtWuH_zZ.css">
+  </head>
+
+  <body>
+    <!-- The ASCII canvas mounts here. aria-hidden: it is pure decoration. -->
+    <div id="ascii-stage" aria-hidden="true"></div>
+
+    <!--
+      Flyby nameplates. Each is pinned to one of the shaped bodies in the
+      flight — the book, the cursor, the hard hat — and introduces the pilot
+      as she passes: a caption that fades in beneath the silhouette, the way
+      the flight-log cards print a name under each pixel device. Positioned
+      every frame by scrollIntro projecting the body's world position through
+      the flight camera.
+    -->
+    <div id="scene-tags" aria-hidden="true">
+      <div class="scene-tag" data-tag="cursor">
+        <span class="scene-tag-card"><span class="scene-tag-bubble"><i>(&#172;&#8255;&#172;)</i>Chronically online</span></span>
+      </div>
+      <div class="scene-tag" data-tag="book">
+        <span class="scene-tag-card"><span class="scene-tag-bubble"><i>(&#3591; &#8226;&#768;_&#8226;&#769;)&#3591;</i>Certified workaholic</span></span>
+      </div>
+      <div class="scene-tag" data-tag="hardhat">
+        <span class="scene-tag-card"><span class="scene-tag-bubble"><i>(&#8976;&#9632;_&#9632;)</i>Soon-to-be engineer</span></span>
+      </div>
+    </div>
+
+    <!--
+      Boot shutter. The scene builds its renderer and fonts on the first
+      frames, and uncovered that read as a hard pop into deep space. Two thick
+      slabs hold the void for one beat, then part vertically — top up, bottom
+      down — once the first frame is actually painted underneath them.
+    -->
+    <div id="boot" aria-hidden="true">
+      <span class="boot-half boot-half--top"></span>
+      <span class="boot-half boot-half--bottom"></span>
+    </div>
+
+    <!--
+      Retro title card. Slides up over the flight like an old cartridge title
+      screen; the first scroll docks both lines into the lower corners
+      (scrollIntro toggles body.title-away on the same threshold as the pill).
+    -->
+    <div id="game-title">
+      <p class="gt-name">RISSY'S SPACE</p>
+      <p class="gt-sub">SCROLL TO START</p>
+    </div>
+
+    <!--
+      8-bit game HUD, replacing the old cockpit canopy and instrument chips.
+      One status row: lives, hull bar, and distance-to-Earth counter — the bar
+      and counter are fed by scrollIntro each frame.
+    -->
+    <div id="hud" aria-hidden="true">
+      <div class="hud8">
+        <span class="hud8-hearts">
+          <i class="hud8-heart"></i><i class="hud8-heart"></i><i class="hud8-heart"></i>
+        </span>
+        <span class="hud8-bar"><i id="hud8-fill"></i></span>
+        <span class="hud8-pct" id="hud8-pct">%0</span>
+      </div>
+    </div>
+
+    <!-- Entry streaks. Sits above the ASCII canvas and the hero so its white
+         cover can mask the swap between them. -->
+    <div id="impact-flash" aria-hidden="true"><canvas id="warp-canvas"></canvas></div>
+
+    <div id="intro-progress" aria-hidden="true"><span id="intro-progress-bar"></span></div>
+    <div id="scroll-nudge" class="nudge-pill" aria-hidden="true">
+      <svg class="nudge-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 10V2M2.5 5.5 6 2l3.5 3.5" />
+      </svg>
+      <span id="nudge-swap" class="nudge-swap">
+        <span id="nudge-scroll" class="nudge-state">SCROLL</span>
+        <span id="nudge-incoming" class="nudge-state is-hidden"
+          >INCOMING&hellip;<span id="nudge-percent">0%</span></span
+        >
+      </span>
+      <svg class="nudge-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 10V2M2.5 5.5 6 2l3.5 3.5" />
+      </svg>
+    </div>
+
+    <!-- Shown only while the reader is pulling away from the hero. -->
+    <!--
+      Everything in normal flow, wrapped so the overscroll spring has a single
+      thing to translate. It carries no styles of its own and, critically, no
+      transform at rest — a transform makes this an offsetParent for everything
+      inside it, and the intro reads heroPin.offsetTop to know where to land.
+    -->
+    <div id="page">
+      <!-- The flight's scroll budget: viewports of nothing, sized from
+           CONFIG.scrollLengthVh. -->
+      <section id="intro-scroll" aria-hidden="true"></section>
+
+      <div id="hero-pin">
+        <section id="hero">
+
+          <!-- Holds the break-orbit control and nothing else. The landing goes
+               straight into the work below. -->
+          <div class="statement">
+          </div>
+        </section>
+      </div>
+
+      <!--
+        Project showcase. The section is tall on purpose — one viewport of scroll
+        per project — and everything you see is the sticky pane inside it, so
+        scrolling advances the exhibit rather than moving past it.
+
+        The device is a single element that morphs between phone and desktop
+        proportions rather than two elements swapping places: the reshaping *is*
+        the transition, and a crossfade between two frames would read as a cut.
+      -->
+      <section id="work" class="showcase">
+        <div class="showcase-inner">
+          <h2 class="section-banner sc-banner">Selected work</h2>
+
+          <!--
+            Bento, not a reel: all six projects on screen at once, weighted by
+            grid area instead of revealed in sequence — the flagship gets the
+            2x2, the two with tall art get columns, and nothing needs six
+            viewports of scrolling to be seen.
+          -->
+          <ul class="bento">
+            <li class="bento-card bento--tempo">
+              <a href="/tempo.html">
+                <span class="bento-media" data-label="Tempo"></span>
+                <span class="bento-copy">
+                  <span class="bento-head"><span class="bento-index">01</span><span class="bento-proj">Tempo</span></span>
+                  <span class="bento-name">Design and code drift apart at every handoff.</span>
+                  <span class="bento-tags"><span>Product design</span><span>Frontend</span></span>
+                </span>
+              </a>
+            </li>
+            <li class="bento-card bento--callie">
+              <a href="/callie.html">
+                <span class="bento-media" data-label="Callie"></span>
+                <span class="bento-copy">
+                  <span class="bento-head"><span class="bento-index">02</span><span class="bento-proj">Callie</span></span>
+                  <span class="bento-name">Calorie tracking is so tedious people quit doing it.</span>
+                </span>
+              </a>
+            </li>
+            <li class="bento-card bento--pv">
+              <a href="/pv.html">
+                <span class="bento-media" data-label="Project Vitality"></span>
+                <span class="bento-copy">
+                  <span class="bento-head"><span class="bento-index">03</span><span class="bento-proj">Project Vitality</span></span>
+                  <span class="bento-name">Where you live decides how easily you see a doctor.</span>
+                </span>
+              </a>
+            </li>
+            <li class="bento-card bento--lg">
+              <a href="/liveguard.html">
+                <span class="bento-media" data-label="LiveGuard"></span>
+                <span class="bento-copy">
+                  <span class="bento-head"><span class="bento-index">04</span><span class="bento-proj">LiveGuard</span></span>
+                  <span class="bento-name">The problem LiveGuard solves, in one line.</span>
+                </span>
+              </a>
+            </li>
+            <li class="bento-card bento--uw">
+              <a href="/un.html">
+                <span class="bento-media" data-label="UW Navi"></span>
+                <span class="bento-copy">
+                  <span class="bento-head"><span class="bento-index">05</span><span class="bento-proj">UW Navi</span></span>
+                  <span class="bento-name">The problem UW Navi solves, in one line.</span>
+                </span>
+              </a>
+            </li>
+            <li class="bento-card bento--ctrl">
+              <a href="https://ctrlplusy.ca/" target="_blank" rel="noopener">
+                <span class="bento-media" data-label="CTRL+y"></span>
+                <span class="bento-copy">
+                  <span class="bento-head"><span class="bento-index">06</span><span class="bento-proj">CTRL+y</span></span>
+                  <span class="bento-name">The problem CTRL+y solves, in one line.</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+
+      <!-- Holds the hero's place in layout while it is pinned. -->
+      <div id="hero-spacer" aria-hidden="true"></div>
+
+      <!--
+        Career log as a character-select screen: one compact grid of cards, each
+        a run of duty. Freelance sits in the grid but unnumbered — it ran
+        alongside the sequence, not within it.
+      -->
+      <section id="past" class="past">
+        <div class="past-inner">
+          <ul class="log-cards">
+            <li class="log-card" tabindex="0">
+              <svg class="log-dev log-dev--ds" viewBox="0 0 14 16" shape-rendering="crispEdges" role="img" aria-hidden="true"><rect x="1" y="0" width="12" height="1" fill="#0d0d1c"/><rect x="0" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="1" width="12" height="1" fill="#EDEFF7"/><rect x="13" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="2" width="1" height="1" fill="#EDEFF7"/><rect x="2" y="2" width="10" height="1" fill="#0d0d1c"/><rect x="12" y="2" width="1" height="1" fill="#EDEFF7"/><rect x="13" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="3" width="1" height="1" fill="#EDEFF7"/><rect x="2" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="3" width="8" height="1" fill="#1d2340"/><rect x="11" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="3" width="1" height="1" fill="#EDEFF7"/><rect x="13" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="4" width="1" height="1" fill="#EDEFF7"/><rect x="2" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="4" width="1" height="1" fill="#1d2340"/><rect x="4" y="4" width="1" height="1" fill="#aebdf5"/><rect x="5" y="4" width="6" height="1" fill="#1d2340"/><rect x="11" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="4" width="1" height="1" fill="#EDEFF7"/><rect x="13" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="5" width="1" height="1" fill="#EDEFF7"/><rect x="2" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="5" width="8" height="1" fill="#1d2340"/><rect x="11" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="5" width="1" height="1" fill="#EDEFF7"/><rect x="13" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="6" width="1" height="1" fill="#EDEFF7"/><rect x="2" y="6" width="10" height="1" fill="#0d0d1c"/><rect x="12" y="6" width="1" height="1" fill="#EDEFF7"/><rect x="13" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="7" width="14" height="1" fill="#0d0d1c"/><rect x="0" y="8" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="8" width="12" height="1" fill="#EDEFF7"/><rect x="13" y="8" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="9" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="9" width="1" height="1" fill="#EDEFF7"/><rect x="2" y="9" width="10" height="1" fill="#0d0d1c"/><rect x="12" y="9" width="1" height="1" fill="#EDEFF7"/><rect x="13" y="9" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="10" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="10" width="1" height="1" fill="#EDEFF7"/><rect x="2" y="10" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="10" width="8" height="1" fill="#1d2340"/><rect x="11" y="10" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="10" width="1" height="1" fill="#EDEFF7"/><rect x="13" y="10" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="11" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="11" width="1" height="1" fill="#EDEFF7"/><rect x="2" y="11" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="11" width="6" height="1" fill="#1d2340"/><rect x="9" y="11" width="1" height="1" fill="#aebdf5"/><rect x="10" y="11" width="1" height="1" fill="#1d2340"/><rect x="11" y="11" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="11" width="1" height="1" fill="#EDEFF7"/><rect x="13" y="11" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="12" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="12" width="1" height="1" fill="#EDEFF7"/><rect x="2" y="12" width="10" height="1" fill="#0d0d1c"/><rect x="12" y="12" width="1" height="1" fill="#EDEFF7"/><rect x="13" y="12" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="13" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="13" width="1" height="1" fill="#EDEFF7"/><rect x="2" y="13" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="13" width="7" height="1" fill="#EDEFF7"/><rect x="10" y="13" width="1" height="1" fill="#E0507E"/><rect x="11" y="13" width="2" height="1" fill="#EDEFF7"/><rect x="13" y="13" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="14" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="14" width="12" height="1" fill="#EDEFF7"/><rect x="13" y="14" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="15" width="12" height="1" fill="#0d0d1c"/></svg>
+              <p class="log-card-where">Tempo</p>
+              <p class="log-card-role">UX Engineer</p>
+              <p class="log-card-when">Summer 2026</p>
+            </li>
+            <li class="log-card" tabindex="0">
+              <svg class="log-dev log-dev--sp" viewBox="0 0 14 13" shape-rendering="crispEdges" role="img" aria-hidden="true"><rect x="1" y="0" width="12" height="1" fill="#0d0d1c"/><rect x="0" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="1" width="12" height="1" fill="#4FBE72"/><rect x="13" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="2" width="1" height="1" fill="#4FBE72"/><rect x="2" y="2" width="10" height="1" fill="#0d0d1c"/><rect x="12" y="2" width="1" height="1" fill="#4FBE72"/><rect x="13" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="3" width="1" height="1" fill="#4FBE72"/><rect x="2" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="3" width="8" height="1" fill="#1d2340"/><rect x="11" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="3" width="1" height="1" fill="#4FBE72"/><rect x="13" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="4" width="1" height="1" fill="#4FBE72"/><rect x="2" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="4" width="1" height="1" fill="#1d2340"/><rect x="4" y="4" width="1" height="1" fill="#aebdf5"/><rect x="5" y="4" width="6" height="1" fill="#1d2340"/><rect x="11" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="4" width="1" height="1" fill="#4FBE72"/><rect x="13" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="5" width="1" height="1" fill="#4FBE72"/><rect x="2" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="5" width="8" height="1" fill="#1d2340"/><rect x="11" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="5" width="1" height="1" fill="#4FBE72"/><rect x="13" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="6" width="1" height="1" fill="#4FBE72"/><rect x="2" y="6" width="10" height="1" fill="#0d0d1c"/><rect x="12" y="6" width="1" height="1" fill="#4FBE72"/><rect x="13" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="7" width="14" height="1" fill="#0d0d1c"/><rect x="0" y="8" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="8" width="12" height="1" fill="#4FBE72"/><rect x="13" y="8" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="9" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="9" width="1" height="1" fill="#4FBE72"/><rect x="2" y="9" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="9" width="6" height="1" fill="#4FBE72"/><rect x="9" y="9" width="1" height="1" fill="#E0507E"/><rect x="10" y="9" width="1" height="1" fill="#4FBE72"/><rect x="11" y="9" width="1" height="1" fill="#E0507E"/><rect x="12" y="9" width="1" height="1" fill="#4FBE72"/><rect x="13" y="9" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="10" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="10" width="1" height="1" fill="#4FBE72"/><rect x="2" y="10" width="3" height="1" fill="#0d0d1c"/><rect x="5" y="10" width="5" height="1" fill="#4FBE72"/><rect x="10" y="10" width="1" height="1" fill="#E0507E"/><rect x="11" y="10" width="2" height="1" fill="#4FBE72"/><rect x="13" y="10" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="11" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="11" width="12" height="1" fill="#4FBE72"/><rect x="13" y="11" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="12" width="12" height="1" fill="#0d0d1c"/></svg>
+              <p class="log-card-where">TD Bank</p>
+              <p class="log-card-role">UX Design Intern</p>
+              <p class="log-card-when">Fall 2025</p>
+            </li>
+            <li class="log-card" tabindex="0">
+              <svg class="log-dev log-dev--gba" viewBox="0 0 22 9" shape-rendering="crispEdges" role="img" aria-hidden="true"><rect x="2" y="0" width="18" height="1" fill="#0d0d1c"/><rect x="1" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="2" y="1" width="18" height="1" fill="#0362D8"/><rect x="20" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="2" width="4" height="1" fill="#0362D8"/><rect x="5" y="2" width="12" height="1" fill="#0d0d1c"/><rect x="17" y="2" width="4" height="1" fill="#0362D8"/><rect x="21" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="3" width="2" height="1" fill="#0362D8"/><rect x="3" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="4" y="3" width="1" height="1" fill="#0362D8"/><rect x="5" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="6" y="3" width="10" height="1" fill="#1d2340"/><rect x="16" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="17" y="3" width="2" height="1" fill="#0362D8"/><rect x="19" y="3" width="1" height="1" fill="#E0507E"/><rect x="20" y="3" width="1" height="1" fill="#0362D8"/><rect x="21" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="4" width="1" height="1" fill="#0362D8"/><rect x="2" y="4" width="4" height="1" fill="#0d0d1c"/><rect x="6" y="4" width="2" height="1" fill="#1d2340"/><rect x="8" y="4" width="1" height="1" fill="#aebdf5"/><rect x="9" y="4" width="7" height="1" fill="#1d2340"/><rect x="16" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="17" y="4" width="1" height="1" fill="#0362D8"/><rect x="18" y="4" width="1" height="1" fill="#E0507E"/><rect x="19" y="4" width="2" height="1" fill="#0362D8"/><rect x="21" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="5" width="2" height="1" fill="#0362D8"/><rect x="3" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="4" y="5" width="1" height="1" fill="#0362D8"/><rect x="5" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="6" y="5" width="10" height="1" fill="#1d2340"/><rect x="16" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="17" y="5" width="4" height="1" fill="#0362D8"/><rect x="21" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="6" width="4" height="1" fill="#0362D8"/><rect x="5" y="6" width="12" height="1" fill="#0d0d1c"/><rect x="17" y="6" width="4" height="1" fill="#0362D8"/><rect x="21" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="7" width="1" height="1" fill="#0d0d1c"/><rect x="2" y="7" width="18" height="1" fill="#0362D8"/><rect x="20" y="7" width="1" height="1" fill="#0d0d1c"/><rect x="2" y="8" width="18" height="1" fill="#0d0d1c"/></svg>
+              <p class="log-card-where">Willful</p>
+              <p class="log-card-role">UX Design Intern</p>
+              <p class="log-card-when">Winter 2025</p>
+            </li>
+            <li class="log-card" tabindex="0">
+              <svg class="log-dev log-dev--gamegear" viewBox="0 0 22 9" shape-rendering="crispEdges" role="img" aria-hidden="true"><rect x="2" y="0" width="18" height="1" fill="#0d0d1c"/><rect x="1" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="2" y="1" width="18" height="1" fill="#33333C"/><rect x="20" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="2" width="4" height="1" fill="#33333C"/><rect x="5" y="2" width="12" height="1" fill="#0d0d1c"/><rect x="17" y="2" width="4" height="1" fill="#33333C"/><rect x="21" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="3" width="4" height="1" fill="#33333C"/><rect x="5" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="6" y="3" width="10" height="1" fill="#1d2340"/><rect x="16" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="17" y="3" width="4" height="1" fill="#33333C"/><rect x="21" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="4" width="1" height="1" fill="#33333C"/><rect x="2" y="4" width="1" height="1" fill="#e04444"/><rect x="3" y="4" width="2" height="1" fill="#33333C"/><rect x="5" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="6" y="4" width="2" height="1" fill="#1d2340"/><rect x="8" y="4" width="1" height="1" fill="#aebdf5"/><rect x="9" y="4" width="7" height="1" fill="#1d2340"/><rect x="16" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="17" y="4" width="1" height="1" fill="#33333C"/><rect x="18" y="4" width="1" height="1" fill="#E0507E"/><rect x="19" y="4" width="2" height="1" fill="#33333C"/><rect x="21" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="5" width="4" height="1" fill="#33333C"/><rect x="5" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="6" y="5" width="10" height="1" fill="#1d2340"/><rect x="16" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="17" y="5" width="2" height="1" fill="#33333C"/><rect x="19" y="5" width="1" height="1" fill="#E0507E"/><rect x="20" y="5" width="1" height="1" fill="#33333C"/><rect x="21" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="6" width="4" height="1" fill="#33333C"/><rect x="5" y="6" width="12" height="1" fill="#0d0d1c"/><rect x="17" y="6" width="4" height="1" fill="#33333C"/><rect x="21" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="7" width="1" height="1" fill="#0d0d1c"/><rect x="2" y="7" width="18" height="1" fill="#33333C"/><rect x="20" y="7" width="1" height="1" fill="#0d0d1c"/><rect x="2" y="8" width="18" height="1" fill="#0d0d1c"/></svg>
+              <p class="log-card-where">Questrade</p>
+              <p class="log-card-role">UX Design Intern</p>
+              <p class="log-card-when">2024</p>
+            </li>
+            <li class="log-card" tabindex="0">
+              <svg class="log-dev log-dev--gameboy" viewBox="0 0 14 16" shape-rendering="crispEdges" role="img" aria-hidden="true"><rect x="1" y="0" width="12" height="1" fill="#0d0d1c"/><rect x="0" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="1" width="12" height="1" fill="#E0507E"/><rect x="13" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="2" width="1" height="1" fill="#E0507E"/><rect x="2" y="2" width="10" height="1" fill="#0d0d1c"/><rect x="12" y="2" width="1" height="1" fill="#E0507E"/><rect x="13" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="3" width="1" height="1" fill="#E0507E"/><rect x="2" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="3" width="8" height="1" fill="#1d2340"/><rect x="11" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="3" width="1" height="1" fill="#E0507E"/><rect x="13" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="4" width="1" height="1" fill="#E0507E"/><rect x="2" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="4" width="1" height="1" fill="#1d2340"/><rect x="4" y="4" width="1" height="1" fill="#aebdf5"/><rect x="5" y="4" width="6" height="1" fill="#1d2340"/><rect x="11" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="4" width="1" height="1" fill="#E0507E"/><rect x="13" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="5" width="1" height="1" fill="#E0507E"/><rect x="2" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="5" width="8" height="1" fill="#1d2340"/><rect x="11" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="5" width="1" height="1" fill="#E0507E"/><rect x="13" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="6" width="1" height="1" fill="#E0507E"/><rect x="2" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="3" y="6" width="6" height="1" fill="#1d2340"/><rect x="9" y="6" width="1" height="1" fill="#aebdf5"/><rect x="10" y="6" width="1" height="1" fill="#1d2340"/><rect x="11" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="12" y="6" width="1" height="1" fill="#E0507E"/><rect x="13" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="7" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="7" width="1" height="1" fill="#E0507E"/><rect x="2" y="7" width="10" height="1" fill="#0d0d1c"/><rect x="12" y="7" width="1" height="1" fill="#E0507E"/><rect x="13" y="7" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="8" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="8" width="12" height="1" fill="#E0507E"/><rect x="13" y="8" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="9" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="9" width="3" height="1" fill="#E0507E"/><rect x="4" y="9" width="1" height="1" fill="#0d0d1c"/><rect x="5" y="9" width="8" height="1" fill="#E0507E"/><rect x="13" y="9" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="10" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="10" width="2" height="1" fill="#E0507E"/><rect x="3" y="10" width="3" height="1" fill="#0d0d1c"/><rect x="6" y="10" width="4" height="1" fill="#E0507E"/><rect x="10" y="10" width="1" height="1" fill="#f7f7ff"/><rect x="11" y="10" width="2" height="1" fill="#E0507E"/><rect x="13" y="10" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="11" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="11" width="3" height="1" fill="#E0507E"/><rect x="4" y="11" width="1" height="1" fill="#0d0d1c"/><rect x="5" y="11" width="4" height="1" fill="#E0507E"/><rect x="9" y="11" width="1" height="1" fill="#f7f7ff"/><rect x="10" y="11" width="3" height="1" fill="#E0507E"/><rect x="13" y="11" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="12" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="12" width="12" height="1" fill="#E0507E"/><rect x="13" y="12" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="13" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="13" width="7" height="1" fill="#E0507E"/><rect x="8" y="13" width="2" height="1" fill="#0d0d1c"/><rect x="10" y="13" width="3" height="1" fill="#E0507E"/><rect x="13" y="13" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="14" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="14" width="7" height="1" fill="#E0507E"/><rect x="8" y="14" width="2" height="1" fill="#0d0d1c"/><rect x="10" y="14" width="3" height="1" fill="#E0507E"/><rect x="13" y="14" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="15" width="12" height="1" fill="#0d0d1c"/></svg>
+              <p class="log-card-where">CI Technologies</p>
+              <p class="log-card-role">UI/UX Designer &middot; Fullstack Developer</p>
+              <p class="log-card-when">2022 &ndash; 2023</p>
+            </li>
+            <li class="log-card" tabindex="0">
+              <svg class="log-dev log-dev--gamewatch" viewBox="0 0 20 9" shape-rendering="crispEdges" role="img" aria-hidden="true"><rect x="1" y="0" width="18" height="1" fill="#0d0d1c"/><rect x="0" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="1" width="18" height="1" fill="#5AC67E"/><rect x="19" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="2" width="2" height="1" fill="#5AC67E"/><rect x="3" y="2" width="14" height="1" fill="#0d0d1c"/><rect x="17" y="2" width="2" height="1" fill="#5AC67E"/><rect x="19" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="3" width="2" height="1" fill="#5AC67E"/><rect x="3" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="4" y="3" width="12" height="1" fill="#1d2340"/><rect x="16" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="17" y="3" width="2" height="1" fill="#5AC67E"/><rect x="19" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="4" width="1" height="1" fill="#5AC67E"/><rect x="2" y="4" width="1" height="1" fill="#E0507E"/><rect x="3" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="4" y="4" width="3" height="1" fill="#1d2340"/><rect x="7" y="4" width="1" height="1" fill="#aebdf5"/><rect x="8" y="4" width="8" height="1" fill="#1d2340"/><rect x="16" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="17" y="4" width="1" height="1" fill="#E0507E"/><rect x="18" y="4" width="1" height="1" fill="#5AC67E"/><rect x="19" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="5" width="2" height="1" fill="#5AC67E"/><rect x="3" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="4" y="5" width="12" height="1" fill="#1d2340"/><rect x="16" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="17" y="5" width="2" height="1" fill="#5AC67E"/><rect x="19" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="6" width="2" height="1" fill="#5AC67E"/><rect x="3" y="6" width="14" height="1" fill="#0d0d1c"/><rect x="17" y="6" width="2" height="1" fill="#5AC67E"/><rect x="19" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="7" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="7" width="18" height="1" fill="#5AC67E"/><rect x="19" y="7" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="8" width="18" height="1" fill="#0d0d1c"/></svg>
+              <p class="log-card-where">Nanoleaf</p>
+              <p class="log-card-role">Product Design Intern</p>
+              <p class="log-card-when">Winter 2022</p>
+            </li>
+            <li class="log-break" aria-hidden="true"></li>
+            <li class="log-card" tabindex="0">
+              <svg class="log-dev log-dev--cart" viewBox="0 0 12 12" shape-rendering="crispEdges" role="img" aria-hidden="true"><rect x="1" y="0" width="10" height="1" fill="#0d0d1c"/><rect x="0" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="1" width="10" height="1" fill="#F0C443"/><rect x="11" y="1" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="2" width="1" height="1" fill="#F0C443"/><rect x="2" y="2" width="8" height="1" fill="#0d0d1c"/><rect x="10" y="2" width="1" height="1" fill="#F0C443"/><rect x="11" y="2" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="3" width="10" height="1" fill="#F0C443"/><rect x="11" y="3" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="4" width="1" height="1" fill="#F0C443"/><rect x="2" y="4" width="8" height="1" fill="#ccd7ff"/><rect x="10" y="4" width="1" height="1" fill="#F0C443"/><rect x="11" y="4" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="5" width="1" height="1" fill="#F0C443"/><rect x="2" y="5" width="1" height="1" fill="#ccd7ff"/><rect x="3" y="5" width="1" height="1" fill="#aebdf5"/><rect x="4" y="5" width="6" height="1" fill="#ccd7ff"/><rect x="10" y="5" width="1" height="1" fill="#F0C443"/><rect x="11" y="5" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="6" width="1" height="1" fill="#F0C443"/><rect x="2" y="6" width="8" height="1" fill="#ccd7ff"/><rect x="10" y="6" width="1" height="1" fill="#F0C443"/><rect x="11" y="6" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="7" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="7" width="1" height="1" fill="#F0C443"/><rect x="2" y="7" width="8" height="1" fill="#ccd7ff"/><rect x="10" y="7" width="1" height="1" fill="#F0C443"/><rect x="11" y="7" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="8" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="8" width="10" height="1" fill="#F0C443"/><rect x="11" y="8" width="1" height="1" fill="#0d0d1c"/><rect x="0" y="9" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="9" width="10" height="1" fill="#F0C443"/><rect x="11" y="9" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="10" width="1" height="1" fill="#0d0d1c"/><rect x="2" y="10" width="8" height="1" fill="#F0C443"/><rect x="10" y="10" width="1" height="1" fill="#0d0d1c"/><rect x="1" y="11" width="10" height="1" fill="#0d0d1c"/></svg>
+              <p class="log-card-where">Freelance</p>
+              <p class="log-card-when">2023 &rarr; now</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <footer id="earth">
+        <div class="earth-surface">
+          <!--
+            The run's end screen — the whole footer now. One heart left, two
+            spent, the invitation where GAME OVER would sit, the contact links,
+            and the name as the closing wordmark, Discord-style. Shift+R (or the
+            prompt itself) restarts the run.
+          -->
+          <div class="go-screen">
+            <!-- Arcade menu is the headline — the actions that actually matter.
+                 Each row carries a pixel icon; the selector arrow appears on
+                 the hovered one. -->
+            <ul class="go-menu">
+              <li><a href="mailto:c5jeong@uwaterloo.ca">
+                <svg class="go-ico" viewBox="0 0 12 9" aria-hidden="true"><path fill="currentColor" shape-rendering="crispEdges" d="M0 0h12v1H0zM0 1h1v7H0zM11 1h1v7h-1zM0 8h12v1H0zM1 1h1v1H1zM10 1h1v1h-1zM2 2h1v1H2zM9 2h1v1H9zM3 3h1v1H3zM8 3h1v1H8zM4 4h1v1H4zM7 4h1v1H7zM5 5h2v1H5z"/></svg>
+                Email</a></li>
+              <li><a href="https://www.linkedin.com/in/charissa-jeong-509ba3217/" target="_blank" rel="noopener">
+                <svg class="go-ico" viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" shape-rendering="crispEdges" d="M0 0h12v1H0zM0 11h12v1H0zM0 1h1v10H0zM11 1h1v10h-1zM3 3h1v1H3zM3 5h1v4H3zM5 5h1v4H5zM6 5h2v1H6zM8 6h1v3H8z"/></svg>
+                LinkedIn</a></li>
+              <li><a href="https://drive.google.com/file/d/1fU5VSda1ZXj69sGmAiFi6Xpc0pgQn-Ep/view?usp=sharing" target="_blank" rel="noopener">
+                <svg class="go-ico" viewBox="0 0 10 12" aria-hidden="true"><path fill="currentColor" shape-rendering="crispEdges" d="M0 0h10v1H0zM0 11h10v1H0zM0 1h1v10H0zM9 1h1v10H9zM2 3h6v1H2zM2 5h6v1H2zM2 7h4v1H2z"/></svg>
+                Resume</a></li>
+            </ul>
+            <!-- The name as the closing wordmark. -->
+            <div class="go-end">
+              <p class="go-wordmark" aria-hidden="true">CHARISSA JEONG</p>
+            </div>
+
+            <!-- The way back in, after the sign-off: the run is over, the name
+                 has landed, and this is the footnote under it. -->
+            <button type="button" class="go-title" id="play-again">
+              Press <kbd>Shift</kbd>+<kbd>R</kbd> to play again
+            </button>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!--
+      Deep space, behind the whole document. Empty on purpose: the intro's own
+      renderer mounts its canvas here the first time the page is pulled past the
+      bottom, so a reader who never overscrolls never builds it.
+    -->
+    <!--
+      The way back into the flight, sitting in the strip of deep space that opens
+      when you push up past the top of the page.
+
+      Outside #page on purpose: #page is what translates to open that strip, so a
+      button inside it would ride down with the content and never appear in the
+      gap it is supposed to occupy.
+    -->
+    <button id="break-orbit" type="button">
+              <span class="bo-glyph" aria-hidden="true">
+                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 10V2M2.5 5.5 6 2l3.5 3.5" />
+                </svg>
+              </span>
+              Break orbit
+            </button>
+
+    <!--
+      The reticle cursor and its ASCII wake. Above everything, including the
+      white-out — the pointer is the one thing that belongs to the reader rather
+      than to the page, so nothing the page does should paint over it.
+    -->
+    <!--
+      Thin masthead: identity left, section links centred, outbound links right.
+
+      A direct child of <body> and fixed, not sticky inside the hero. Sticky only
+      sticks within its own containing block, and the hero is a short band — so it
+      stuck for the hero's ~160px and then scrolled away with it. Out here it has
+      the whole document to stick to. It is hidden until the intro hands over,
+      which is the job the hero's opacity used to do for it.
+    -->
+    <header id="topbar">
+            <a class="topbar-name" href="#work">Charissa Jeong</a>
+            <nav class="topbar-nav" aria-label="Sections">
+              <a href="#work">work</a>
+              <a href="#past">past</a>
+            </nav>
+            <div class="topbar-links">
+              <a href="#earth">info</a>
+              <a href="https://drive.google.com/file/d/1fU5VSda1ZXj69sGmAiFi6Xpc0pgQn-Ep/view?usp=sharing" target="_blank" rel="noopener">résumé</a>
+            </div>
+          </header>
+
+    <div id="cursor-layer" aria-hidden="true"><canvas></canvas></div>
+
+  </body>
+</html>

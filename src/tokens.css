@@ -1,0 +1,97 @@
+:root {
+  /* Pulled from jaeeunj.github.io/portfolio */
+  --void: #07070f;
+  --deep: #19192e;
+  --mid: #262640;
+  --slate: #484866;
+  --electric: #113ddc;
+  --accent: #6e8cff;
+  --soft: #a2b4fe;
+  --pale: #ccd7ff;
+  --white: #f7f7ff;
+
+  /*
+   * Dot-matrix display face. Chosen to rhyme with the ASCII scene — the headline
+   * is built from dots much as the flight is built from characters.
+   */
+  --font-display: 'Bitcount Prop Single', system-ui, sans-serif;
+  /* Dense blocky arcade capitals — the title card only. Bitcount's dotted
+     glyphs read airy and wide at display sizes; this is the NES-cartridge cut. */
+  --font-arcade: 'Press Start 2P', 'Bitcount Prop Single', system-ui, sans-serif;
+  /* Text cuts of the same family as --font-heavy: the fine print speaks in the
+     same voice as the names it sits under, just quietly. Spline Sans was the
+     old portfolio's grotesk and read as a visitor from that site. */
+  --font-body: 'Rubik', system-ui, sans-serif;
+  /* Heavy geometric sans. Carries the things whose only job is to be read at a
+     glance and remembered: the sign-off, the section banners, the work names. */
+  --font-heavy: 'Rubik', system-ui, sans-serif;
+
+  /* Edge-to-edge layout metrics. The right gutter stays wider than the left:
+     it held the scroll rail, and the asymmetry is load-bearing for the layout
+     even now that nothing rides in it. */
+  --gutter: 16px;
+  --rail-gutter: 46px;
+  --gap: 14px;
+
+  /* Cockpit frame. Corners are fixed-size, so these are real pixels, not ratios. */
+  --hud-inset: 20px;
+  /* Offset of the instrument row below the top rail. A fixed gap, not a
+     percentage: at 11% the row sat 43px down a landscape phone and 132px down a
+     tall monitor, so its distance from the rail it hangs off changed on every
+     screen. Mirrors the pill's fixed offset from the bottom. */
+  --hud-row-top: 52px;
+  /*
+   * Inset of the flanking chips from the frame edge. Fixed for the same reason
+   * as --hud-row-top, and more so: the corners are a fixed 120x90 no matter the
+   * viewport, so a percentage walks away from the very thing it should be
+   * hugging — at 6% the clock sat 38px from the edge on a small laptop and 115px
+   * on a wide monitor, drifting further from a corner that never moved.
+   *
+   * Sized to clear the corner artwork rather than lie over it. The faint inner
+   * echo curves through x 41-55 across the chip's vertical band, so at the old
+   * +18px (38px from the edge) the chip cut straight through it. This puts the
+   * chip's edge past the curve's widest point in that band, with room to read as
+   * a gap; the outer rail sits at 21-24px and is cleared comfortably either way.
+   */
+  --hud-row-side: calc(var(--hud-inset) + 44px);
+  /* Ruling shared by the flight log's column guides and its row rules — they
+     are one grid, so they read from one value. */
+  --rule: rgba(162, 180, 254, 0.15);
+  /* How far the log's text sits off the guide beside it. */
+  --row-inset: clamp(1rem, 2vw, 1.9rem);
+  /*
+   * The log's index gutter, as a fixed track rather than content width. The
+   * header row and the body underneath both offset by it, so an employer name
+   * and the line describing the work share a left edge — derived from one pair
+   * of values instead of each guessing at the other's.
+   */
+  --log-index-col: 2.4rem;
+  --log-gap: clamp(0.9rem, 2.4vw, 2rem);
+  /* Fixed name track so the titles beside them start on one line rather than
+     stepping in and out with each employer's name length. Narrower than it was:
+     the employer is body-sized now, not a heading, and the room it was holding
+     is better spent on the role. */
+  --log-name-col: clamp(6.5rem, 9vw, 8.75rem);
+  /*
+   * Fixed date track, sized for the longest span in the list.
+   *
+   * It was `auto`, which meant every row's date length set that row's own
+   * column widths. Narrower than it first needed to be: it was sized for a
+   * compound "Fall 2022 · Summer 2023", and now that each term carries its own
+   * date the longest value is a single season, so the slack goes to the summary.
+   */
+  --log-when-col: clamp(5.5rem, 10vw, 9rem);
+  /*
+   * Shared line box for the employer/role/date row. One entry lists two terms,
+   * and its roles and spans stack into matching pairs — they only line up if
+   * both columns march on the same rhythm, which they will not do on their own
+   * at 16.5px body text against 11.5px instrument text.
+   */
+  --log-line: 1.75rem;
+
+  /* Masthead height. The hero pads by it so nothing starts underneath. */
+  --topbar-h: 46px;
+
+  --hud-corner-w: 120px;
+  --hud-corner-h: 90px;
+}
