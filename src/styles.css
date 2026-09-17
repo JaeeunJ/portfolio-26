@@ -1633,9 +1633,8 @@ body:not(.intro-done) #topbar {
   text-shadow: 0 1px 6px rgba(7, 7, 15, 0.95), 0 0 2px rgba(7, 7, 15, 0.95);
 }
 
-.bento-index { color: var(--accent); }
 /* The project's name — the headline slot now belongs to the problem it solved. */
-.bento-proj { color: var(--pale); text-align: right; }
+.bento-proj { color: var(--slate); text-align: right; font-size: 1rem; font-weight: 600;}
 
 /* One line on what was solved, not the name: the name is metadata above, the
    problem is the pitch. */
@@ -1658,15 +1657,16 @@ body:not(.intro-done) #topbar {
 .bento-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.3rem;
   margin-top: 0.35rem;
 }
 
 .bento-tags span {
   display: inline-block;
   padding: 0.3em 0.65em;
-  border: 2px solid var(--slate);
-  background: rgba(25, 25, 46, 0.55);
+  border: 1px solid var(--slate);
+  border-radius: 4px;
+  background: black;
   font-family: var(--font-display);
   font-size: 0.72rem;
   letter-spacing: 0.14em;
