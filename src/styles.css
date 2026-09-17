@@ -151,18 +151,15 @@ body.intro-done #game-title {
 .gt-name {
   position: absolute;
   left: 50%;
-  top: 40%;
-  transform: translate(-50%, -50%) scale(1);
+  top: 42%;
+  transform: translate(-50%, -44%) scale(1);
   transform-origin: left bottom;
   margin: 0;
   font-family: var(--font-arcade);
   font-weight: 400;
-  /* Press Start 2P advances a full em per glyph with a lot of air in the box;
-     the negative tracking closes the letters up to a solid wordmark, and buys
-     back the size the tighter width allows. */
   /* The extra 8.6vw ceiling is the phone fit: 13 glyphs at ~0.86em each need
      ~11.2em, so past that the floor would push the wordmark off both edges. */
-  font-size: min(max(2.7rem, 6.8vw), 8vw, 5.8rem);
+  font-size: min(max(2.2rem, 6.4vw), 6vw, 5.4rem);
   line-height: 1.2;
   letter-spacing: -0.14em;
   white-space: nowrap;
@@ -171,10 +168,10 @@ body.intro-done #game-title {
   background: linear-gradient(
     180deg,
     #ffffff 0%,
-    #ffb2e8 16%,
-    #ff7fd8 38%,
-    #b47fff 58%,
-    #6fa8f5 78%,
+    #ffb2e8 12%,
+    #ff7fd8 30%,
+    #b47fff 50%,
+    #6fa8f5 70%,
     #2f5ede 100%
   );
   -webkit-background-clip: text;
@@ -182,8 +179,38 @@ body.intro-done #game-title {
   color: transparent;
   /* Chunky offset slab for the 8-bit drop, plus a neon bloom to lift it off
      the scene. */
-  filter: drop-shadow(0.06em 0.09em 0 rgba(10, 12, 44, 1))
+  filter: 
     drop-shadow(0 0 0.35em rgba(196, 127, 255, 0.55));
+  transition:
+    left 0.4s cubic-bezier(0.5, 0, 0.2, 1),
+    top 0.4s cubic-bezier(0.5, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.5, 0, 0.2, 1);
+}
+
+.gt-name-below {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -44%) scale(1);
+  transform-origin: left bottom;
+  margin: 0;
+  font-family: var(--font-arcade);
+  font-weight: 400;
+  /* The extra 8.6vw ceiling is the phone fit: 13 glyphs at ~0.86em each need
+     ~11.2em, so past that the floor would push the wordmark off both edges. */
+  font-size: min(max(2.2rem, 6.4vw), 6vw, 5.4rem);
+  line-height: 1.2;
+  letter-spacing: -0.14em;
+  white-space: nowrap;
+  /* Arcade chrome: white-hot top edge, hot pink down to electric blue. The
+     opening planet is kept cool so this warm ramp owns the frame. */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: black;
+  text-shadow: rgb(28, 6, 39) 0.05em 0 0, rgb(28, 6, 39) -0.05em 0 0, rgb(28, 6, 39) 0 0.05em 0, rgb(28, 6, 39) 0 -0.05em 0;
+
+  filter: 
+    drop-shadow(0 0 0.8em rgba(196, 127, 255, 0.55));
   transition:
     left 0.4s cubic-bezier(0.5, 0, 0.2, 1),
     top 0.4s cubic-bezier(0.5, 0, 0.2, 1),
@@ -193,12 +220,12 @@ body.intro-done #game-title {
 .gt-sub {
   position: absolute;
   left: 50%;
-  top: 50.5%;
+  top: 51%;
   transform: translate(-50%, -50%) scale(1);
   transform-origin: right bottom;
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 800;
   /* Same phone fit as the wordmark above. */
   font-size: min(max(1.05rem, 2vw), 4vw, 1.5rem);
   letter-spacing: 0.55em;
@@ -232,7 +259,13 @@ body.intro-done #game-title {
 body.title-away .gt-name {
   left: 2.6rem;
   top: calc(100vh - 3rem);
-  transform: translate(0, -100%) scale(0.16);
+  transform: translate(0, -100%) scale(0.3);
+}
+
+body.title-away .gt-name-below {
+  left: 2.6rem;
+  top: calc(100vh - 3rem);
+  transform: translate(0, -100%) scale(0.3);
 }
 
 body.title-away .gt-sub {
