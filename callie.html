@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Callie — Charissa Jeong</title>
+    <meta
+      name="description"
+      content="Designing Callie in ten days: a calorie tracker disguised as a chat, from UX research through branding, mid-fi flows, and final screens."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@400;500&family=Rubik:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/portfolio-26/assets/callie-XfDd7n2r.js"></script>
+    <link rel="modulepreload" crossorigin href="/portfolio-26/assets/modulepreload-polyfill-P2Xu9kJm.js">
+    <link rel="stylesheet" crossorigin href="/portfolio-26/assets/case-study-Bn0GVmg9.css">
+  </head>
+
+  <body>
+    <header class="cs-top">
+      <a class="cs-back" href="/#work">&larr; work</a>
+      <div class="cs-top-links">
+        <a href="/#past">past</a>
+        <a href="/#earth">info</a>
+        <a
+          href="https://drive.google.com/file/d/1fU5VSda1ZXj69sGmAiFi6Xpc0pgQn-Ep/view?usp=sharing"
+          target="_blank"
+          rel="noopener"
+          >résumé</a
+        >
+      </div>
+    </header>
+
+    <main class="cs" id="top">
+      <!--
+        Contents. Grouped by how the ten days actually ran: what we were
+        building and why, the research that set it up, then the design work
+        check-in by check-in, then what shipped.
+      -->
+      <nav class="cs-toc" aria-label="Contents">
+        <p class="cs-toc-label">Content</p>
+        <div class="cs-toc-group">
+          <a href="#top">Overview</a>
+          <a href="#problem">Problem</a>
+          <a href="#bet">The bet</a>
+        </div>
+        <div class="cs-toc-group">
+          <a href="#research">Research</a>
+          <a href="#branding">Branding</a>
+        </div>
+        <div class="cs-toc-group">
+          <a href="#chat">The chat</a>
+          <a href="#log">The log</a>
+          <a href="#settings">Settings</a>
+        </div>
+        <div class="cs-toc-group">
+          <a href="#landed">Where it landed</a>
+        </div>
+      </nav>
+
+      <!--
+        Hero. The tagline is the product's own one-liner, so the title is the
+        job instead: the whole thing was designed in ten days of daily
+        check-ins with the founder.
+      -->
+      <section class="cs-hero">
+        <p class="cs-eyebrow">
+          <span>02</span><span class="dot"></span><span>Freelance &middot; 10-day sprint</span>
+        </p>
+        <h1>Ten days to make calorie tracking feel like texting</h1>
+        <p class="cs-lede">
+          Callie is an iOS calorie tracker disguised as a chat: send a photo or describe your meal,
+          get a full macro breakdown, and refine it like a conversation — &ldquo;half the bread,&rdquo;
+          &ldquo;no cheese.&rdquo; I was the sole designer, taking it from research to handoff in ten
+          days of daily check-ins with the founder.
+        </p>
+
+        <div class="cs-banner">
+          <img src="/portfolio-26/screens/callie/cl-log-flow.webp" alt="Callie's mid-fidelity logging flow — chat, describing a meal, AI output, streak, and log success" />
+        </div>
+      </section>
+
+      <dl class="cs-meta">
+        <div>
+          <dt>Role</dt>
+          <dd>UX research, UI/UX design, branding</dd>
+        </div>
+        <div>
+          <dt>Timeline</dt>
+          <dd>May 2026 · 10 days</dd>
+        </div>
+        <div>
+          <dt>Team</dt>
+          <dd>Me, sole designer · founder</dd>
+        </div>
+        <div>
+          <dt>Tools</dt>
+          <dd>Figma, FigJam</dd>
+        </div>
+        <div class="cs-meta-wide">
+          <dt>Final screens</dt>
+          <dd>
+            <a
+              class="cs-proto"
+              href="https://www.figma.com/design/viTUi8yTDY0GJOASldxgkZ/Callie?node-id=56-2904&t=8F4G9LHzJHvw24aO-4"
+              target="_blank"
+              rel="noopener"
+              >Open in Figma<span class="arrow" aria-hidden="true">&rarr;</span></a
+            >
+          </dd>
+        </div>
+      </dl>
+
+      <!-- ------------------------------------------------------------- 01 -->
+      <section class="cs-section" id="problem">
+        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><line x1="12" y1="16.4" x2="12.01" y2="16.4"/></svg></span>01 — The problem</p>
+        <h2>Tracking a meal takes more effort than choosing it.</h2>
+        <p>
+          People who already believe in calorie tracking still quit doing it, because every tool
+          makes them do the thinking. On one side is the database grind — searching, scrolling, and
+          assembling a five-ingredient dinner one ingredient at a time, which takes longer than the
+          cooking did. On the other is the black-box AI: photo in, number out, take it or leave it.
+        </p>
+        <p>
+          The gap between them is <strong>conversational control</strong>. Nobody lets you say
+          &ldquo;actually it was half a cup&rdquo; and just have the number adjust — you start over,
+          or you dig through menus. The tracking itself becomes the friction, and the friction is
+          why people churn.
+        </p>
+      </section>
+
+      <!-- ------------------------------------------------------------- 02 -->
+      <section class="cs-section" id="bet">
+        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="9.5" y1="18.5" x2="14.5" y2="18.5"/><line x1="10.5" y1="21.2" x2="13.5" y2="21.2"/><path d="M12 2.8a6.2 6.2 0 0 0-3.6 11.2c.6.4 1 1.1 1 1.9v.3h5.2v-.3c0-.8.4-1.5 1-1.9A6.2 6.2 0 0 0 12 2.8z"/></svg></span>02 — The bet</p>
+        <h2>Chat is the interface, and the agent does the thinking.</h2>
+        <p>
+          Callie&rsquo;s core loop: open the app and land in a fresh chat, tell it what you ate — by
+          photo or in plain language — and an agent returns the full breakdown: calories, carbs,
+          protein, fat. Never just a calorie number. One tap logs it. The target was a meal logged
+          in under thirty seconds.
+        </p>
+        <p>What makes it a product rather than a prompt wrapper is three commitments:</p>
+        <ul class="cs-list">
+          <li>
+            <strong>Conversational refinement</strong> — &ldquo;no rice, extra guac, half the
+            cheese&rdquo; adjusts the entry like a person would, no starting over.
+          </li>
+          <li>
+            <strong>Agent memory</strong> — say &ldquo;my usual morning shake&rdquo; and Callie
+            already knows, because it learns your meals and habits over time.
+          </li>
+          <li>
+            <strong>Trust through transparency</strong> — the chat itself is the proof. You can see
+            how your words became the breakdown, and edit the numbers directly if you disagree.
+          </li>
+        </ul>
+      </section>
+
+      <!-- ------------------------------------------------------------- 03 -->
+      <section class="cs-section" id="research">
+        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><line x1="15.8" y1="15.8" x2="20" y2="20"/></svg></span>03 — Research</p>
+        <h2>The PRD ended in questions, so the research started there.</h2>
+        <p>
+          The founder&rsquo;s PRD was thorough enough that I didn&rsquo;t need to fight for
+          features — the requirements held up. What it left open, it left open honestly, as four
+          questions at the end of the document. My research week went at those: how onboarding
+          should work, whether notifications belong at all, and how granular the agent&rsquo;s
+          memory needs to be.
+        </p>
+
+        <h3>Onboarding: don&rsquo;t have one</h3>
+        <p>
+          I tore down the onboarding of MyFitnessPal, MacroFactor, and CalAI. The market leaders put
+          <strong>20 to 50+ screens</strong> between install and the first log — goal quizzes,
+          biometrics, weight projections, an account wall, a paywall. For an app whose entire
+          identity is being the easy alternative, the strongest first impression is the absence of
+          all that: Callie opens straight into the chat, in under three screens, and asks for
+          biometrics only after you&rsquo;ve logged something.
+        </p>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-uxr-onboarding.webp" alt="Onboarding comparison table — MyFitnessPal, MacroFactor, CalAI versus Callie's goal" loading="lazy" />
+          <figcaption>
+            The teardown. Every competitor gates logging behind dozens of screens; Callie&rsquo;s
+            goal column is mostly &ldquo;skip.&rdquo;
+          </figcaption>
+        </figure>
+
+        <h3>Notifications: only if the user shapes them</h3>
+        <p>
+          Forum research turned up something sharper than annoyance: generic reminders make people
+          feel <strong>ashamed</strong>, and shame is a reason users gave for deleting tracking
+          apps entirely. Logging already sits in the back of their mind all day. So Callie replaces
+          generic nagging with context-aware nudges built from the user&rsquo;s own patterns —
+          &ldquo;you usually log a shake after a workout&rdquo; — and makes them granular and
+          optional, which the competitors don&rsquo;t offer at all.
+        </p>
+
+        <h3>Memory: remember meals the way people name them</h3>
+        <p>
+          People describe repeated meals in <strong>meal units</strong> — &ldquo;my usual morning
+          shake,&rdquo; not a list of ingredients — and they mostly re-log the same meals with small
+          day-to-day tweaks. And they&rsquo;re rightly skeptical of photo AI, which misses invisible
+          calories like the 200 in the cooking oil. So the memory design stores the nickname for
+          speed but keeps the ingredients underneath it for tweaks, and learns cooking habits —
+          &ldquo;always fries in two rounds of oil&rdquo; — to close the trust gap.
+        </p>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-uxr-features.webp" alt="Research synthesis — pain points mapped to features" loading="lazy" />
+          <figcaption>
+            The synthesis: each research pain point mapped to the feature that answers it.
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- ------------------------------------------------------------- 04 -->
+      <section class="cs-section" id="branding">
+        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1z"/><line x1="14.5" y1="6.5" x2="17.5" y2="9.5"/></svg></span>04 — Branding</p>
+        <h2>An orangey-red, and a typeface that isn&rsquo;t allowed to be SF Pro.</h2>
+        <p>
+          The logo couldn&rsquo;t just use the system font — SF Pro isn&rsquo;t licensed for
+          commercial marks — so I put up options and we chose from there. The working system is SF
+          Pro for the interface, <strong>Bricolage Grotesque</strong> as the display face — the
+          numbers are the loudest thing a user takes in, so they get the personality — and
+          <strong>Spline Sans</strong> for subtext, whose tight spacing keeps long ingredient lists
+          from blurring together.
+        </p>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-logo.webp" alt="Logo font options — Familjen Grotesk, Bricolage Grotesque, Spline Sans" loading="lazy" />
+        </figure>
+
+        <p>
+          The palette leads with <strong>#FF3C00</strong>, an orangey-red, used pure for the brand
+          moments and at 10% opacity as its own background wash. The colour tokens went into a
+          design system from day one so implementation wouldn&rsquo;t have to reverse-engineer them.
+        </p>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-palette.webp" alt="Callie's palette and colour tokens, hero colour #FF3C00" loading="lazy" />
+        </figure>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-typography.webp" alt="Typography system — SF Pro with Bricolage Grotesque display and Spline Sans subtext" loading="lazy" />
+        </figure>
+      </section>
+
+      <!-- ------------------------------------------------------------- 05 -->
+      <section class="cs-section" id="chat">
+        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c-4.7 0-8.5 3.2-8.5 7.2 0 2.3 1.3 4.4 3.3 5.7l-.8 4.1 4-1.6c.6.1 1.3.2 2 .2 4.7 0 8.5-3.2 8.5-7.3S16.7 3.5 12 3.5z"/></svg></span>05 — The chat</p>
+        <h2>Open the app, and you&rsquo;re already logging.</h2>
+        <p>
+          The chat home carries your daily progress in the header and nothing else in your way:
+          tapping the middle of the screen opens the camera, the input field suggests meals
+          you&rsquo;ve logged before, and a <strong>+</strong> menu covers photos from the library.
+          Describe the meal, get the breakdown, log it — with a streak moment on the way out.
+        </p>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-chat-midfi.webp" alt="Mid-fidelity chat screens — homepage and active input field with suggestions" loading="lazy" />
+          <figcaption>
+            Mid-fi on purpose: the check-ins reviewed the experience before the UI dressed it up.
+          </figcaption>
+        </figure>
+
+        <h3>When one message is four meals</h3>
+        <p>
+          Real logging is messy — one message might be a meal with sides, or an entire day. The
+          card scales with it: a single meal with sides stays one card with modification chips; two
+          meals duplicate the card; and at three or more, the output becomes a
+          <strong>receipt</strong> — every meal collapsed to a line with its calorie contribution,
+          expandable if you care, one Log button for the lot. A log-and-go user reads it as
+          &ldquo;seems about right&rdquo; and moves on.
+        </p>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-multilog.webp" alt="Multiple distinct meals detected — receipt-style collapsed cards" loading="lazy" />
+        </figure>
+
+        <p>
+          And because Callie is a go-in, go-out app, it keeps no chat history — the one thing worth
+          preserving is a log you walked away from mid-conversation. That comes back as a
+          &ldquo;finish logging&rdquo; banner on the chat home rather than a history tab.
+        </p>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-resume.webp" alt="Exited-while-logging state — a finish logging banner on the chat home" loading="lazy" />
+        </figure>
+      </section>
+
+      <!-- ------------------------------------------------------------- 06 -->
+      <section class="cs-section" id="log">
+        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3.5" width="14" height="17" rx="2"/><line x1="9" y1="8.5" x2="15" y2="8.5"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="15.5" x2="13" y2="15.5"/></svg></span>06 — The log</p>
+        <h2>The journal answers &ldquo;how am I doing&rdquo; at a glance.</h2>
+        <p>
+          For the daily overview I drew two layouts — macros reading left-to-right beside the
+          calorie ring, or top-to-bottom under it — and brought both to the check-in instead of
+          picking. The founder was the app&rsquo;s primary user, which changed how I made
+          decisions: anything that came down to reading preference was his call to make, framed
+          with my recommendation attached.
+        </p>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-logs-options.webp" alt="Two layout options for the daily log overview" loading="lazy" />
+        </figure>
+
+        <h3>One entry, fully editable</h3>
+        <p>
+          A log&rsquo;s detail page keeps the anatomy simple: an optional photo, the meal&rsquo;s
+          name with its modification chips (&ldquo;+1.5x lettuce base&rdquo;), the time —
+          auto-set from when you logged unless you said otherwise — and the ingredient list,
+          collapsed to three until you ask for more. Every part of it can be changed after the
+          fact: rename it, re-photograph it, move it in time, or delete it behind a native confirm.
+        </p>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-log-details.webp" alt="Log details page — photo, modification chips, ingredient list, macro totals" loading="lazy" />
+        </figure>
+
+        <p>
+          The one button that never scrolls away is <strong>Edit with AI</strong>. It reopens the
+          conversation about that meal — &ldquo;bro u forgot the carrots&rdquo; — and the log
+          updates the same way it was created. Correction is the product&rsquo;s signature move, so
+          it works on old entries exactly like new ones.
+        </p>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-edit-ai.webp" alt="Edit with AI flow — a chat correction updating an existing log" loading="lazy" />
+        </figure>
+      </section>
+
+      <!-- ------------------------------------------------------------- 07 -->
+      <section class="cs-section" id="settings">
+        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.8M12 18.4v2.8M2.8 12h2.8M18.4 12h2.8M5.5 5.5l2 2M16.5 16.5l2 2M18.5 5.5l-2 2M7.5 16.5l-2 2"/></svg></span>07 — Settings</p>
+        <h2>Login is optional, and so are the reminders.</h2>
+        <p>
+          Settings holds the three things the chat shouldn&rsquo;t: your account (three header
+          states — none, Apple, Google — because an account is a way to save progress, not a wall
+          in front of the app), your connected data (Apple Health sync and the biometrics, each
+          editable through native pickers), and your preferences.
+        </p>
+        <p>
+          The preference that matters is <strong>push notification nudges</strong> — the feature
+          the research flagged as the one most likely to get the app deleted. It ships as a single
+          honest toggle: smart reminders based on your own logging patterns, off if you say so.
+        </p>
+
+        <figure>
+          <img src="/portfolio-26/screens/callie/cl-settings.webp" alt="Settings page — account header, connected data, nutrition goals, notification nudges" loading="lazy" />
+        </figure>
+      </section>
+
+      <!-- ------------------------------------------------------------- 08 -->
+      <section class="cs-section" id="landed">
+        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3.5" x2="6" y2="20.5"/><path d="M6 4.5h11.5l-2.7 4 2.7 4H6"/></svg></span>08 — Where it landed</p>
+        <h2>Handed off, on schedule.</h2>
+        <p>
+          Ten days, research to end-to-end package, with a check-in every day. The final screens —
+          polished a step past what the last check-in shows — are in the
+          <a href="https://www.figma.com/design/viTUi8yTDY0GJOASldxgkZ/Callie?node-id=56-2904&t=8F4G9LHzJHvw24aO-4" target="_blank" rel="noopener">Figma file</a>,
+          organized for handoff to development.
+        </p>
+
+        <h3>What I took away</h3>
+        <ol class="numbered">
+          <li>
+            <div>
+              <b>The client was the primary user</b>
+              <p>
+                That collapsed the usual distance between stakeholder and persona. Ambiguous calls
+                became framed options with a recommendation, and the answers came back same-day.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>Research can validate instead of fight</b>
+              <p>
+                The PRD&rsquo;s features survived contact with the evidence, so the research week
+                went into its open questions — which is where it actually changed the design.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>Borrow familiarity, spend novelty carefully</b>
+              <p>
+                The journal and progress views deliberately lean on patterns users already know from
+                CalAI. The novelty budget went to the one thing nobody else does: the conversation.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>Daily check-ins beat big reveals</b>
+              <p>
+                Nothing drifted more than a day from what the founder expected, and decisions like
+                collapsed-versus-expanded defaults got settled while they were still cheap.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </main>
+
+    <nav class="cs-next">
+      <div class="cs-next-inner">
+        <p class="cs-next-label">Next project</p>
+        <a class="cs-next-link" href="/pv.html">
+          Project Vitality
+          <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19.5" y2="12"/><path d="M13.5 6l6 6-6 6"/></svg></span>
+        </a>
+      </div>
+    </nav>
+
+    <footer class="cs-foot">
+      <a href="mailto:c5jeong@uwaterloo.ca">Email</a>
+      <a
+        href="https://www.linkedin.com/in/charissa-jeong-509ba3217/"
+        target="_blank"
+        rel="noopener"
+        >LinkedIn</a
+      >
+      <a href="/#work">All work</a>
+      <span>Charissa Jeong</span>
+    </footer>
+
+  </body>
+</html>
