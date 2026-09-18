@@ -1569,8 +1569,8 @@ body:not(.intro-done) #topbar {
 
 .bento-media img {
   position: absolute;
+  margin-left: -80vw;
   inset: 0;
-  width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.45s ease;
@@ -1578,30 +1578,6 @@ body:not(.intro-done) #topbar {
 
 .bento-card a:hover .bento-media img {
   transform: scale(1.05);
-}
-
-/* No art yet: the striped placeholder, labelled, same as the old reel's. */
-.bento-media:not(:has(img))::after {
-  content: attr(data-label);
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  text-align: center;
-  background:
-    repeating-linear-gradient(
-      -45deg,
-      rgba(110, 140, 255, 0.05) 0 10px,
-      transparent 10px 20px
-    ),
-    var(--deep);
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--slate);
 }
 
 /*
@@ -1628,11 +1604,11 @@ body:not(.intro-done) #topbar {
   background: linear-gradient(
     180deg,
     rgba(7, 7, 15, 0) 0%,
-    rgba(7, 7, 15, 0.12) 18%,
-    rgba(7, 7, 15, 0.34) 36%,
-    rgba(7, 7, 15, 0.58) 56%,
-    rgba(7, 7, 15, 0.78) 76%,
-    rgba(7, 7, 15, 0.92) 100%
+    rgba(7, 7, 15, 0.12) 8%,
+    rgba(7, 7, 15, 0.34) 18%,
+    rgba(7, 7, 15, 0.58) 32%,
+    rgba(7, 7, 15, 0.78) 44%,
+    rgba(7, 7, 15, 0.92) 60%
   );
   opacity: 0;
   transform: translateY(6px);
@@ -1666,8 +1642,12 @@ body:not(.intro-done) #topbar {
   text-shadow: 0 1px 6px rgba(7, 7, 15, 0.95), 0 0 2px rgba(7, 7, 15, 0.95);
 }
 
-/* The project's name — the headline slot now belongs to the problem it solved. */
-.bento-proj { color: var(--slate); text-align: right; font-size: 1rem; font-weight: 600;}
+.bento-proj { 
+  color: var(--pale);
+  text-align: right;
+  font-size: 1rem;
+  font-weight: 600;
+}
 
 /* One line on what was solved, not the name: the name is metadata above, the
    problem is the pitch. */

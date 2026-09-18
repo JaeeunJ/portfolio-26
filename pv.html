@@ -32,459 +32,440 @@
         >
       </div>
     </header>
+    
+    <div class="cs-banner">
+      <img src="/projects/pv-banner.svg" alt="Project Vitality app screens" />
+    </div>
 
-    <main class="cs" id="top">
-      <!--
-        Table of contents. Fixed in the left gutter the grid already leaves
-        empty on wide screens; below that it simply isn't there — the section
-        numbers do the same job inline.
-      -->
+    <section class="cs-grid">
       <nav class="cs-toc" aria-label="Contents">
-        <p class="cs-toc-label">Content</p>
-        <!-- Grouped by the stages the week was actually run in: setup, then
-             research and synthesis, then design, then what came of it. -->
-        <div class="cs-toc-group">
-          <a href="#top">Overview</a>
-          <a href="#problem">Problem</a>
-          <a href="#week">The week</a>
-        </div>
-        <div class="cs-toc-group">
-          <a href="#research">Research</a>
-          <a href="#users">Who it&rsquo;s for</a>
-        </div>
-        <div class="cs-toc-group">
-          <a href="#visual">Visual design</a>
-          <a href="#final">Final designs</a>
-        </div>
-        <div class="cs-toc-group">
-          <a href="#landed">Where it landed</a>
-        </div>
-      </nav>
+          <p class="cs-toc-label">Content</p>
+          <!-- Grouped by the stages the week was actually run in: setup, then
+              research and synthesis, then design, then what came of it. -->
+          <div class="cs-toc-group">
+            <a href="#top">Overview</a>
+            <a href="#problem">Problem</a>
+            <a href="#week">The week</a>
+          </div>
+          <div class="cs-toc-group">
+            <a href="#research">Research</a>
+            <a href="#users">Who it&rsquo;s for</a>
+          </div>
+          <div class="cs-toc-group">
+            <a href="#visual">Visual design</a>
+            <a href="#final">Final designs</a>
+          </div>
+          <div class="cs-toc-group">
+            <a href="#landed">Where it landed</a>
+          </div>
+        </nav>
 
-      <!--
-        Hero. The title is the thing that happened, not the product name — the
-        name is already in the eyebrow and the tab, and a reader arriving from
-        the bento tile knows it. What they don't know is what the week was.
-      -->
-      <section class="cs-hero">
-        <p class="cs-eyebrow">
-          <span>03</span><span class="dot"></span><span>Freelance &middot; Pitch competition</span>
-        </p>
-        <h1>Designing a healthcare app&rsquo;s first happy path in one week</h1>
-        <p class="cs-lede">
-          Project Vitality puts scheduling, records, and AI visit notes in one place — for patients
-          and for the physicians treating them. I came on a week before a pitch competition as the
-          only designer, and left with the branding and a working prototype of patient sign-up.
-        </p>
+      <main class="cs" id="top">
 
-        <div class="cs-banner">
-          <img src="/projects/pv-banner.webp" alt="Project Vitality app screens" />
-        </div>
-      </section>
+        <section class="cs-hero">
+          <p class="cs-eyebrow">
+            <span>Freelance &middot; Pitch competition</span>
+          </p>
+          <h1>Project Vitality</h1>
+          <p class="cs-lede">
+            Project Vitality puts scheduling, records, and AI visit notes in one place — for both patients
+            and the physicians treating them. I came on a week before a pitch competition as the
+            only designer, and completed the branding and a working prototype.
+          </p>
 
-      <!--
-        The prototype is a fact about the project like the rest, so it lives in
-        the strip with them — a fifth labelled entry, not a control floating in
-        the space between two rules.
-      -->
-      <dl class="cs-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>UI/UX design, prototyping, branding</dd>
-        </div>
-        <div>
-          <dt>Timeline</dt>
-          <dd>June 2024 · 1 week</dd>
-        </div>
-        <div>
-          <dt>Team</dt>
-          <dd>Me, solo · client + devs</dd>
-        </div>
-        <div>
-          <dt>Tools</dt>
-          <dd>Figma, FigJam</dd>
-        </div>
-        <div class="cs-meta-wide">
-          <dt>Prototype</dt>
-          <dd>
-            <a class="cs-proto" href="#" target="_blank" rel="noopener"
-              >Open in Figma<span class="arrow" aria-hidden="true">&rarr;</span></a
-            >
-          </dd>
-        </div>
-      </dl>
+        </section>
 
-      <!-- ------------------------------------------------------------- 01 -->
-      <section class="cs-section" id="problem">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><line x1="12" y1="16.4" x2="12.01" y2="16.4"/></svg></span>01 — The problem</p>
-        <h2>Getting the healthcare you deserve shouldn&rsquo;t be this hard to figure out.</h2>
-        <p>
-          Where you live decides how easily you see a doctor. People in rural areas travel hours for
-          an appointment a city patient books in an afternoon — and even in the city, working out
-          <strong>which</strong> kind of help you need is confusing enough that people put it off.
-        </p>
-        <p>
-          Care delayed that way shows up later as worse health outcomes. The client&rsquo;s bet was
-          that one system serving patients and physicians at the same time could close some of that
-          gap.
-        </p>
-      </section>
+        <dl class="cs-meta">
+          <div>
+            <dt>Role</dt>
+            <dd>UI/UX design, prototyping, branding</dd>
+          </div>
+          <div>
+            <dt>Timeline</dt>
+            <dd>June 2024 · 1 week</dd>
+          </div>
+          <div>
+            <dt>Team</dt>
+            <dd>Me, solo · client + devs</dd>
+          </div>
+          <div>
+            <dt>Tools</dt>
+            <dd>Figma, FigJam</dd>
+          </div>
+        </dl>
 
-      <!-- ------------------------------------------------------------- 02 -->
-      <section class="cs-section" id="week">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="14" rx="2"/><line x1="4" y1="10.5" x2="20" y2="10.5"/><line x1="8.5" y1="3.5" x2="8.5" y2="7"/><line x1="15.5" y1="3.5" x2="15.5" y2="7"/></svg></span>02 — The week</p>
-        <h2>Seven days, one designer, one path through the app.</h2>
-        <p>
-          This was a last-minute build for a pitch competition, so scope was the first design
-          decision. Rather than sketch the whole product thinly, I picked one thing to finish
-          properly: <strong>a patient signing up and booking for the first time</strong>. Everything
-          else got a screen only if the pitch needed it.
-        </p>
-        <p>Each stage got a hard time limit, and I moved on whether or not it felt done.</p>
+        <!-- ------------------------------------------------------------- 01 -->
+        <section class="cs-section" id="problem">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><line x1="12" y1="16.4" x2="12.01" y2="16.4"/></svg></span>01 — The problem</p>
+          <h2>Getting the healthcare you deserve shouldn&rsquo;t be this hard to figure out.</h2>
+          <p>
+            Where you live decides how easily you see a doctor. People in rural areas travel hours for
+            an appointment a city patient books in an afternoon — and even in the city, working out
+            <strong>which</strong> kind of help you need is confusing enough that people put it off.
+          </p>
+          <p>
+            Care delayed that way shows up later as worse health outcomes. The client&rsquo;s bet was
+            that one system serving patients and physicians at the same time could close some of that
+            gap.
+          </p>
+        </section>
 
-        <ol class="sprint">
-          <li>
-            <span class="sprint-num">1</span>
-            <span class="sprint-what">Research</span>
-            <p>initial requirements<br />competitor analysis<br />new requirements</p>
-          </li>
-          <li>
-            <span class="sprint-num">2</span>
-            <span class="sprint-what">Synthesis</span>
-            <p>user personas<br />user flow</p>
-          </li>
-          <li>
-            <span class="sprint-num">3</span>
-            <span class="sprint-what">Visual design</span>
-            <p>visual branding<br />low-fi sketches</p>
-          </li>
-          <li>
-            <span class="sprint-num">4</span>
-            <span class="sprint-what">Final designs</span>
-            <p>design system<br />hi-fi designs</p>
-          </li>
-        </ol>
-      </section>
+        <!-- ------------------------------------------------------------- 02 -->
+        <section class="cs-section" id="week">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="14" rx="2"/><line x1="4" y1="10.5" x2="20" y2="10.5"/><line x1="8.5" y1="3.5" x2="8.5" y2="7"/><line x1="15.5" y1="3.5" x2="15.5" y2="7"/></svg></span>02 — The week</p>
+          <h2>Seven days, one designer, one path through the app.</h2>
+          <p>
+            This was a last-minute build for a pitch competition, so scope was the first design
+            decision. Rather than sketch the whole product thinly, I picked one thing to finish
+            properly: <strong>a patient signing up and booking for the first time</strong>. Everything
+            else got a screen only if the pitch needed it.
+          </p>
+          <p>Each stage got a hard time limit, and I moved on whether or not it felt done.</p>
 
-      <!-- ------------------------------------------------------------- 03 -->
-      <section class="cs-section" id="research">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><line x1="15.8" y1="15.8" x2="20" y2="20"/></svg></span>03 — Research</p>
-        <h2>What the client asked for, and what the market had already learned.</h2>
-        <p>The brief came in as a short list of jobs on both sides of the appointment:</p>
-        <ul class="cs-list">
-          <li>Physicians want every appointment, virtual and in-person, in one calendar.</li>
-          <li>Physicians want AI to sit in on virtual visits and hand back the notes.</li>
-          <li>Patients want to book virtually, and to filter doctors by location.</li>
-          <li>Everyone wants navigation a non-technical user can get through.</li>
-        </ul>
+          <ol class="sprint">
+            <li>
+              <span class="sprint-num">1</span>
+              <span class="sprint-what">Research</span>
+              <p>initial requirements<br />competitor analysis<br />new requirements</p>
+            </li>
+            <li>
+              <span class="sprint-num">2</span>
+              <span class="sprint-what">Synthesis</span>
+              <p>user personas<br />user flow</p>
+            </li>
+            <li>
+              <span class="sprint-num">3</span>
+              <span class="sprint-what">Visual design</span>
+              <p>visual branding<br />low-fi sketches</p>
+            </li>
+            <li>
+              <span class="sprint-num">4</span>
+              <span class="sprint-what">Final designs</span>
+              <p>design system<br />hi-fi designs</p>
+            </li>
+          </ol>
+        </section>
 
-        <h3>Two products that got partway there</h3>
-        <p>
-          Nobody had shipped this exact thing — healthcare online and AI in the room are both new
-          enough that the field is thin. So I looked at two apps that had done the online half.
-        </p>
+        <!-- ------------------------------------------------------------- 03 -->
+        <section class="cs-section" id="research">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><line x1="15.8" y1="15.8" x2="20" y2="20"/></svg></span>03 — Research</p>
+          <h2>What the client asked for, and what the market had already learned.</h2>
+          <p>The brief came in as a short list of jobs on both sides of the appointment:</p>
+          <ul class="cs-list">
+            <li>Physicians want every appointment, virtual and in-person, in one calendar.</li>
+            <li>Physicians want AI to sit in on virtual visits and hand back the notes.</li>
+            <li>Patients want to book virtually, and to filter doctors by location.</li>
+            <li>Everyone wants navigation a non-technical user can get through.</li>
+          </ul>
 
-        <!--
-          The teardown is evidence, not argument — a reader who trusts the
-          conclusion below shouldn't have to scroll past it. Closed by default,
-          and <details> rather than a script so it works before JS and answers
-          to the keyboard.
-        -->
-        <ul class="cards">
-          <li>
-            <details class="card">
-              <summary>
-                <span class="card-head">
-                  <img src="/screens/pv/practo.png" alt="" />
-                  <span>
-                    <span class="card-name">Practo</span>
-                    <span class="card-where">India</span>
+          <h3>Two products that got partway there</h3>
+          <p>
+            Nobody had shipped this exact thing — healthcare online and AI in the room are both new
+            enough that the field is thin. So I looked at two apps that had done the online half.
+          </p>
+
+          <!--
+            The teardown is evidence, not argument — a reader who trusts the
+            conclusion below shouldn't have to scroll past it. Closed by default,
+            and <details> rather than a script so it works before JS and answers
+            to the keyboard.
+          -->
+          <ul class="cards">
+            <li>
+              <details class="card">
+                <summary>
+                  <span class="card-head">
+                    <img src="/screens/pv/practo.png" alt="" />
+                    <span>
+                      <span class="card-name">Practo</span>
+                      <span class="card-where">India</span>
+                    </span>
                   </span>
-                </span>
-                <svg class="card-chev" viewBox="0 0 12 8" aria-hidden="true">
-                  <path
-                    d="M1 1.5 6 6.5l5-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </summary>
-              <p>
-                <span class="card-label">Works</span>
-                Search by symptom, not by specialty, so you can find a specialist without guessing
-                your own diagnosis first. Expert-answered forums do the same job.
-              </p>
-              <p>
-                <span class="card-label">Breaks</span>
-                Too many type sizes and colours at once. Hard to scan if you&rsquo;re older or in a
-                hurry.
-              </p>
-            </details>
-          </li>
-          <li>
-            <details class="card">
-              <summary>
-                <span class="card-head">
-                  <img src="/screens/pv/rocketdoctor.jpg" alt="" />
-                  <span>
-                    <span class="card-name">Rocket Doctor</span>
-                    <span class="card-where">Canada (ON, BC, AB)</span>
-                  </span>
-                </span>
-                <svg class="card-chev" viewBox="0 0 12 8" aria-hidden="true">
-                  <path
-                    d="M1 1.5 6 6.5l5-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </summary>
-              <p>
-                <span class="card-label">Works</span>
-                A short, direct route to a confirmed appointment, connected straight to your
-                insurance and upfront about cost.
-              </p>
-              <p>
-                <span class="card-label">Breaks</span>
-                Web only, and rough on a phone. You pick a format — text, call, video, in-person —
-                rather than a specialist.
-              </p>
-            </details>
-          </li>
-        </ul>
-
-        <h3>What that changed</h3>
-        <ul class="cs-list">
-          <li>
-            Split the surfaces: a fuller mobile app for younger patients, a simpler website for older
-            ones.
-          </li>
-          <li>Put the virtual-or-in-person choice at the very top of the home screen.</li>
-          <li>Give common symptoms their own shelf on home, so nobody has to name their condition.</li>
-          <li>Less text, fewer bright colours.</li>
-        </ul>
-      </section>
-
-      <!-- ------------------------------------------------------------- 04 -->
-      <section class="cs-section" id="users">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3.5"/><path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M15.5 5.6a3.5 3.5 0 0 1 0 5.8"/><path d="M17.5 14.9c1.8.8 3 2.4 3 4.6"/></svg></span>04 — Who it&rsquo;s for</p>
-        <h2>Two patients at opposite ends of the same gap.</h2>
-        <p>
-          The competitor work and a second round with the client pointed at the same split: someone
-          older and further out, and someone younger in the city who doesn&rsquo;t know the system.
-        </p>
-
-        <ul class="cards">
-          <li class="card">
-            <div class="card-head">
-              <div>
-                <span class="card-name">Da Kim, 61</span>
-                <span class="card-where">Welland, ON · retired teacher</span>
-              </div>
-            </div>
-            <div class="card-cols">
-              <div class="card-about">
-                <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c0-3.6 3.2-6 7.2-6s7.2 2.4 7.2 6"/></svg></span>About</span>
+                  <svg class="card-chev" viewBox="0 0 12 8" aria-hidden="true">
+                    <path
+                      d="M1 1.5 6 6.5l5-5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </summary>
                 <p>
-                  Da values her independence and needs semi-regular checkups, but mobility and
-                  transport make the trip to her specialist hard. COVID got her comfortable with
-                  virtual visits, and she&rsquo;d rather keep them.
+                  <span class="card-label">Works</span>
+                  Search by symptom, not by specialty, so you can find a specialist without guessing
+                  your own diagnosis first. Expert-answered forums do the same job.
+                </p>
+                <p>
+                  <span class="card-label">Breaks</span>
+                  Too many type sizes and colours at once. Hard to scan if you&rsquo;re older or in a
+                  hurry.
+                </p>
+              </details>
+            </li>
+            <li>
+              <details class="card">
+                <summary>
+                  <span class="card-head">
+                    <img src="/screens/pv/rocketdoctor.jpg" alt="" />
+                    <span>
+                      <span class="card-name">Rocket Doctor</span>
+                      <span class="card-where">Canada (ON, BC, AB)</span>
+                    </span>
+                  </span>
+                  <svg class="card-chev" viewBox="0 0 12 8" aria-hidden="true">
+                    <path
+                      d="M1 1.5 6 6.5l5-5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </summary>
+                <p>
+                  <span class="card-label">Works</span>
+                  A short, direct route to a confirmed appointment, connected straight to your
+                  insurance and upfront about cost.
+                </p>
+                <p>
+                  <span class="card-label">Breaks</span>
+                  Web only, and rough on a phone. You pick a format — text, call, video, in-person —
+                  rather than a specialist.
+                </p>
+              </details>
+            </li>
+          </ul>
+
+          <h3>What that changed</h3>
+          <ul class="cs-list">
+            <li>
+              Split the surfaces: a fuller mobile app for younger patients, a simpler website for older
+              ones.
+            </li>
+            <li>Put the virtual-or-in-person choice at the very top of the home screen.</li>
+            <li>Give common symptoms their own shelf on home, so nobody has to name their condition.</li>
+            <li>Less text, fewer bright colours.</li>
+          </ul>
+        </section>
+
+        <!-- ------------------------------------------------------------- 04 -->
+        <section class="cs-section" id="users">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3.5"/><path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M15.5 5.6a3.5 3.5 0 0 1 0 5.8"/><path d="M17.5 14.9c1.8.8 3 2.4 3 4.6"/></svg></span>04 — Who it&rsquo;s for</p>
+          <h2>Two patients at opposite ends of the same gap.</h2>
+          <p>
+            The competitor work and a second round with the client pointed at the same split: someone
+            older and further out, and someone younger in the city who doesn&rsquo;t know the system.
+          </p>
+
+          <ul class="cards">
+            <li class="card">
+              <div class="card-head">
+                <div>
+                  <span class="card-name">Da Kim, 61</span>
+                  <span class="card-where">Welland, ON · retired teacher</span>
+                </div>
+              </div>
+              <div class="card-cols">
+                <div class="card-about">
+                  <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c0-3.6 3.2-6 7.2-6s7.2 2.4 7.2 6"/></svg></span>About</span>
+                  <p>
+                    Da values her independence and needs semi-regular checkups, but mobility and
+                    transport make the trip to her specialist hard. COVID got her comfortable with
+                    virtual visits, and she&rsquo;d rather keep them.
+                  </p>
+                </div>
+                <div class="card-pains">
+                  <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 4.2 2.5 18.3a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.3 4.2a1.5 1.5 0 0 0-2.6 0z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="17.2" x2="12.01" y2="17.2"/></svg></span>Pain points</span>
+                  <ul>
+                    <li>Forgets when checkups are due</li>
+                    <li>Travel is physically tiring</li>
+                    <li>Little access to care without going in person</li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li class="card">
+              <div class="card-head">
+                <div>
+                  <span class="card-name">William Li, 20</span>
+                  <span class="card-where">Toronto, ON · university student</span>
+                </div>
+              </div>
+              <div class="card-cols">
+                <div class="card-about">
+                  <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c0-3.6 3.2-6 7.2-6s7.2 2.4 7.2 6"/></svg></span>About</span>
+                  <p>
+                    William moved from China for university and doesn&rsquo;t know how Canadian
+                    healthcare works. His allergies get severe seasonally, so he needs specialists and
+                    a place to keep track of them.
+                  </p>
+                </div>
+                <div class="card-pains">
+                  <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 4.2 2.5 18.3a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.3 4.2a1.5 1.5 0 0 0-2.6 0z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="17.2" x2="12.01" y2="17.2"/></svg></span>Pain points</span>
+                  <ul>
+                    <li>Doesn&rsquo;t know the system</li>
+                    <li>Needs to be pointed at the right specialist, not search for one</li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <figure>
+            <img src="/screens/pv/pv-user-flow.webp" alt="Patient user flow diagram" loading="lazy" />
+            <figcaption>
+              The flow the team signed off on before I drew a single screen — cheaper to argue about
+              here than in hi-fi.
+            </figcaption>
+          </figure>
+        </section>
+
+        <!-- ------------------------------------------------------------- 05 -->
+        <section class="cs-section" id="visual">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1z"/><line x1="14.5" y1="6.5" x2="17.5" y2="9.5"/></svg></span>05 — Visual design</p>
+          <h2>Clean, with enough personality to not feel like a clinic.</h2>
+          <p>
+            Branding came before the screens, because other deadlines needed it first. The client
+            wanted clean with a bit of play. Green was the obvious base — it&rsquo;s what people
+            already read as <strong>life</strong>, which is the name — paired with a sans-serif that
+            isn&rsquo;t cold.
+          </p>
+
+          <figure>
+            <img src="/screens/pv/pv-branding.svg" alt="Project Vitality branding" loading="lazy" />
+          </figure>
+
+          <figure>
+            <img src="/experiments/pv-graphics.webp" alt="Project Vitality brand sheet — playful black-and-white illustrations around the wordmark and the line 'a pocket-sized hospital'" loading="lazy" />
+            <figcaption>
+              The collateral that came out of it. The one-liner — &ldquo;a pocket-sized
+              hospital&rdquo; — ended up steering more decisions than the brief did.
+            </figcaption>
+          </figure>
+
+          <figure>
+            <img src="/screens/pv/pv-low-fi.webp" alt="Low-fidelity sketches" loading="lazy" />
+            <figcaption>
+              Low-fi for the patient happy path. I ended up drawing more screens than this once the
+              main path came together faster than expected.
+            </figcaption>
+          </figure>
+        </section>
+
+        <!-- ------------------------------------------------------------- 06 -->
+        <section class="cs-section" id="final">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l8.5 4.5L12 12.5 3.5 8 12 3.5z"/><path d="M3.5 12.5L12 17l8.5-4.5"/><path d="M3.5 17L12 21.5 20.5 17"/></svg></span>06 — Final designs</p>
+          <h2>A system first, then the screens that came out of it.</h2>
+          <p>
+            Primitives went in before components — with four days left, the only way to draw quickly
+            was to not re-decide colour and type on every screen. The component library is still
+            partial; the project is paused until my term ends.
+          </p>
+
+          <figure>
+            <img src="/screens/pv/pv-primitives.png" alt="Colour and type primitives" loading="lazy" />
+          </figure>
+          <figure>
+            <img src="/screens/pv/pv-components.png" alt="Component library" loading="lazy" />
+          </figure>
+          <figure>
+            <img src="/screens/pv/pv-screens.webp" alt="High-fidelity screens" loading="lazy" />
+            <figcaption>
+              Screens built for the stakeholder pitch, outside the happy path prototype.
+            </figcaption>
+          </figure>
+        </section>
+
+        <!-- ------------------------------------------------------------- 07 -->
+        <section class="cs-section" id="landed">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3.5" x2="6" y2="20.5"/><path d="M6 4.5h11.5l-2.7 4 2.7 4H6"/></svg></span>07 — Where it landed</p>
+          <h2>We&rsquo;re still going.</h2>
+          <p>
+            We didn&rsquo;t take the competition, but the pitch pulled in several interested parties,
+            and I&rsquo;m picking the app back up after this school term.
+          </p>
+
+          <h3>What I&rsquo;d do next</h3>
+          <ol class="numbered">
+            <li>
+              <div>
+                <b>User tests</b>
+                <p>
+                  Skipped under the time crunch. Moderated and unmoderated, as many as I can get, before
+                  anything else ships.
                 </p>
               </div>
-              <div class="card-pains">
-                <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 4.2 2.5 18.3a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.3 4.2a1.5 1.5 0 0 0-2.6 0z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="17.2" x2="12.01" y2="17.2"/></svg></span>Pain points</span>
-                <ul>
-                  <li>Forgets when checkups are due</li>
-                  <li>Travel is physically tiring</li>
-                  <li>Little access to care without going in person</li>
-                </ul>
-              </div>
-            </div>
-          </li>
-          <li class="card">
-            <div class="card-head">
+            </li>
+            <li>
               <div>
-                <span class="card-name">William Li, 20</span>
-                <span class="card-where">Toronto, ON · university student</span>
-              </div>
-            </div>
-            <div class="card-cols">
-              <div class="card-about">
-                <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c0-3.6 3.2-6 7.2-6s7.2 2.4 7.2 6"/></svg></span>About</span>
+                <b>The website</b>
                 <p>
-                  William moved from China for university and doesn&rsquo;t know how Canadian
-                  healthcare works. His allergies get severe seasonally, so he needs specialists and
-                  a place to keep track of them.
+                  The app was the MVP. Competitive analysis made it clear the older half of the audience
+                  needs the web version.
                 </p>
               </div>
-              <div class="card-pains">
-                <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 4.2 2.5 18.3a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.3 4.2a1.5 1.5 0 0 0-2.6 0z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="17.2" x2="12.01" y2="17.2"/></svg></span>Pain points</span>
-                <ul>
-                  <li>Doesn&rsquo;t know the system</li>
-                  <li>Needs to be pointed at the right specialist, not search for one</li>
-                </ul>
+            </li>
+            <li>
+              <div>
+                <b>The physical product</b>
+                <p>
+                  Early days, but the real goal is de-centralizing hospitals — a device that replaces
+                  the in-person consultation.
+                </p>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+            <li>
+              <div>
+                <b>Beyond Canada</b>
+                <p>A long way off, but it changes what we build now if we mean it.</p>
+              </div>
+            </li>
+          </ol>
 
-        <figure>
-          <img src="/screens/pv/pv-user-flow.webp" alt="Patient user flow diagram" loading="lazy" />
-          <figcaption>
-            The flow the team signed off on before I drew a single screen — cheaper to argue about
-            here than in hi-fi.
-          </figcaption>
-        </figure>
-      </section>
-
-      <!-- ------------------------------------------------------------- 05 -->
-      <section class="cs-section" id="visual">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1z"/><line x1="14.5" y1="6.5" x2="17.5" y2="9.5"/></svg></span>05 — Visual design</p>
-        <h2>Clean, with enough personality to not feel like a clinic.</h2>
-        <p>
-          Branding came before the screens, because other deadlines needed it first. The client
-          wanted clean with a bit of play. Green was the obvious base — it&rsquo;s what people
-          already read as <strong>life</strong>, which is the name — paired with a sans-serif that
-          isn&rsquo;t cold.
-        </p>
-
-        <figure>
-          <img src="/screens/pv/pv-branding.svg" alt="Project Vitality branding" loading="lazy" />
-        </figure>
-
-        <figure>
-          <img src="/experiments/pv-graphics.webp" alt="Project Vitality brand sheet — playful black-and-white illustrations around the wordmark and the line 'a pocket-sized hospital'" loading="lazy" />
-          <figcaption>
-            The collateral that came out of it. The one-liner — &ldquo;a pocket-sized
-            hospital&rdquo; — ended up steering more decisions than the brief did.
-          </figcaption>
-        </figure>
-
-        <figure>
-          <img src="/screens/pv/pv-low-fi.webp" alt="Low-fidelity sketches" loading="lazy" />
-          <figcaption>
-            Low-fi for the patient happy path. I ended up drawing more screens than this once the
-            main path came together faster than expected.
-          </figcaption>
-        </figure>
-      </section>
-
-      <!-- ------------------------------------------------------------- 06 -->
-      <section class="cs-section" id="final">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l8.5 4.5L12 12.5 3.5 8 12 3.5z"/><path d="M3.5 12.5L12 17l8.5-4.5"/><path d="M3.5 17L12 21.5 20.5 17"/></svg></span>06 — Final designs</p>
-        <h2>A system first, then the screens that came out of it.</h2>
-        <p>
-          Primitives went in before components — with four days left, the only way to draw quickly
-          was to not re-decide colour and type on every screen. The component library is still
-          partial; the project is paused until my term ends.
-        </p>
-
-        <figure>
-          <img src="/screens/pv/pv-primitives.png" alt="Colour and type primitives" loading="lazy" />
-        </figure>
-        <figure>
-          <img src="/screens/pv/pv-components.png" alt="Component library" loading="lazy" />
-        </figure>
-        <figure>
-          <img src="/screens/pv/pv-screens.webp" alt="High-fidelity screens" loading="lazy" />
-          <figcaption>
-            Screens built for the stakeholder pitch, outside the happy path prototype.
-          </figcaption>
-        </figure>
-      </section>
-
-      <!-- ------------------------------------------------------------- 07 -->
-      <section class="cs-section" id="landed">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3.5" x2="6" y2="20.5"/><path d="M6 4.5h11.5l-2.7 4 2.7 4H6"/></svg></span>07 — Where it landed</p>
-        <h2>We&rsquo;re still going.</h2>
-        <p>
-          We didn&rsquo;t take the competition, but the pitch pulled in several interested parties,
-          and I&rsquo;m picking the app back up after this school term.
-        </p>
-
-        <h3>What I&rsquo;d do next</h3>
-        <ol class="numbered">
-          <li>
-            <div>
-              <b>User tests</b>
-              <p>
-                Skipped under the time crunch. Moderated and unmoderated, as many as I can get, before
-                anything else ships.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>The website</b>
-              <p>
-                The app was the MVP. Competitive analysis made it clear the older half of the audience
-                needs the web version.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>The physical product</b>
-              <p>
-                Early days, but the real goal is de-centralizing hospitals — a device that replaces
-                the in-person consultation.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Beyond Canada</b>
-              <p>A long way off, but it changes what we build now if we mean it.</p>
-            </div>
-          </li>
-        </ol>
-
-        <h3>What I took away</h3>
-        <ol class="numbered">
-          <li>
-            <div>
-              <b>Order is the design</b>
-              <p>
-                When navigation has to be simple enough for anyone, information architecture does most
-                of the work. What came first mattered more than what it looked like.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Feedback has a cost</b>
-              <p>
-                On a week-long schedule, knowing when to stop and ask — and how much to fold in — was
-                the hardest call I made repeatedly.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Devs were building while I designed</b>
-              <p>
-                No handoff moment, just a running conversation I wasn&rsquo;t good enough at yet.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Client goals aren&rsquo;t user goals</b>
-              <p>
-                They mostly overlapped here. User testing is where I&rsquo;ll find out where they
-                don&rsquo;t.
-              </p>
-            </div>
-          </li>
-        </ol>
-      </section>
-    </main>
+          <h3>What I took away</h3>
+          <ol class="numbered">
+            <li>
+              <div>
+                <b>Order is the design</b>
+                <p>
+                  When navigation has to be simple enough for anyone, information architecture does most
+                  of the work. What came first mattered more than what it looked like.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>Feedback has a cost</b>
+                <p>
+                  On a week-long schedule, knowing when to stop and ask — and how much to fold in — was
+                  the hardest call I made repeatedly.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>Devs were building while I designed</b>
+                <p>
+                  No handoff moment, just a running conversation I wasn&rsquo;t good enough at yet.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>Client goals aren&rsquo;t user goals</b>
+                <p>
+                  They mostly overlapped here. User testing is where I&rsquo;ll find out where they
+                  don&rsquo;t.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+      </main>
+    </section>
 
     <nav class="cs-next">
       <div class="cs-next-inner">
