@@ -22,3 +22,4 @@ window.addEventListener('keydown', (event) => {
   if (event.shiftKey && (event.key === 'R' || event.key === 'r')) playAgain()
 })
 document.getElementById('play-again')?.addEventListener('click', playAgain)
+

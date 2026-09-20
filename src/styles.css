@@ -1556,21 +1556,41 @@ body:not(.intro-done) #topbar {
   outline: none;
 }
 
-.bento-media {
+.bento-media, .bento-media-long {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   inset: 0;
-  display: block;
   background: var(--deep);
+  width: 100%;
+  height: 100%;
+}
+
+.bento-media img, .bento-media-long img {
+  display: block;
+  height: auto;
+  transition: transform 0.25s ease;
 }
 
 .bento-media img {
-  position: absolute;
-  margin-left: -80vw;
-  inset: 0;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.45s ease;
+  scale: 1.3;
+  margin-left: 2rem;
+  margin-top: 2rem;
 }
+
+.bento-media-long img {
+  scale: 1.1;
+  height: 100%;
+}
+
+.bento--tempo a span img { background-color: #A685E3;}
+.bento--callie a span img { background-color: #FF3C00;}
+.bento--pv a span img { background-color: #55AF58;}
+.bento--lg a span img { background-color: #3597DE;}
+.bento--uw a span img { background-color: #37B7B7;}
+.bento--ctrl a span img { background-color: #227036;}
 
 .bento-card a:hover .bento-media img {
   transform: scale(1.05);

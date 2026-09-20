@@ -475,3 +475,4 @@ export function initCursor(): void {
   // Covers tabbing away mid-drag, where no pointerup or pointerleave arrives.
   window.addEventListener('blur', onLeave)
 }
+
