@@ -1585,12 +1585,16 @@ body:not(.intro-done) #topbar {
   height: 100%;
 }
 
-.bento--tempo a span img { background-color: #A685E3;}
-.bento--callie a span img { background-color: #FF3C00;}
-.bento--pv a span img { background-color: #55AF58;}
-.bento--lg a span img { background-color: #3597DE;}
-.bento--uw a span img { background-color: #37B7B7;}
-.bento--ctrl a span img { background-color: #227036;}
+.bento--tempo a div { background-color: #A685E3;}
+.bento--callie a div { background-color: #FF3C00;}
+.bento--pv a div { background-color: #55AF58;}
+.bento--lg a div { background-color: #3597DE;}
+.bento--uw a div { background-color: #37B7B7;}
+.bento--ctrl a div { background-color: #227036;}
+
+.bento--ctrl a div img {
+  margin-left: 4rem;
+}
 
 .bento-card a:hover .bento-media img {
   transform: scale(1.05);
@@ -1913,6 +1917,7 @@ body:not(.intro-done) #topbar {
      type, which is what makes it read as stamped rather than written. Tracked
      out because the dotted glyphs collide at their natural fit. */
   font-family: var(--font-display);
+  font-weight: 500;
   font-size: 0.85rem;
   letter-spacing: 0.14em;
   text-align: center;

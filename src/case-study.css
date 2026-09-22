@@ -236,6 +236,7 @@ a { color: var(--ink-body); }
 
 .cs-banner {
   margin: clamp(2rem, 5vh, 3.5rem) 0 0;
+  display: block;
   overflow: hidden;
   background: var(--deep);
   width: 100%;
@@ -245,11 +246,17 @@ a { color: var(--ink-body); }
   height: 32vh;
 }
 
+.cs--tempo { background-color: #A685E3; }
+.cs--callie { background-color: #FF3C00; }
+.cs--pv { background-color: #55AF58;}
+.cs--lg { background-color: #3597DE;}
+.cs--uw { background-color: #37B7B7;}
+
 .cs-banner img {
-  width: 100%;
   height: 100%;
-  display: block;
-  object-fit: cover;
+  width: 100%;
+  scale: 2.5;
+  margin-top: 8rem;
 }
 
 /* ------------------------------------------------------------------- stats */

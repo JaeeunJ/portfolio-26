@@ -34,7 +34,11 @@
       </div>
     </header>
 
-    <main class="cs" id="top">
+    <div class="cs-banner cs--uw">
+      <img src="/projects/un-banner.svg" alt="UW Navi app screens" />
+    </div>
+
+    <section class="cs-grid">
       <nav class="cs-toc" aria-label="Contents">
         <p class="cs-toc-label">Content</p>
         <div class="cs-toc-group">
@@ -50,269 +54,262 @@
           <a href="#landed">Where it landed</a>
         </div>
       </nav>
-
-      <!--
-        Hero. Three days is the fact that shapes everything below it, so it is
-        in the title rather than buried in the metadata strip.
-      -->
-      <section class="cs-hero">
-        <p class="cs-eyebrow">
-          <span>05</span><span class="dot"></span><span>SYDE 162 &middot; Coursework</span>
-        </p>
-        <h1>Three days to make a campus you can actually navigate</h1>
-        <p class="cs-lede">
-          UW Navi was the final project for SYDE 162, a human–computer interaction course. Six of us
-          had a long weekend to answer one question: why is finding a <em>room</em> at Waterloo so
-          much harder than finding the building it&rsquo;s in?
-        </p>
-
-        <div class="cs-banner">
-          <img src="/projects/un-banner.webp" alt="UW Navi app screens" />
-        </div>
-      </section>
-
-      <dl class="cs-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>UI/UX design, prototyping, user testing, branding</dd>
-        </div>
-        <div>
-          <dt>Timeline</dt>
-          <dd>August 1&ndash;3, 2022 · 3 days</dd>
-        </div>
-        <div>
-          <dt>Team</dt>
-          <dd>Me, sole designer · 2 researchers, 3 writers</dd>
-        </div>
-        <div>
-          <dt>Tools</dt>
-          <dd>Figma, FigJam</dd>
-        </div>
-        <div class="cs-meta-wide">
-          <dt>Prototype</dt>
-          <dd>
+      <main class="cs" id="top">
+        <section class="cs-hero">
+          <p class="cs-eyebrow">
+            <span>05</span><span class="dot"></span><span>SYDE 162 &middot; Coursework</span>
+          </p>
+          <h1>Three days to make a campus you can actually navigate</h1>
+          <p class="cs-lede">
+            UW Navi was the final project for SYDE 162, a human–computer interaction course. Six of us
+            had a long weekend to answer one question: why is finding a <em>room</em> at Waterloo so
+            much harder than finding the building it&rsquo;s in?
+          </p>
+        </section>
+  
+        <dl class="cs-meta">
+          <div>
+            <dt>Role</dt>
+            <dd>UI/UX design, prototyping, user testing, branding</dd>
+          </div>
+          <div>
+            <dt>Timeline</dt>
+            <dd>August 1&ndash;3, 2022 · 3 days</dd>
+          </div>
+          <div>
+            <dt>Team</dt>
+            <dd>Me, sole designer · 2 researchers, 3 writers</dd>
+          </div>
+          <div>
+            <dt>Tools</dt>
+            <dd>Figma, FigJam</dd>
+          </div>
+          <div class="cs-meta-wide">
+            <dt>Prototype</dt>
+            <dd>
+              <a
+                class="cs-proto"
+                href="https://www.figma.com/proto/0lNodaimoZNKTAPP0LjirM/162-Prototype?page-id=2%3A3&node-id=7%3A448&viewport=-1071%2C891%2C0.2&scaling=scale-down&starting-point-node-id=7%3A448&hide-ui=1"
+                target="_blank"
+                rel="noopener"
+                >Open in Figma<span class="arrow" aria-hidden="true">&rarr;</span></a
+              >
+            </dd>
+          </div>
+        </dl>
+  
+        <!-- ------------------------------------------------------------- 01 -->
+        <section class="cs-section" id="problem">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><line x1="12" y1="16.4" x2="12.01" y2="16.4"/></svg></span>01 — The problem</p>
+          <h2>Outdoor maps stop at the front door.</h2>
+          <p>
+            Getting to a classroom at Waterloo means switching tools halfway. Google Maps gets you to
+            a building and then quits — and it drops its pin in the <strong>middle</strong> of the
+            building, which in a large one isn&rsquo;t near any entrance, let alone the entrance
+            closest to your room.
+          </p>
+          <p>
+            Inside, you&rsquo;re on static floor plans bolted to walls at intervals nobody chose for
+            your benefit. They&rsquo;re unintuitive enough that students get lost and take routes
+            that cost them time they didn&rsquo;t have.
+          </p>
+          <p>Everything else about moving around campus has the same shape:</p>
+          <ul class="cs-list">
+            <li>
+              Campus food vendors mostly have no reviews, and their own descriptions are written to
+              sell.
+            </li>
+            <li>
+              Study spaces vary in ways no map records — half the desk lamps in one Davis Centre area
+              don&rsquo;t work, and you only find out by sitting down.
+            </li>
+            <li>
+              Parts of campus aren&rsquo;t wheelchair-accessible, and no widely used map app will
+              filter a route by accessibility or by weather.
+            </li>
+          </ul>
+        </section>
+  
+        <!-- ------------------------------------------------------------- 02 -->
+        <section class="cs-section" id="solution">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="9.5" y1="18.5" x2="14.5" y2="18.5"/><line x1="10.5" y1="21.2" x2="13.5" y2="21.2"/><path d="M12 2.8a6.2 6.2 0 0 0-3.6 11.2c.6.4 1 1.1 1 1.9v.3h5.2v-.3c0-.8.4-1.5 1-1.9A6.2 6.2 0 0 0 12 2.8z"/></svg></span>02 — The solution</p>
+          <h2>One map that goes from the sidewalk to the seat.</h2>
+          <p>
+            A navigation system for everyone on campus, where the outdoor map and the building&rsquo;s
+            floor plan are the same continuous thing — so a route ends at a room, not at a postcode.
+            Around that, the parts that make the route worth trusting: filters for the fastest,
+            indoor, or wheelchair-accessible way; ratings on study spots, classrooms, and eateries;
+            and your friends, if you want them to see you.
+          </p>
+        </section>
+  
+        <!-- ------------------------------------------------------------- 03 -->
+        <section class="cs-section" id="research">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><line x1="15.8" y1="15.8" x2="20" y2="20"/></svg></span>03 — Research</p>
+          <h2>Everyone we asked had already been lost.</h2>
+  
+          <h3>What we set out to build</h3>
+          <ul class="cs-list">
+            <li>Instant navigation to a place — or to a friend</li>
+            <li>A friending system, where showing your location is a choice</li>
+            <li>Ratings on study spots, classrooms, and eateries</li>
+            <li>Onboarding with authentication, since location is the data at stake</li>
+            <li>Search, and route filters for fastest, indoors, or wheelchair-accessible</li>
+            <li>A campus map that continues into the building&rsquo;s floor plan</li>
+          </ul>
+  
+          <h3>The survey</h3>
+          <p>
+            We surveyed 32 students about getting around campus. <strong>84.4%</strong> had had
+            trouble finding a university facility at least once — and most said they need to go
+            somewhere <strong>three or more times</strong> before the route sticks. That second
+            number is the one that mattered: the problem isn&rsquo;t a first visit being hard,
+            it&rsquo;s that it stays hard.
+          </p>
+  
+          <figure>
+            <img src="/screens/un/un-survey-1.webp" alt="Survey results — share of students who had difficulty navigating" loading="lazy" />
+          </figure>
+          <figure>
+            <img src="/screens/un/uni-survey-2.webp" alt="Survey results — number of visits before a route becomes familiar" loading="lazy" />
+          </figure>
+  
+          <h3>Moderated tests</h3>
+          <p>
+            Preliminary questions first, then prompts to work through, which gave us the route people
+            actually take rather than the one they describe. It confirmed the pain points we&rsquo;d
+            guessed at — and turned up one we hadn&rsquo;t: a participant pointed out that Google
+            Maps&rsquo; default path across campus goes up a flight of stairs, with no
+            wheelchair-accessible alternative offered at all.
+          </p>
+  
+          <figure>
             <a
-              class="cs-proto"
-              href="https://www.figma.com/proto/0lNodaimoZNKTAPP0LjirM/162-Prototype?page-id=2%3A3&node-id=7%3A448&viewport=-1071%2C891%2C0.2&scaling=scale-down&starting-point-node-id=7%3A448&hide-ui=1"
+              href="https://docs.google.com/document/d/1gxbNofMlS-mTBsyuKdXUebTwdKfdj8AJLV9t2P_nnMM/edit?usp=sharing"
               target="_blank"
               rel="noopener"
-              >Open in Figma<span class="arrow" aria-hidden="true">&rarr;</span></a
             >
-          </dd>
-        </div>
-      </dl>
-
-      <!-- ------------------------------------------------------------- 01 -->
-      <section class="cs-section" id="problem">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><line x1="12" y1="16.4" x2="12.01" y2="16.4"/></svg></span>01 — The problem</p>
-        <h2>Outdoor maps stop at the front door.</h2>
-        <p>
-          Getting to a classroom at Waterloo means switching tools halfway. Google Maps gets you to
-          a building and then quits — and it drops its pin in the <strong>middle</strong> of the
-          building, which in a large one isn&rsquo;t near any entrance, let alone the entrance
-          closest to your room.
-        </p>
-        <p>
-          Inside, you&rsquo;re on static floor plans bolted to walls at intervals nobody chose for
-          your benefit. They&rsquo;re unintuitive enough that students get lost and take routes
-          that cost them time they didn&rsquo;t have.
-        </p>
-        <p>Everything else about moving around campus has the same shape:</p>
-        <ul class="cs-list">
-          <li>
-            Campus food vendors mostly have no reviews, and their own descriptions are written to
-            sell.
-          </li>
-          <li>
-            Study spaces vary in ways no map records — half the desk lamps in one Davis Centre area
-            don&rsquo;t work, and you only find out by sitting down.
-          </li>
-          <li>
-            Parts of campus aren&rsquo;t wheelchair-accessible, and no widely used map app will
-            filter a route by accessibility or by weather.
-          </li>
-        </ul>
-      </section>
-
-      <!-- ------------------------------------------------------------- 02 -->
-      <section class="cs-section" id="solution">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="9.5" y1="18.5" x2="14.5" y2="18.5"/><line x1="10.5" y1="21.2" x2="13.5" y2="21.2"/><path d="M12 2.8a6.2 6.2 0 0 0-3.6 11.2c.6.4 1 1.1 1 1.9v.3h5.2v-.3c0-.8.4-1.5 1-1.9A6.2 6.2 0 0 0 12 2.8z"/></svg></span>02 — The solution</p>
-        <h2>One map that goes from the sidewalk to the seat.</h2>
-        <p>
-          A navigation system for everyone on campus, where the outdoor map and the building&rsquo;s
-          floor plan are the same continuous thing — so a route ends at a room, not at a postcode.
-          Around that, the parts that make the route worth trusting: filters for the fastest,
-          indoor, or wheelchair-accessible way; ratings on study spots, classrooms, and eateries;
-          and your friends, if you want them to see you.
-        </p>
-      </section>
-
-      <!-- ------------------------------------------------------------- 03 -->
-      <section class="cs-section" id="research">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><line x1="15.8" y1="15.8" x2="20" y2="20"/></svg></span>03 — Research</p>
-        <h2>Everyone we asked had already been lost.</h2>
-
-        <h3>What we set out to build</h3>
-        <ul class="cs-list">
-          <li>Instant navigation to a place — or to a friend</li>
-          <li>A friending system, where showing your location is a choice</li>
-          <li>Ratings on study spots, classrooms, and eateries</li>
-          <li>Onboarding with authentication, since location is the data at stake</li>
-          <li>Search, and route filters for fastest, indoors, or wheelchair-accessible</li>
-          <li>A campus map that continues into the building&rsquo;s floor plan</li>
-        </ul>
-
-        <h3>The survey</h3>
-        <p>
-          We surveyed 32 students about getting around campus. <strong>84.4%</strong> had had
-          trouble finding a university facility at least once — and most said they need to go
-          somewhere <strong>three or more times</strong> before the route sticks. That second
-          number is the one that mattered: the problem isn&rsquo;t a first visit being hard,
-          it&rsquo;s that it stays hard.
-        </p>
-
-        <figure>
-          <img src="/screens/un/un-survey-1.webp" alt="Survey results — share of students who had difficulty navigating" loading="lazy" />
-        </figure>
-        <figure>
-          <img src="/screens/un/uni-survey-2.webp" alt="Survey results — number of visits before a route becomes familiar" loading="lazy" />
-        </figure>
-
-        <h3>Moderated tests</h3>
-        <p>
-          Preliminary questions first, then prompts to work through, which gave us the route people
-          actually take rather than the one they describe. It confirmed the pain points we&rsquo;d
-          guessed at — and turned up one we hadn&rsquo;t: a participant pointed out that Google
-          Maps&rsquo; default path across campus goes up a flight of stairs, with no
-          wheelchair-accessible alternative offered at all.
-        </p>
-
-        <figure>
-          <a
-            href="https://docs.google.com/document/d/1gxbNofMlS-mTBsyuKdXUebTwdKfdj8AJLV9t2P_nnMM/edit?usp=sharing"
-            target="_blank"
-            rel="noopener"
-          >
-            <img src="/screens/un/un-moderated-test.webp" alt="Moderated user test script and findings" loading="lazy" />
-          </a>
-          <figcaption>The test script and what came back. Opens in Google Docs.</figcaption>
-        </figure>
-
-        <h3>The decision matrix</h3>
-        <p>
-          The friend features were the ones we argued about, so we scored them against the two
-          things the app is for: does this help people socialize, and does it help them navigate?
-        </p>
-        <p>
-          Summoning a friend and locating a friend scored top marks on both, so they were in. The
-          status <em>update</em> feature only served the social half — it does nothing to make
-          navigation easier. We kept it anyway, deliberately: it&rsquo;s what brings people back
-          into the app, and an app nobody opens can&rsquo;t route anyone anywhere.
-        </p>
-
-        <figure>
-          <img src="/screens/un/un-decision-matrix.webp" alt="Decision matrix for the friend features" loading="lazy" />
-        </figure>
-      </section>
-
-      <!-- ------------------------------------------------------------- 04 -->
-      <section class="cs-section" id="system">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1z"/><line x1="14.5" y1="6.5" x2="17.5" y2="9.5"/></svg></span>04 — Design system</p>
-        <h2>Bright teal, because being lost is annoying enough.</h2>
-        <p>
-          A cheerful teal as the base colour — enough to stand out from the grey-and-blue field
-          every other map app lives in, and enough to make an errand nobody enjoys a bit lighter.
-        </p>
-
-        <figure>
-          <img src="/screens/un/un-palette.webp" alt="UW Navi colour palette" loading="lazy" />
-        </figure>
-
-        <p>
-          One sans-serif throughout, matching how casual the app is meant to feel. Nothing here
-          needs a second voice.
-        </p>
-
-        <figure>
-          <img src="/screens/un/un-typography.webp" alt="UW Navi typography" loading="lazy" />
-        </figure>
-
-        <p>
-          We were short on time and I built the component set anyway — the most-used components and
-          the iconography. On a three-day build, drawing a button twice costs more than defining it
-          once.
-        </p>
-
-        <figure>
-          <img src="/screens/un/un-components.webp" alt="UW Navi components and iconography" loading="lazy" />
-        </figure>
-      </section>
-
-      <!-- ------------------------------------------------------------- 05 -->
-      <section class="cs-section" id="landed">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3.5" x2="6" y2="20.5"/><path d="M6 4.5h11.5l-2.7 4 2.7 4H6"/></svg></span>05 — Where it landed</p>
-        <h2>The first thing I designed on my own.</h2>
-        <p>
-          This was the first time I designed a whole application without other designers on it, and
-          it was a great deal more work than it looks from the outside. It was also due the week
-          before finals, which I&rsquo;d call the real constraint. Given that, I&rsquo;m happy with
-          where it got to.
-        </p>
-
-        <h3>What I&rsquo;d do next</h3>
-        <ol class="numbered">
-          <li>
-            <div>
-              <b>More components</b>
-              <p>
-                The set covers what we drew, not what the app would need. A new user would feel the
-                seams in the places we ran out of time to systematize.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Test the accessible routes</b>
-              <p>
-                The strongest finding came from one participant and one flight of stairs. That
-                deserved its own round of testing, not a feature.
-              </p>
-            </div>
-          </li>
-        </ol>
-
-        <h3>What I took away</h3>
-        <ol class="numbered">
-          <li>
-            <div>
-              <b>A feature can earn its place two ways</b>
-              <p>
-                The status update does nothing for navigation and we kept it, because getting
-                people to open the app is upstream of everything the app does.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>The useful number wasn&rsquo;t the big one</b>
-              <p>
-                84% having trouble says there&rsquo;s a problem. Three visits before a route sticks
-                says what the problem <em>is</em>.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>A system is worth it even at three days</b>
-              <p>
-                Especially at three days. It was the only reason six people&rsquo;s work looked
-                like one app.
-              </p>
-            </div>
-          </li>
-        </ol>
-      </section>
-    </main>
+              <img src="/screens/un/un-moderated-test.webp" alt="Moderated user test script and findings" loading="lazy" />
+            </a>
+            <figcaption>The test script and what came back. Opens in Google Docs.</figcaption>
+          </figure>
+  
+          <h3>The decision matrix</h3>
+          <p>
+            The friend features were the ones we argued about, so we scored them against the two
+            things the app is for: does this help people socialize, and does it help them navigate?
+          </p>
+          <p>
+            Summoning a friend and locating a friend scored top marks on both, so they were in. The
+            status <em>update</em> feature only served the social half — it does nothing to make
+            navigation easier. We kept it anyway, deliberately: it&rsquo;s what brings people back
+            into the app, and an app nobody opens can&rsquo;t route anyone anywhere.
+          </p>
+  
+          <figure>
+            <img src="/screens/un/un-decision-matrix.webp" alt="Decision matrix for the friend features" loading="lazy" />
+          </figure>
+        </section>
+  
+        <!-- ------------------------------------------------------------- 04 -->
+        <section class="cs-section" id="system">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1z"/><line x1="14.5" y1="6.5" x2="17.5" y2="9.5"/></svg></span>04 — Design system</p>
+          <h2>Bright teal, because being lost is annoying enough.</h2>
+          <p>
+            A cheerful teal as the base colour — enough to stand out from the grey-and-blue field
+            every other map app lives in, and enough to make an errand nobody enjoys a bit lighter.
+          </p>
+  
+          <figure>
+            <img src="/screens/un/un-palette.webp" alt="UW Navi colour palette" loading="lazy" />
+          </figure>
+  
+          <p>
+            One sans-serif throughout, matching how casual the app is meant to feel. Nothing here
+            needs a second voice.
+          </p>
+  
+          <figure>
+            <img src="/screens/un/un-typography.webp" alt="UW Navi typography" loading="lazy" />
+          </figure>
+  
+          <p>
+            We were short on time and I built the component set anyway — the most-used components and
+            the iconography. On a three-day build, drawing a button twice costs more than defining it
+            once.
+          </p>
+  
+          <figure>
+            <img src="/screens/un/un-components.webp" alt="UW Navi components and iconography" loading="lazy" />
+          </figure>
+        </section>
+  
+        <!-- ------------------------------------------------------------- 05 -->
+        <section class="cs-section" id="landed">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3.5" x2="6" y2="20.5"/><path d="M6 4.5h11.5l-2.7 4 2.7 4H6"/></svg></span>05 — Where it landed</p>
+          <h2>The first thing I designed on my own.</h2>
+          <p>
+            This was the first time I designed a whole application without other designers on it, and
+            it was a great deal more work than it looks from the outside. It was also due the week
+            before finals, which I&rsquo;d call the real constraint. Given that, I&rsquo;m happy with
+            where it got to.
+          </p>
+  
+          <h3>What I&rsquo;d do next</h3>
+          <ol class="numbered">
+            <li>
+              <div>
+                <b>More components</b>
+                <p>
+                  The set covers what we drew, not what the app would need. A new user would feel the
+                  seams in the places we ran out of time to systematize.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>Test the accessible routes</b>
+                <p>
+                  The strongest finding came from one participant and one flight of stairs. That
+                  deserved its own round of testing, not a feature.
+                </p>
+              </div>
+            </li>
+          </ol>
+  
+          <h3>What I took away</h3>
+          <ol class="numbered">
+            <li>
+              <div>
+                <b>A feature can earn its place two ways</b>
+                <p>
+                  The status update does nothing for navigation and we kept it, because getting
+                  people to open the app is upstream of everything the app does.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>The useful number wasn&rsquo;t the big one</b>
+                <p>
+                  84% having trouble says there&rsquo;s a problem. Three visits before a route sticks
+                  says what the problem <em>is</em>.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>A system is worth it even at three days</b>
+                <p>
+                  Especially at three days. It was the only reason six people&rsquo;s work looked
+                  like one app.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+      </main>
+    </section>
 
     <nav class="cs-next">
       <div class="cs-next-inner">
