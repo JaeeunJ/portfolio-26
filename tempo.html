@@ -45,13 +45,14 @@
         <a href="#top">Overview</a>
       </div>
       <div class="cs-toc-group">
-        <a href="#motion">Motion</a>
+        <a href="#ai-mode">AI Mode</a>
         <a href="#system">Design system</a>
         <a href="#light">Light mode</a>
         <a href="#issues">Issues</a>
       </div>
       <div class="cs-toc-group">
-        <a href="#more">Everything else</a>
+        <a href="#else">Everything else</a>
+        <a href="#beyond">Beyond the app</a>
       </div>
     </nav>
     <main class="cs" id="top">
@@ -70,17 +71,8 @@
         <h1>A summer shipping Tempo&rsquo;s interface</h1>
         <p class="cs-lede">
           Tempo is an all-in-one workspace for software teams — issues, docs, design canvas, and
-          code in one place. I spent the summer as a UX engineer designing in production: my Figma
-          was the codebase, and everything below shipped to real users. The work I&rsquo;m proudest
-          of had no reference product to copy — how the app moves, and the design system that
-          governs everything it shows.
+          code in one place. I spent the summer as a UX engineer designing in production. Everything below shipped to real users.
         </p>
-
-        <dl class="cs-stats">
-          <div><dt>59</dt><dd>PRs merged</dd></div>
-          <div><dt>555</dt><dd>commits</dd></div>
-          <div><dt>1</dt><dd>summer</dd></div>
-        </dl>
       </section>
 
       <dl class="cs-meta">
@@ -97,60 +89,52 @@
           <dd>Design + engineering, all-hands</dd>
         </div>
         <div>
-          <dt>Stack</dt>
-          <dd>React, TypeScript, Tailwind</dd>
+          <dt>Tools</dt>
+          <dd>Tempo, Tailwind, React</dd>
         </div>
       </dl>
 
       <!-- ------------------------------------------------------------- 01 -->
-      <section class="cs-section" id="motion">
-        <p class="cs-num">01 — Motion</p>
-        <h2>Designing how Tempo moves.</h2>
-        <p>
-          The work with no reference to copy: the feel of the app between states. I choreographed
-          the workspace-creation takeover — a veil that mounts before the freeze, a caption so the
-          black is never empty, a minimum beat, and a fade timed to the destination&rsquo;s first
-          paint. I gave share pages Shippy, a flight-progress loader, and tuned the tab
-          nav&rsquo;s microanimations so switching contexts feels physical instead of instant.
-        </p>
+      <section class="cs-section" id="ai-mode">
+        <p class="cs-num">01 — AI Mode</p>
+        <h2>Editing complex code layers directly in the canvas</h2>
 
         <figure>
           <div class="ph ph--wide">
-            <span>Workspace-creation takeover mid-sequence — veil + caption + vignette.</span>
+            
           </div>
         </figure>
 
         <div class="shots">
           <figure>
             <div class="ph ph--half">
-              <span>Shippy mid-flight on a share loading screen.</span>
+              <span></span>
             </div>
           </figure>
           <figure>
             <div class="ph ph--half">
-              <span>Tab strip mid-transition — the microanimation, captured.</span>
+
             </div>
           </figure>
         </div>
 
         <figcaption class="fig-note">
-          Workspace-creation takeover &middot; paint-timed fade out &middot; Shippy flight-progress
-          loader &middot; tab-nav microanimations &middot; reduced-motion variants &middot; 60&nbsp;Hz
-          starfield fix
+          AI Mode &middot; AI Mode in the chat sidebar &middot; Revert confirmation
         </figcaption>
+
+        <p>
+          Although Tempo allows its users to create or edit react pages directly in its canvas,
+          some layers are simply too complex to track their styling. The AI Mode feature I helped
+          ideate allows users to edit complex code layers by stashing their edits as AI prompts while
+          displaying their changes on the canvas. A single click allows the users to seamlessly flow
+          between edits without being interupted by the complexity of the code layer. The AI Mode feature was shipped to production and is now available to all Tempo users.
+        </p>
       </section>
 
       <!-- ------------------------------------------------------------- 02 -->
       <section class="cs-section" id="system">
         <p class="cs-num">02 — Design system</p>
         <h2>Building the design system&rsquo;s source of truth.</h2>
-        <p>
-          I built Tempo&rsquo;s design-system canvases from nothing — color, elevation, iconography,
-          cursors, every component family from inputs to app-shell templates, rendered from the
-          real production components. Then I made production honor them: shadows onto elevation
-          tokens, off-scale spacing and radii snapped to the published scale, every context menu
-          unified.
-        </p>
 
         <figure>
           <div class="ph ph--wide">
@@ -175,35 +159,37 @@
           10 source-of-truth canvases &middot; elevation + shadow tokens &middot; spacing/radius
           codemod across the app &middot; context menus unified
         </figcaption>
+
+        <p>
+          I built Tempo&rsquo;s design-system canvases; color, elevation, iconography,
+          cursors, every component family from inputs to app-shell templates, rendered from the
+          real production components. Then I made production honor them: shadows onto elevation
+          tokens, off-scale spacing and radii snapped to the published scale, every context menu
+          unified.
+        </p>
       </section>
 
       <!-- ------------------------------------------------------------- 03 -->
       <section class="cs-section" id="light">
         <p class="cs-num">03 — Light mode</p>
         <h2>Giving a dark-first app its second theme.</h2>
-        <p>
-          Tempo was designed dark. I did the light-mode pass across the whole design system —
-          densified the base ramp, moved components onto theme-driven tokens, made accent pairs and
-          issue-status colors theme-aware, and wired the preference to persist. Not a color swap; a
-          second theme the system understands.
-        </p>
 
         <div class="shots">
           <figure>
             <div class="ph ph--tall">
-              <span>Same screen, dark mode.</span>
+              <span></span>
             </div>
           </figure>
           <figure>
             <div class="ph ph--tall">
-              <span>Same screen, light mode.</span>
+              <span></span>
             </div>
           </figure>
         </div>
 
         <figure>
           <div class="ph ph--wide">
-            <span>Light mode across surfaces — issues, docs, canvas. One wide composite.</span>
+            <span></span>
           </div>
         </figure>
 
@@ -211,35 +197,34 @@
           Full token pass &middot; densified base ramp &middot; theme-aware accent pairs + status
           colors &middot; theme persists across restart
         </figcaption>
+
+        <p>
+          Tempo was designed dark. I did the light-mode pass across the whole design system;
+          densified the base colour ramp, moved components onto theme-driven tokens, made accent pairs and
+          issue-status colors theme-aware, and wired the preference to persist.
+        </p>
       </section>
 
       <!-- ------------------------------------------------------------- 04 -->
       <section class="cs-section" id="issues">
         <p class="cs-num">04 — Issues</p>
         <h2>Redesigning the issues page.</h2>
-        <p>
-          The biggest single body of work: the board, the list, the split view, and everything on a
-          card. I rebuilt the filter system on the design system, added label badges and pickers,
-          and made every card property toggleable. The part no tracker had an answer for: in Tempo,
-          agents work issues too — so I folded the live chat signal into the status glyph, and a
-          card says what&rsquo;s happening to it at a glance.
-        </p>
 
         <figure>
           <div class="ph ph--wide">
-            <span>Issues board — cards with labels, facepiles, status glyphs. Dark mode.</span>
+            <span></span>
           </div>
         </figure>
 
         <div class="shots">
           <figure>
             <div class="ph ph--half">
-              <span>Display-properties dropdown open — the show/hide toggles.</span>
+              <span></span>
             </div>
           </figure>
           <figure>
             <div class="ph ph--half">
-              <span>Split view — dense rows, chat dot on an active issue.</span>
+              <span></span>
             </div>
           </figure>
         </div>
@@ -249,83 +234,104 @@
           &middot; status glyph with live chat signal &middot; bulk multi-select bar &middot;
           unified artifact cards
         </figcaption>
+
+        <p>
+          The biggest single body of work: the board, the list, the split view, and everything on an issues
+          card. I also rebuilt the filter system on the design system, added label badges and pickers,
+          and made every card property toggleable.
+        </p>
       </section>
 
       <!-- ------------------------------------------------------------- 05 -->
-      <section class="cs-section" id="more">
-        <p class="cs-num">05 — Everything else</p>
-        <h2>And the rest of the summer.</h2>
-        <p>
-          Smaller in scope, shipped all the same. Each of these went from first sketch to merged PR.
-        </p>
 
+      <section class="cs-section" id="else">
+        <p class="cs-num">05 — Everything else</p>
+        <h2>A taste of the 70+ PRs. </h2>
         <ul class="wall">
           <li>
+            <b>Micro-motions</b>
             <div class="ph ph--tile">
-              <img src="screens/ai-mode.png">
             </div>
-            <b>AI mode</b>
-            <p>The visual language for editing by prompt — AI-mode chrome, discard states, themed production canvases, and its light-mode pass.</p>
+            <div class="ph ph--tile">
+            </div>
+            <p>
+              I designed
+              the workspace-creation takeover, gave share pages Shippy, and tuned the tab
+              nav&rsquo;s microanimations so switching contexts feels physical instead of instant.
+            </p>
           </li>
           <li>
-            <div class="ph ph--tile">
-              <span>Share modal — visibility cards + invite popover.</span>
-            </div>
             <b>Share modal, twice</b>
-            <p>First the share popover redesign; then a second full pass — visibility cards, a card-variant segmented control, and the invite-by-email popover.</p>
+            <div class="ph ph--tile">
+              <span></span>
+            </div>
           </li>
           <li>
+            <b>Bug report modal</b>
             <div class="ph ph--tile">
               <img src="public/screens/bug-report.png">
             </div>
-            <b>Bug report modal</b>
-            <p>Rebuilt on the design system — evidence chips, a description that grows before it scrolls, and a confirm before discarding work.</p>
+            <p>Rebuilt on the design system; evidence chips, a description that grows before it scrolls, and a confirm before discarding work.</p>
           </li>
           <li>
-            <div class="ph ph--tile">
-              <span>Home page — the four-step quick start.</span>
-            </div>
             <b>Home page</b>
-            <p>A connected step spine with hue-coded wayfinding: the app opens on where you are, not a blank dashboard.</p>
+            <div class="ph ph--tile">
+              <span></span>
+            </div>
+            <p>Colour-coded steps and simple animations to aid a first time user.</p>
           </li>
           <li>
-            <div class="ph ph--tile">
-              <span>Onboarding — kickoff step with agent cards.</span>
-            </div>
-            <b>Onboarding</b>
-            <p>The new first-run flow — project kickoff, agent cards, and a merged invite step.</p>
-          </li>
-          <li>
-            <div class="ph ph--tile">
-              <span>Changelog modal, accordion open.</span>
-            </div>
             <b>Changelog</b>
+            <div class="ph ph--tile">
+              <span></span>
+            </div>
             <p>Redesigned what&rsquo;s-new modal with accordion releases, reachable from the update toast.</p>
           </li>
           <li>
-            <div class="ph ph--tile">
-              <span>Sidebar glyph hover preview.</span>
-            </div>
             <b>Nav previews</b>
-            <p>Interactive hover previews on the sidebar glyphs — peek at chats and docs without leaving where you are.</p>
+            <div class="ph ph--tile">
+              <span></span>
+            </div>
+            <p>Interactive hover previews on the sidebar glyphs; peek at chats and docs without leaving your location.</p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="cs-section" id="beyond">
+        <p class="cs-num">06 — Beyond the app</p>
+        <h2>For a complete user experience.</h2>
+        <ul class="wall">
+          <li>
+            <b>Onboarding</b>
+            <div class="ph ph--tile">
+              <span></span>
+            </div>
+            <p>Reorganizing the onboarding flow and redesiging the project kickoff, agent cards, and a merged invite step.</p>
           </li>
           <li>
-            <div class="ph ph--tile">
-              <span>Public share page — an issue, logged out.</span>
-            </div>
             <b>Public share pages</b>
-            <p>Full redesign of issue, doc, and canvas shares — desktop and mobile — plus the sign-up flow that brings viewers into Tempo.</p>
+            <div class="ph ph--tile">
+              <span></span>
+            </div>
+            <div class="ph ph--tile">
+              <span></span>
+            </div>
+            <div class="ph ph--tile">
+              <span></span>
+            </div>
+            <p>Full redesign of issue, doc, and canvas shares (desktop and mobile) plus the sign-up flow that brings viewers into Tempo.</p>
           </li>
         </ul>
       </section>
     </main>
 </section>
 
+
     <nav class="cs-next">
       <div class="cs-next-inner">
         <p class="cs-next-label">Next project</p>
         <a class="cs-next-link" href="pv.html">
-          Project Vitality <span class="cs-next-role">Freelance</span>
+          A pocket sized hospital
           <span class="arrow">&rarr;</span>
         </a>
       </div>
