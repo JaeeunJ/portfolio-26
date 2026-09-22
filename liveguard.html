@@ -16,9 +16,9 @@
       href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@400;500&family=Rubik:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <script type="module" crossorigin src="/portfolio-26/assets/liveguard-bCK2fFPQ.js"></script>
+    <script type="module" crossorigin src="/portfolio-26/assets/liveguard-Cz7Ku3Kv.js"></script>
     <link rel="modulepreload" crossorigin href="/portfolio-26/assets/modulepreload-polyfill-P2Xu9kJm.js">
-    <link rel="stylesheet" crossorigin href="/portfolio-26/assets/case-study-DlGIY-nh.css">
+    <link rel="stylesheet" crossorigin href="/portfolio-26/assets/case-study-CBzldQpi.css">
   </head>
 
   <body>
@@ -36,11 +36,11 @@
       </div>
     </header>
 
-    <main class="cs" id="top">
-      <!--
-        Contents. Grouped by the shape the project actually had: what it was
-        meant to be, the two passes at building it, and what came of them.
-      -->
+    <div class="cs-banner cs--lg">
+      <img src="/portfolio-26/projects/lv-banner.svg" alt="LiveGuard app screens" />
+    </div>
+
+    <section class="cs-grid">
       <nav class="cs-toc" aria-label="Contents">
         <p class="cs-toc-label">Content</p>
         <div class="cs-toc-group">
@@ -62,428 +62,428 @@
         </div>
       </nav>
 
-      <!--
-        Hero. The title is what happened, not the product name — the name is in
-        the eyebrow and the tab already, and the thing worth saying up front is
-        that this project was designed twice.
-      -->
-      <section class="cs-hero">
-        <p class="cs-eyebrow">
-          <span>04</span><span class="dot"></span><span>Freelance</span>
-        </p>
-        <h1>Designing a livestream censor, then designing it again</h1>
-        <p class="cs-lede">
-          LiveGuard watches a stream as it goes out and mutes what would get the streamer
-          demonetized. I joined as the only designer, drew the product the client asked for — and
-          then spent the rest of the project taking it apart as the team found out what five
-          developers could actually build.
-        </p>
+      <main class="cs" id="top">
 
-        <div class="cs-banner">
-          <img src="/projects/lv-banner.webp" alt="LiveGuard app screens" />
-        </div>
-      </section>
-
-      <dl class="cs-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>UI/UX design, prototyping, branding</dd>
-        </div>
-        <div>
-          <dt>Timeline</dt>
-          <dd>August 2023 → ongoing</dd>
-        </div>
-        <div>
-          <dt>Team</dt>
-          <dd>Me, solo designer · 5 devs</dd>
-        </div>
-        <div>
-          <dt>Tools</dt>
-          <dd>Figma, FigJam</dd>
-        </div>
-        <div class="cs-meta-wide">
-          <dt>Prototype</dt>
-          <dd>
-            <a class="cs-proto" href="#" target="_blank" rel="noopener"
-              >Open in Figma<span class="arrow" aria-hidden="true">&rarr;</span></a
-            >
-          </dd>
-        </div>
-      </dl>
-
-      <!-- ------------------------------------------------------------- 01 -->
-      <section class="cs-section" id="problem">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><line x1="12" y1="16.4" x2="12.01" y2="16.4"/></svg></span>01 — The problem</p>
-        <h2>One slip in a six-hour stream can cost you the whole day.</h2>
-        <p>
-          <strong>Demonetization</strong> is a platform pulling your ability to earn from something
-          you made — for a policy breach, or just for content advertisers don&rsquo;t want to sit
-          beside. The rules tighten every year, YouTube&rsquo;s most of all.
-        </p>
-        <p>
-          A creator can stream for six hours and lose the recording to a few seconds they
-          don&rsquo;t remember saying. The usual fix is to catch it in the edit afterwards, which
-          means watching your own stream end to end before anyone else can.
-        </p>
-        <p>
-          LiveGuard&rsquo;s bet was that the fix belongs earlier: censor it live, as it goes out, so
-          there is nothing to clean up and nothing to appeal.
-        </p>
-      </section>
-
-      <!-- ------------------------------------------------------------- 02 -->
-      <section class="cs-section" id="solution">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="9.5" y1="18.5" x2="14.5" y2="18.5"/><line x1="10.5" y1="21.2" x2="13.5" y2="21.2"/><path d="M12 2.8a6.2 6.2 0 0 0-3.6 11.2c.6.4 1 1.1 1 1.9v.3h5.2v-.3c0-.8.4-1.5 1-1.9A6.2 6.2 0 0 0 12 2.8z"/></svg></span>02 — The solution</p>
-        <h2>A web app that sits beside the stream, not in front of it.</h2>
-        <p>
-          Streamers already have a setup that works — a broadcast tool, a platform, a routine they
-          don&rsquo;t want touched five minutes before going live. So LiveGuard had to be a
-          companion to that setup rather than something you stream <em>through</em>.
-        </p>
-        <p>
-          Three words had to mean one thing to everybody before I could draw a single screen. Most
-          of the first month&rsquo;s confusion turned out to be this, not the interface:
-        </p>
-        <ul class="cs-list">
-          <li><strong>Action</strong> — a segment of audio or video the user wants caught.</li>
-          <li>
-            <strong>Event</strong> — an Action together with its Reaction: what gets caught, and
-            what happens to it when it is.
-          </li>
-          <li>
-            <strong>Streaming profile</strong> — a set of Events switched on together. This one
-            didn&rsquo;t survive; see below.
-          </li>
-        </ul>
-      </section>
-
-      <!-- ------------------------------------------------------------- 03 -->
-      <section class="cs-section" id="first">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l8.5 4.5L12 12.5 3.5 8 12 3.5z"/><path d="M3.5 12.5L12 17l8.5-4.5"/><path d="M3.5 17L12 21.5 20.5 17"/></svg></span>03 — First pass</p>
-        <h2>Everything the client asked for, drawn once.</h2>
-        <p>
-          There was no competitor to tear down. Nobody had shipped real-time censorship for
-          livestreams, so the usual move — find the three apps closest to this and learn from their
-          mistakes — wasn&rsquo;t available. Requirements got refined in meetings instead, with the
-          team members who actually stream.
-        </p>
-
-        <h3>What the client proposed</h3>
-        <ul class="cs-list">
-          <li>An in-stream controls overlay</li>
-          <li>A dashboard: event sets, an analytics preview, quick search</li>
-          <li>A streaming profiles page</li>
-          <li>A triggers library, with custom triggers</li>
-          <li>An events library, with custom events</li>
-          <li>An analytics page</li>
-        </ul>
-
-        <h3>What users needed</h3>
-        <ul class="cs-list">
-          <li>Controls simple enough to flip mid-stream</li>
-          <li>Visibility into what actually got censored</li>
-          <li>An obvious path for connecting the external app</li>
-          <li>A clean, monochrome interface that doesn&rsquo;t compete with the stream</li>
-        </ul>
-
-        <figure>
-          <img src="/portfolio-26/screens/lv/lv-features.webp" alt="Feature set from the first iteration" loading="lazy" />
-          <figcaption>
-            The full first-pass feature set. Almost half of this is gone by section 05.
-          </figcaption>
-        </figure>
-
-        <h3>Who it&rsquo;s for</h3>
-        <ul class="cards">
-          <li class="card">
-            <div class="card-head">
-              <div>
-                <span class="card-name">Christie, 24</span>
-                <span class="card-where">Twitch + YouTube · part-time creator</span>
+        <!--
+          Hero. The title is what happened, not the product name — the name is in
+          the eyebrow and the tab already, and the thing worth saying up front is
+          that this project was designed twice.
+        -->
+        <section class="cs-hero">
+          <p class="cs-eyebrow">
+            <span>04</span><span class="dot"></span><span>Freelance</span>
+          </p>
+          <h1>Designing a livestream censor, then designing it again</h1>
+          <p class="cs-lede">
+            LiveGuard watches a stream as it goes out and mutes what would get the streamer
+            demonetized. I joined as the only designer, drew the product the client asked for — and
+            then spent the rest of the project taking it apart as the team found out what five
+            developers could actually build.
+          </p>
+        </section>
+  
+        <dl class="cs-meta">
+          <div>
+            <dt>Role</dt>
+            <dd>UI/UX design, prototyping, branding</dd>
+          </div>
+          <div>
+            <dt>Timeline</dt>
+            <dd>August 2023 → ongoing</dd>
+          </div>
+          <div>
+            <dt>Team</dt>
+            <dd>Me, solo designer · 5 devs</dd>
+          </div>
+          <div>
+            <dt>Tools</dt>
+            <dd>Figma, FigJam</dd>
+          </div>
+          <div class="cs-meta-wide">
+            <dt>Prototype</dt>
+            <dd>
+              <a class="cs-proto" href="#" target="_blank" rel="noopener"
+                >Open in Figma<span class="arrow" aria-hidden="true">&rarr;</span></a
+              >
+            </dd>
+          </div>
+        </dl>
+  
+        <!-- ------------------------------------------------------------- 01 -->
+        <section class="cs-section" id="problem">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><line x1="12" y1="16.4" x2="12.01" y2="16.4"/></svg></span>01 — The problem</p>
+          <h2>One slip in a six-hour stream can cost you the whole day.</h2>
+          <p>
+            <strong>Demonetization</strong> is a platform pulling your ability to earn from something
+            you made — for a policy breach, or just for content advertisers don&rsquo;t want to sit
+            beside. The rules tighten every year, YouTube&rsquo;s most of all.
+          </p>
+          <p>
+            A creator can stream for six hours and lose the recording to a few seconds they
+            don&rsquo;t remember saying. The usual fix is to catch it in the edit afterwards, which
+            means watching your own stream end to end before anyone else can.
+          </p>
+          <p>
+            LiveGuard&rsquo;s bet was that the fix belongs earlier: censor it live, as it goes out, so
+            there is nothing to clean up and nothing to appeal.
+          </p>
+        </section>
+  
+        <!-- ------------------------------------------------------------- 02 -->
+        <section class="cs-section" id="solution">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="9.5" y1="18.5" x2="14.5" y2="18.5"/><line x1="10.5" y1="21.2" x2="13.5" y2="21.2"/><path d="M12 2.8a6.2 6.2 0 0 0-3.6 11.2c.6.4 1 1.1 1 1.9v.3h5.2v-.3c0-.8.4-1.5 1-1.9A6.2 6.2 0 0 0 12 2.8z"/></svg></span>02 — The solution</p>
+          <h2>A web app that sits beside the stream, not in front of it.</h2>
+          <p>
+            Streamers already have a setup that works — a broadcast tool, a platform, a routine they
+            don&rsquo;t want touched five minutes before going live. So LiveGuard had to be a
+            companion to that setup rather than something you stream <em>through</em>.
+          </p>
+          <p>
+            Three words had to mean one thing to everybody before I could draw a single screen. Most
+            of the first month&rsquo;s confusion turned out to be this, not the interface:
+          </p>
+          <ul class="cs-list">
+            <li><strong>Action</strong> — a segment of audio or video the user wants caught.</li>
+            <li>
+              <strong>Event</strong> — an Action together with its Reaction: what gets caught, and
+              what happens to it when it is.
+            </li>
+            <li>
+              <strong>Streaming profile</strong> — a set of Events switched on together. This one
+              didn&rsquo;t survive; see below.
+            </li>
+          </ul>
+        </section>
+  
+        <!-- ------------------------------------------------------------- 03 -->
+        <section class="cs-section" id="first">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l8.5 4.5L12 12.5 3.5 8 12 3.5z"/><path d="M3.5 12.5L12 17l8.5-4.5"/><path d="M3.5 17L12 21.5 20.5 17"/></svg></span>03 — First pass</p>
+          <h2>Everything the client asked for, drawn once.</h2>
+          <p>
+            There was no competitor to tear down. Nobody had shipped real-time censorship for
+            livestreams, so the usual move — find the three apps closest to this and learn from their
+            mistakes — wasn&rsquo;t available. Requirements got refined in meetings instead, with the
+            team members who actually stream.
+          </p>
+  
+          <h3>What the client proposed</h3>
+          <ul class="cs-list">
+            <li>An in-stream controls overlay</li>
+            <li>A dashboard: event sets, an analytics preview, quick search</li>
+            <li>A streaming profiles page</li>
+            <li>A triggers library, with custom triggers</li>
+            <li>An events library, with custom events</li>
+            <li>An analytics page</li>
+          </ul>
+  
+          <h3>What users needed</h3>
+          <ul class="cs-list">
+            <li>Controls simple enough to flip mid-stream</li>
+            <li>Visibility into what actually got censored</li>
+            <li>An obvious path for connecting the external app</li>
+            <li>A clean, monochrome interface that doesn&rsquo;t compete with the stream</li>
+          </ul>
+  
+          <figure>
+            <img src="/portfolio-26/screens/lv/lv-features.webp" alt="Feature set from the first iteration" loading="lazy" />
+            <figcaption>
+              The full first-pass feature set. Almost half of this is gone by section 05.
+            </figcaption>
+          </figure>
+  
+          <h3>Who it&rsquo;s for</h3>
+          <ul class="cards">
+            <li class="card">
+              <div class="card-head">
+                <div>
+                  <span class="card-name">Christie, 24</span>
+                  <span class="card-where">Twitch + YouTube · part-time creator</span>
+                </div>
               </div>
-            </div>
-            <div class="card-cols">
-              <div class="card-about">
-                <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c0-3.6 3.2-6 7.2-6s7.2 2.4 7.2 6"/></svg></span>About</span>
+              <div class="card-cols">
+                <div class="card-about">
+                  <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c0-3.6 3.2-6 7.2-6s7.2 2.4 7.2 6"/></svg></span>About</span>
+                  <p>
+                    Christie makes vlogs and streams on more than one platform, then edits the
+                    recordings down herself before they go up on YouTube. The stream is the fun part;
+                    the edit is the job.
+                  </p>
+                </div>
+                <div class="card-pains">
+                  <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 4.2 2.5 18.3a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.3 4.2a1.5 1.5 0 0 0-2.6 0z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="17.2" x2="12.01" y2="17.2"/></svg></span>Pain points</span>
+                  <ul>
+                    <li>Hours of editing per stream</li>
+                    <li>Can&rsquo;t police her own vocabulary for six hours straight</li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+          </ul>
+  
+          <figure>
+            <img src="/portfolio-26/screens/lv/lv-user-flow.webp" alt="First user flow" loading="lazy" />
+            <figcaption>The first flow, signed off by the team before any screens existed.</figcaption>
+          </figure>
+  
+          <figure>
+            <img src="/portfolio-26/screens/lv/lv-low-fi.webp" alt="Low-fidelity sketches" loading="lazy" />
+            <figcaption>
+              Low-fi for the dashboard, actions, events, streaming profiles, and analytics.
+            </figcaption>
+          </figure>
+  
+          <figure>
+            <img src="/portfolio-26/screens/lv/lv-high-fidelity-1.webp" alt="First high-fidelity prototype" loading="lazy" />
+            <figcaption>The first hi-fi prototype — the version that assumed we had the time.</figcaption>
+          </figure>
+        </section>
+  
+        <!-- ------------------------------------------------------------- 04 -->
+        <section class="cs-section" id="cut">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6.5" r="2.6"/><circle cx="6" cy="17.5" r="2.6"/><line x1="20" y1="4.2" x2="8.2" y2="15.8"/><line x1="8.2" y1="8.2" x2="20" y2="19.8"/></svg></span>04 — The cut</p>
+          <h2>Then the scope met the calendar.</h2>
+          <p>
+            Three things landed at once, and between them they took out most of what I had just
+            finished drawing.
+          </p>
+          <ol class="numbered">
+            <li>
+              <div>
+                <b>Time</b>
                 <p>
-                  Christie makes vlogs and streams on more than one platform, then edits the
-                  recordings down herself before they go up on YouTube. The stream is the fun part;
-                  the edit is the job.
+                  The release phases were fixed, and the requirements weren&rsquo;t going to fit
+                  inside them. Something had to come out.
                 </p>
               </div>
-              <div class="card-pains">
-                <span class="card-label"><span class="card-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 4.2 2.5 18.3a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.3 4.2a1.5 1.5 0 0 0-2.6 0z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="17.2" x2="12.01" y2="17.2"/></svg></span>Pain points</span>
-                <ul>
-                  <li>Hours of editing per stream</li>
-                  <li>Can&rsquo;t police her own vocabulary for six hours straight</li>
-                </ul>
+            </li>
+            <li>
+              <div>
+                <b>Resources</b>
+                <p>
+                  Five developers, and most of their attention was on the machine learning — which is
+                  the product. Interface work was what was left over.
+                </p>
               </div>
-            </div>
-          </li>
-        </ul>
-
-        <figure>
-          <img src="/portfolio-26/screens/lv/lv-user-flow.webp" alt="First user flow" loading="lazy" />
-          <figcaption>The first flow, signed off by the team before any screens existed.</figcaption>
-        </figure>
-
-        <figure>
-          <img src="/portfolio-26/screens/lv/lv-low-fi.webp" alt="Low-fidelity sketches" loading="lazy" />
-          <figcaption>
-            Low-fi for the dashboard, actions, events, streaming profiles, and analytics.
-          </figcaption>
-        </figure>
-
-        <figure>
-          <img src="/portfolio-26/screens/lv/lv-high-fidelity-1.webp" alt="First high-fidelity prototype" loading="lazy" />
-          <figcaption>The first hi-fi prototype — the version that assumed we had the time.</figcaption>
-        </figure>
-      </section>
-
-      <!-- ------------------------------------------------------------- 04 -->
-      <section class="cs-section" id="cut">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6.5" r="2.6"/><circle cx="6" cy="17.5" r="2.6"/><line x1="20" y1="4.2" x2="8.2" y2="15.8"/><line x1="8.2" y1="8.2" x2="20" y2="19.8"/></svg></span>04 — The cut</p>
-        <h2>Then the scope met the calendar.</h2>
-        <p>
-          Three things landed at once, and between them they took out most of what I had just
-          finished drawing.
-        </p>
-        <ol class="numbered">
-          <li>
-            <div>
-              <b>Time</b>
-              <p>
-                The release phases were fixed, and the requirements weren&rsquo;t going to fit
-                inside them. Something had to come out.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Resources</b>
-              <p>
-                Five developers, and most of their attention was on the machine learning — which is
-                the product. Interface work was what was left over.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Complexity</b>
-              <p>
-                With no market example to point at, a first-time user has nothing to pattern-match
-                against. The more we kept, the more there was to explain.
-              </p>
-            </div>
-          </li>
-        </ol>
-      </section>
-
-      <!-- ------------------------------------------------------------- 05 -->
-      <section class="cs-section" id="second">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 3.5V9H15"/></svg></span>05 — Second pass</p>
-        <h2>Card sorting, and a much smaller product.</h2>
-        <p>
-          I card-sorted the feature set with the team rather than defending it, which made the
-          argument about what a user needs first instead of about what we&rsquo;d already built.
-          Three things changed:
-        </p>
-        <ul class="cs-list">
-          <li>
-            <strong>Custom actions and events came out.</strong> The pre-set list covers swear-word
-            censoring, and nothing else — for now.
-          </li>
-          <li>
-            <strong>Streaming profiles became platform grouping.</strong> Users already think in
-            platforms; the profile was an abstraction on top of one they had.
-          </li>
-          <li>
-            <strong>Quick search came out.</strong> With this much less in the product, there
-            wasn&rsquo;t enough left to search.
-          </li>
-        </ul>
-
-        <figure>
-          <img src="/portfolio-26/screens/lv/lv-features-2.webp" alt="Updated feature set" loading="lazy" />
-          <figcaption>The feature set after card sorting.</figcaption>
-        </figure>
-
-        <figure>
-          <img src="/portfolio-26/screens/lv/lv-user-flow-2.webp" alt="Updated user flow" loading="lazy" />
-        </figure>
-
-        <figure>
-          <img src="/portfolio-26/screens/lv/lv-high-fidelity-2.webp" alt="Second high-fidelity prototype" loading="lazy" />
-          <figcaption>The second hi-fi prototype — the one built against what we actually had.</figcaption>
-        </figure>
-      </section>
-
-      <!-- ------------------------------------------------------------- 06 -->
-      <section class="cs-section" id="testing">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><line x1="15.8" y1="15.8" x2="20" y2="20"/></svg></span>06 — User testing</p>
-        <h2>Three things testing caught that I hadn&rsquo;t.</h2>
-        <p>
-          Moderated sessions with people who actually stream. Every one of these is something I was
-          confident about going in.
-        </p>
-        <ol class="numbered">
-          <li>
-            <div>
-              <b>One overlay per platform, not one overall</b>
-              <p>
-                I&rsquo;d designed a general in-stream overlay. Streamers don&rsquo;t work
-                generally — key binds and placement are per platform, and a shared overlay fights
-                the setup they already have.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>The calendar took too many clicks</b>
-              <p>
-                Scheduling a stream was several steps longer than anyone expected it to be. Cut
-                down and re-ordered.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Stream keys belong on the dashboard</b>
-              <p>
-                Everyone went to the dashboard to edit theirs. It wasn&rsquo;t there — it was in
-                settings, where I&rsquo;d filed it because that&rsquo;s where settings go.
-              </p>
-            </div>
-          </li>
-        </ol>
-
-        <figure>
-          <img src="/portfolio-26/screens/lv/lv-user-test.webp" alt="User testing findings" loading="lazy" />
-        </figure>
-
-        <h3>And then one more cut</h3>
-        <p>
-          Late on, technical constraints took two more things off the board. Analytics went
-          entirely — it was a whole page, and it was the least load-bearing one. The in-stream
-          overlay went with it as priorities moved, and with it every customization option that had
-          existed to serve it.
-        </p>
-      </section>
-
-      <!-- ------------------------------------------------------------- 07 -->
-      <section class="cs-section" id="system">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1z"/><line x1="14.5" y1="6.5" x2="17.5" y2="9.5"/></svg></span>07 — Design system</p>
-        <h2>Blue, because blue already reads as protection.</h2>
-        <p>
-          The product is a guard. Blue is what people already associate with being looked after —
-          it&rsquo;s the colour of the people you call — so it didn&rsquo;t need explaining. Dark
-          mode came straight from the users: streamers work in the dark and their tools do too.
-        </p>
-
-        <figure>
-          <img src="/portfolio-26/screens/lv/lv-palette.webp" alt="LiveGuard colour palette" loading="lazy" />
-        </figure>
-
-        <p>
-          One sans-serif, no second face. The interface has to disappear behind a stream that
-          isn&rsquo;t about it.
-        </p>
-
-        <figure>
-          <img src="/portfolio-26/screens/lv/lv-typography.webp" alt="LiveGuard typography" loading="lazy" />
-        </figure>
-
-        <p>
-          The component library is still partway. Everything drawn is consistent, but it
-          isn&rsquo;t finished — which makes it the top of my list, because handoff to five
-          developers is the thing it exists to make cheap.
-        </p>
-
-        <figure>
-          <img src="/portfolio-26/screens/lv/lv-components.webp" alt="LiveGuard component library" loading="lazy" />
-        </figure>
-      </section>
-
-      <!-- ------------------------------------------------------------- 08 -->
-      <section class="cs-section" id="landed">
-        <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3.5" x2="6" y2="20.5"/><path d="M6 4.5h11.5l-2.7 4 2.7 4H6"/></svg></span>08 — Where it landed</p>
-        <h2>Still open, and the scope is finally honest.</h2>
-        <p>
-          This was my first freelance project taken end to end, and what shaped it most
-          wasn&rsquo;t a design decision — it was limited resources and guidelines that
-          weren&rsquo;t clear until we were already building against them. Some of the first
-          iteration may come back once the team has room. None of it is promised.
-        </p>
-
-        <h3>What I&rsquo;d do next</h3>
-        <ol class="numbered">
-          <li>
-            <div>
-              <b>More user tests</b>
-              <p>
-                The three that came back from the first round were the useful part of the whole
-                project. There should have been more of them, earlier.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Edge cases</b>
-              <p>
-                Everything drawn so far assumes the stream goes as planned. Most of them
-                don&rsquo;t.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Finish the design system</b>
-              <p>Partial is worse than none when five people are building from it.</p>
-            </div>
-          </li>
-        </ol>
-
-        <h3>What I took away</h3>
-        <ol class="numbered">
-          <li>
-            <div>
-              <b>Scope is a design decision, and it comes first</b>
-              <p>
-                I drew the whole product before anyone had said out loud what five developers could
-                build in the time. That conversation was cheap and I had it late.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Ask what the team can&rsquo;t do</b>
-              <p>
-                Capability came up as a limit only when we hit it. Asking about it directly, early,
-                would have saved a full iteration.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Vocabulary before interface</b>
-              <p>
-                Action, Event, Profile — the month where those three meant slightly different
-                things to different people cost more than any screen did.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <b>Cutting is not losing</b>
-              <p>
-                The second prototype is a better product than the first, and it is roughly half the
-                size. That was not obvious to me at the time.
-              </p>
-            </div>
-          </li>
-        </ol>
-      </section>
-    </main>
+            </li>
+            <li>
+              <div>
+                <b>Complexity</b>
+                <p>
+                  With no market example to point at, a first-time user has nothing to pattern-match
+                  against. The more we kept, the more there was to explain.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+  
+        <!-- ------------------------------------------------------------- 05 -->
+        <section class="cs-section" id="second">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 3.5V9H15"/></svg></span>05 — Second pass</p>
+          <h2>Card sorting, and a much smaller product.</h2>
+          <p>
+            I card-sorted the feature set with the team rather than defending it, which made the
+            argument about what a user needs first instead of about what we&rsquo;d already built.
+            Three things changed:
+          </p>
+          <ul class="cs-list">
+            <li>
+              <strong>Custom actions and events came out.</strong> The pre-set list covers swear-word
+              censoring, and nothing else — for now.
+            </li>
+            <li>
+              <strong>Streaming profiles became platform grouping.</strong> Users already think in
+              platforms; the profile was an abstraction on top of one they had.
+            </li>
+            <li>
+              <strong>Quick search came out.</strong> With this much less in the product, there
+              wasn&rsquo;t enough left to search.
+            </li>
+          </ul>
+  
+          <figure>
+            <img src="/portfolio-26/screens/lv/lv-features-2.webp" alt="Updated feature set" loading="lazy" />
+            <figcaption>The feature set after card sorting.</figcaption>
+          </figure>
+  
+          <figure>
+            <img src="/portfolio-26/screens/lv/lv-user-flow-2.webp" alt="Updated user flow" loading="lazy" />
+          </figure>
+  
+          <figure>
+            <img src="/portfolio-26/screens/lv/lv-high-fidelity-2.webp" alt="Second high-fidelity prototype" loading="lazy" />
+            <figcaption>The second hi-fi prototype — the one built against what we actually had.</figcaption>
+          </figure>
+        </section>
+  
+        <!-- ------------------------------------------------------------- 06 -->
+        <section class="cs-section" id="testing">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><line x1="15.8" y1="15.8" x2="20" y2="20"/></svg></span>06 — User testing</p>
+          <h2>Three things testing caught that I hadn&rsquo;t.</h2>
+          <p>
+            Moderated sessions with people who actually stream. Every one of these is something I was
+            confident about going in.
+          </p>
+          <ol class="numbered">
+            <li>
+              <div>
+                <b>One overlay per platform, not one overall</b>
+                <p>
+                  I&rsquo;d designed a general in-stream overlay. Streamers don&rsquo;t work
+                  generally — key binds and placement are per platform, and a shared overlay fights
+                  the setup they already have.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>The calendar took too many clicks</b>
+                <p>
+                  Scheduling a stream was several steps longer than anyone expected it to be. Cut
+                  down and re-ordered.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>Stream keys belong on the dashboard</b>
+                <p>
+                  Everyone went to the dashboard to edit theirs. It wasn&rsquo;t there — it was in
+                  settings, where I&rsquo;d filed it because that&rsquo;s where settings go.
+                </p>
+              </div>
+            </li>
+          </ol>
+  
+          <figure>
+            <img src="/portfolio-26/screens/lv/lv-user-test.webp" alt="User testing findings" loading="lazy" />
+          </figure>
+  
+          <h3>And then one more cut</h3>
+          <p>
+            Late on, technical constraints took two more things off the board. Analytics went
+            entirely — it was a whole page, and it was the least load-bearing one. The in-stream
+            overlay went with it as priorities moved, and with it every customization option that had
+            existed to serve it.
+          </p>
+        </section>
+  
+        <!-- ------------------------------------------------------------- 07 -->
+        <section class="cs-section" id="system">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1z"/><line x1="14.5" y1="6.5" x2="17.5" y2="9.5"/></svg></span>07 — Design system</p>
+          <h2>Blue, because blue already reads as protection.</h2>
+          <p>
+            The product is a guard. Blue is what people already associate with being looked after —
+            it&rsquo;s the colour of the people you call — so it didn&rsquo;t need explaining. Dark
+            mode came straight from the users: streamers work in the dark and their tools do too.
+          </p>
+  
+          <figure>
+            <img src="/portfolio-26/screens/lv/lv-palette.webp" alt="LiveGuard colour palette" loading="lazy" />
+          </figure>
+  
+          <p>
+            One sans-serif, no second face. The interface has to disappear behind a stream that
+            isn&rsquo;t about it.
+          </p>
+  
+          <figure>
+            <img src="/portfolio-26/screens/lv/lv-typography.webp" alt="LiveGuard typography" loading="lazy" />
+          </figure>
+  
+          <p>
+            The component library is still partway. Everything drawn is consistent, but it
+            isn&rsquo;t finished — which makes it the top of my list, because handoff to five
+            developers is the thing it exists to make cheap.
+          </p>
+  
+          <figure>
+            <img src="/portfolio-26/screens/lv/lv-components.webp" alt="LiveGuard component library" loading="lazy" />
+          </figure>
+        </section>
+  
+        <!-- ------------------------------------------------------------- 08 -->
+        <section class="cs-section" id="landed">
+          <p class="cs-num"><span class="cs-num-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3.5" x2="6" y2="20.5"/><path d="M6 4.5h11.5l-2.7 4 2.7 4H6"/></svg></span>08 — Where it landed</p>
+          <h2>Still open, and the scope is finally honest.</h2>
+          <p>
+            This was my first freelance project taken end to end, and what shaped it most
+            wasn&rsquo;t a design decision — it was limited resources and guidelines that
+            weren&rsquo;t clear until we were already building against them. Some of the first
+            iteration may come back once the team has room. None of it is promised.
+          </p>
+  
+          <h3>What I&rsquo;d do next</h3>
+          <ol class="numbered">
+            <li>
+              <div>
+                <b>More user tests</b>
+                <p>
+                  The three that came back from the first round were the useful part of the whole
+                  project. There should have been more of them, earlier.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>Edge cases</b>
+                <p>
+                  Everything drawn so far assumes the stream goes as planned. Most of them
+                  don&rsquo;t.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>Finish the design system</b>
+                <p>Partial is worse than none when five people are building from it.</p>
+              </div>
+            </li>
+          </ol>
+  
+          <h3>What I took away</h3>
+          <ol class="numbered">
+            <li>
+              <div>
+                <b>Scope is a design decision, and it comes first</b>
+                <p>
+                  I drew the whole product before anyone had said out loud what five developers could
+                  build in the time. That conversation was cheap and I had it late.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>Ask what the team can&rsquo;t do</b>
+                <p>
+                  Capability came up as a limit only when we hit it. Asking about it directly, early,
+                  would have saved a full iteration.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>Vocabulary before interface</b>
+                <p>
+                  Action, Event, Profile — the month where those three meant slightly different
+                  things to different people cost more than any screen did.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>Cutting is not losing</b>
+                <p>
+                  The second prototype is a better product than the first, and it is roughly half the
+                  size. That was not obvious to me at the time.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+      </main>
+    </section>
+  
 
     <nav class="cs-next">
       <div class="cs-next-inner">
