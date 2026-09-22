@@ -257,6 +257,12 @@ a { color: var(--ink-body); }
   animation: fadeIn 2s ease-in-out;
 }
 
+.cs-banner img {
+  object-fit: contain;
+  object-position: center;
+  height: 100%;
+}
+
 .cs--tempo { background-color: #A685E3; }
 .cs--callie { background-color: #FF3C00; }
 .cs--pv { background-color: #55AF58;}
