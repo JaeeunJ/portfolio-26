@@ -518,7 +518,7 @@ figcaption {
  * discrete, and a shared outline read as a table asking to be compared
  * cell-by-cell rather than four things that happened in order.
  */
-.sprint {
+.sprint, .sprint-h {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 1.1rem;
@@ -526,7 +526,11 @@ figcaption {
   padding: 0;
 }
 
-.sprint li, .cs-meta {
+.sprint-h {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.sprint li, .sprint-h li, .cs-meta {
   list-style: none;
   padding: 1.2rem 1.15rem 1.1rem;
   background: rgba(207, 198, 232, 0.094);
@@ -547,6 +551,15 @@ figcaption {
   margin-left: 1.6em;
 }
 
+.sprint-content-h li {
+  font-size: 1rem;
+  color: var(--slate);
+  line-height: 1.5rem;
+  background-color: transparent;
+  margin-left: -40px;
+  padding: 0.5rem 0 0;
+}
+
 .sprint-title {
   display: flex;
   align-items: center;
@@ -554,7 +567,7 @@ figcaption {
 }
 
 /* The stop's number, in a chip. */
-.sprint .sprint-num {
+.sprint .sprint-num, .sprint-h .sprint-num {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -566,7 +579,7 @@ figcaption {
   font-size: 1rem;
 }
 
-.sprint .sprint-what {
+.sprint .sprint-what, .sprint-h .sprint-what {
   display: block;
   font-family: var(--font-heavy);
   font-weight: 500;
@@ -576,7 +589,7 @@ figcaption {
 }
 
 
-.sprint p {
+.sprint p, .sprint-h p {
   margin: 0;
   color: var(--ink-dim);
 }

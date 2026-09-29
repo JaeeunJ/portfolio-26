@@ -416,7 +416,6 @@
     </footer>
 
     <script type="module">
-      // Scroll spy for the contents rail. The hero counts as "Overview".
       const links = [...document.querySelectorAll('.cs-toc a')]
       const byId = new Map(links.map((a) => [a.hash.slice(1), a]))
       const targets = [document.querySelector('.cs-hero'), ...document.querySelectorAll('.cs-section')]
@@ -429,8 +428,6 @@
             byId.get(idOf(e.target) === 'top' ? 'top' : idOf(e.target))?.classList.add('is-here')
           }
         },
-        // A thin band a third of the way down the viewport: whichever section
-        // crosses it owns the highlight, so exactly one is ever lit.
         { rootMargin: '-32% 0px -62% 0px' },
       )
       targets.forEach((t) => spy.observe(t))
