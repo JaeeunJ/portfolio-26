@@ -502,6 +502,11 @@ figure img {
   background: var(--deep);
 }
 
+.light img {
+  padding: 2rem;
+  background: var(--white)
+}
+
 figcaption {
   margin: 0.75rem 0 1rem;
   color: var(--ink-dim);

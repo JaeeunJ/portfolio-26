@@ -14,35 +14,21 @@
       href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@400;500&family=Press+Start+2P&family=Rubik:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
-    <!--
-      Linked here rather than imported from main.ts: an import only delivers the
-      CSS after the module graph loads, so the raw HTML painted first — the
-      unstyled flash. A link in the head blocks the first paint on the
-      stylesheet, in dev and in the build alike.
-    -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
 
     <script>
-      // Always replay the intro from the top, even on reload or back-navigation.
       if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
       window.scrollTo(0, 0)
     </script>
-    <script type="module" crossorigin src="/portfolio-26/assets/index-DGsHYxVV.js"></script>
+    <script type="module" crossorigin src="/portfolio-26/assets/index-ybgI-3cV.js"></script>
     <link rel="modulepreload" crossorigin href="/portfolio-26/assets/modulepreload-polyfill-P2Xu9kJm.js">
-    <link rel="stylesheet" crossorigin href="/portfolio-26/assets/index-CyQcwNbM.css">
+    <link rel="stylesheet" crossorigin href="/portfolio-26/assets/index-D5dmTy7X.css">
   </head>
 
   <body>
-    <!-- The ASCII canvas mounts here. aria-hidden: it is pure decoration. -->
     <div id="ascii-stage" aria-hidden="true"></div>
 
-    <!--
-      Flyby nameplates. Each is pinned to one of the shaped bodies in the
-      flight — the book, the cursor, the hard hat — and introduces the pilot
-      as she passes: a caption that fades in beneath the silhouette, the way
-      the flight-log cards print a name under each pixel device. Positioned
-      every frame by scrollIntro projecting the body's world position through
-      the flight camera.
-    -->
     <div id="scene-tags" aria-hidden="true">
       <div class="scene-tag" data-tag="cursor">
         <span class="scene-tag-card"><span class="scene-tag-bubble"><i>(&#172;&#8255;&#172;)</i>Chronically online</span></span>
@@ -55,33 +41,17 @@
       </div>
     </div>
 
-    <!--
-      Boot shutter. The scene builds its renderer and fonts on the first
-      frames, and uncovered that read as a hard pop into deep space. Two thick
-      slabs hold the void for one beat, then part vertically — top up, bottom
-      down — once the first frame is actually painted underneath them.
-    -->
     <div id="boot" aria-hidden="true">
       <span class="boot-half boot-half--top"></span>
       <span class="boot-half boot-half--bottom"></span>
     </div>
 
-    <!--
-      Retro title card. Slides up over the flight like an old cartridge title
-      screen; the first scroll docks both lines into the lower corners
-      (scrollIntro toggles body.title-away on the same threshold as the pill).
-    -->
     <div id="game-title">
-      <p class="gt-name-below">RISSY'S SPACE</p>
-      <p class="gt-name">RISSY'S SPACE</p>
+      <p class="gt-name-below">Rissy's space</p>
+      <p class="gt-name">Rissy's space</p>
       <p class="gt-sub">SCROLL TO START</p>
     </div>
 
-    <!--
-      8-bit game HUD, replacing the old cockpit canopy and instrument chips.
-      One status row: lives, hull bar, and distance-to-Earth counter — the bar
-      and counter are fed by scrollIntro each frame.
-    -->
     <div id="hud" aria-hidden="true">
       <div class="hud8">
         <span class="hud8-hearts">
@@ -92,8 +62,6 @@
       </div>
     </div>
 
-    <!-- Entry streaks. Sits above the ASCII canvas and the hero so its white
-         cover can mask the swap between them. -->
     <div id="impact-flash" aria-hidden="true"><canvas id="warp-canvas"></canvas></div>
 
     <div id="intro-progress" aria-hidden="true"><span id="intro-progress-bar"></span></div>

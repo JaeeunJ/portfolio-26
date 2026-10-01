@@ -151,16 +151,12 @@ body.intro-done #game-title {
   transform: translate(-50%, -44%) scale(1);
   transform-origin: left bottom;
   margin: 0;
-  font-family: var(--font-arcade);
-  font-weight: 400;
-  /* The extra 8.6vw ceiling is the phone fit: 13 glyphs at ~0.86em each need
-     ~11.2em, so past that the floor would push the wordmark off both edges. */
-  font-size: min(max(2.2rem, 6.4vw), 6vw, 5.4rem);
+  font-family: var(--font-arcade-title);
+  font-weight: 600;
+  font-size: min(max(3rem, 7vw), 9vw, 9rem);
   line-height: 1.2;
-  letter-spacing: -0.14em;
+  letter-spacing: 0.02em;
   white-space: nowrap;
-  /* Arcade chrome: white-hot top edge, hot pink down to electric blue. The
-     opening planet is kept cool so this warm ramp owns the frame. */
   background: linear-gradient(
     180deg,
     #ffffff 0%,
@@ -173,8 +169,7 @@ body.intro-done #game-title {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  /* Chunky offset slab for the 8-bit drop, plus a neon bloom to lift it off
-     the scene. */
+  text-transform: uppercase;
   filter: 
     drop-shadow(0 0 0.35em rgba(196, 127, 255, 0.55));
   transition:
@@ -184,22 +179,19 @@ body.intro-done #game-title {
 }
 
 .gt-name-below {
+  text-transform: uppercase;
   position: absolute;
   left: 50%;
   top: 42%;
   transform: translate(-50%, -44%) scale(1);
   transform-origin: left bottom;
   margin: 0;
-  font-family: var(--font-arcade);
-  font-weight: 400;
-  /* The extra 8.6vw ceiling is the phone fit: 13 glyphs at ~0.86em each need
-     ~11.2em, so past that the floor would push the wordmark off both edges. */
-  font-size: min(max(2.2rem, 6.4vw), 6vw, 5.4rem);
+  font-family: var(--font-arcade-title);
+  font-weight: 600;
+  font-size: min(max(3rem, 7vw), 9vw, 9rem);
   line-height: 1.2;
-  letter-spacing: -0.14em;
+  letter-spacing: 0.02em;
   white-space: nowrap;
-  /* Arcade chrome: white-hot top edge, hot pink down to electric blue. The
-     opening planet is kept cool so this warm ramp owns the frame. */
   -webkit-background-clip: text;
   background-clip: text;
   color: black;

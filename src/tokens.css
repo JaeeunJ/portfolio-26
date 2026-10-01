@@ -15,15 +15,9 @@
    * is built from dots much as the flight is built from characters.
    */
   --font-display: 'Bitcount Prop Single', system-ui, sans-serif;
-  /* Dense blocky arcade capitals — the title card only. Bitcount's dotted
-     glyphs read airy and wide at display sizes; this is the NES-cartridge cut. */
   --font-arcade: 'Press Start 2P', 'Bitcount Prop Single', system-ui, sans-serif;
-  /* Text cuts of the same family as --font-heavy: the fine print speaks in the
-     same voice as the names it sits under, just quietly. Spline Sans was the
-     old portfolio's grotesk and read as a visitor from that site. */
+  --font-arcade-title: 'VT323', system-ui, sans-serif;
   --font-body: 'Rubik', system-ui, sans-serif;
-  /* Heavy geometric sans. Carries the things whose only job is to be read at a
-     glance and remembered: the sign-off, the section banners, the work names. */
   --font-heavy: 'Rubik', system-ui, sans-serif;
 
   /* Edge-to-edge layout metrics. The right gutter stays wider than the left:
