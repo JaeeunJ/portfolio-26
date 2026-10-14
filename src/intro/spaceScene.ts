@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { CONFIG, PALETTE, SPACE } from './config'
 import { createStreaks } from './streaks'
+import { createUfoCat } from './ufo'
 
 /*
  * The flight path and everything scattered around it. No GLB, no textures — all
@@ -690,24 +691,10 @@ export function buildHardHatBody(radius: number, material: THREE.Material): THRE
 export interface TagAnchor {
   key: string
   object: THREE.Object3D
-  /**
-   * Height of the body's own silhouette above its origin, in world units.
-   *
-   * Measured from the built geometry rather than taken from `radius`: the
-   * shaped bodies are not spheres and do not fill their nominal radius the
-   * same way. The book's splayed halves reach well above it while the cursor
-   * and hard hat sit mostly below their origin — so a single radius-based
-   * offset planted the cursor's and the hat's labels far above the thing they
-   * were pointing at. Yaw is the only rotation applied, and yaw does not
-   * change vertical extent, so one measurement holds for the whole flight.
-   */
+
   topY: number
   t: number
-  /**
-   * The body's materials, whose shared opacity IS its materialize-on-approach
-   * fade. The bubble must not speak about a body the reader has not seen yet,
-   * so its open is gated on this reaching full.
-   */
+
   materials: THREE.Material[]
 }
 
@@ -941,19 +928,7 @@ export function createSpaceScene(aspect: number): SpaceScene {
   // --- the shooting star ---------------------------------------------------
   const BALL = CONFIG.ball
 
-  const ball = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(BALL.radius, 3),
-    // Emissive soft-blue rather than blown-out white: the ball has to stay just
-    // under the luma that snaps the tint ramp to pure white, or its whole disc
-    // lands on the same solid glyph and it reads as a flat cutout.
-    new THREE.MeshStandardMaterial({
-      color: new THREE.Color(PALETTE.white),
-      emissive: new THREE.Color(PALETTE.soft),
-      emissiveIntensity: 1.4,
-      roughness: 0.3,
-      flatShading: true,
-    }),
-  )
+  const ball = createUfoCat(BALL.radius)
   scene.add(ball)
 
   /*
@@ -967,7 +942,7 @@ export function createSpaceScene(aspect: number): SpaceScene {
   const halo = new THREE.Sprite(
     new THREE.SpriteMaterial({
       map: haloTexture,
-      color: new THREE.Color(PALETTE.soft),
+      color: new THREE.Color('#ffb703'),
       transparent: true,
       opacity: AURA.haloOpacity,
       depthWrite: false,
@@ -1150,7 +1125,10 @@ export function createSpaceScene(aspect: number): SpaceScene {
    */
   function updateAura(progress: number, elapsed: number): void {
     halo.position.copy(ball.position)
+    
+    // Shift slightly down (Y) so it looks like it blasts out from under the saucer
     tail.position.copy(ball.position)
+    tail.position.y -= BALL.radius * 0.2
 
     // Progress per second. Guard the first frame, where lastElapsed is 0 and the
     // delta is the whole page-load time.
@@ -1205,15 +1183,18 @@ export function createSpaceScene(aspect: number): SpaceScene {
     camera.updateMatrixWorld()
 
     ballPositionAt(t, ball.position)
-    ball.rotation.x = elapsed * 0.0004
-    ball.rotation.y = elapsed * 0.0006
+    ball.lookAt(lookTarget)
+
+    const startTilt = THREE.MathUtils.lerp(0.55, 0.3, Math.min(t / 0.15, 1))
+    ball.rotateX(startTilt)
+
+    ball.rotateY(-0.2)
+    ball.rotateZ(Math.sin(elapsed * 0.002) * 0.1)
+    // ------------------------
+
     ballLight.position.copy(ball.position)
     updateAura(t, elapsed)
-    // After camera.updateMatrixWorld() above — streaks are built in the camera's
-    // basis and would trail a frame behind otherwise. The curve tangent is the
-    // direction of travel, which is what the streaks radiate from; it is close
-    // to but not the same as the look direction, so the vanishing point drifts
-    // off screen centre through the turns.
+
     curve.getTangentAt(camT, travelDirection)
     // Same smoothed scroll speed the aura reads (updateAura ran above, so it is
     // current for this frame), saturating a little earlier than the tail does —
