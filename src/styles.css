@@ -147,7 +147,7 @@ body.intro-done #game-title {
 .gt-name {
   position: absolute;
   left: 50%;
-  top: 42%;
+  top: 35%;
   transform: translate(-50%, -44%) scale(1);
   transform-origin: left bottom;
   margin: 0;
@@ -182,7 +182,7 @@ body.intro-done #game-title {
   text-transform: uppercase;
   position: absolute;
   left: 50%;
-  top: 42%;
+  top: 35%;
   transform: translate(-50%, -44%) scale(1);
   transform-origin: left bottom;
   margin: 0;
@@ -208,7 +208,7 @@ body.intro-done #game-title {
 .gt-sub {
   position: absolute;
   left: 50%;
-  top: 51%;
+  top: 45%;
   transform: translate(-50%, -50%) scale(1);
   transform-origin: right bottom;
   margin: 0;
@@ -216,7 +216,7 @@ body.intro-done #game-title {
   font-weight: 800;
   /* Same phone fit as the wordmark above. */
   font-size: min(max(1.05rem, 2vw), 4vw, 1.5rem);
-  letter-spacing: 0.55em;
+  letter-spacing: 0.4em;
   /* Trailing tracking would otherwise unbalance the centring. */
   padding-left: 0.55em;
   white-space: nowrap;
@@ -236,6 +236,51 @@ body.intro-done #game-title {
     left 0.4s cubic-bezier(0.5, 0, 0.2, 1),
     top 0.4s cubic-bezier(0.5, 0, 0.2, 1),
     transform 0.4s cubic-bezier(0.5, 0, 0.2, 1);
+}
+
+.gt-ctrls {
+  position: absolute;
+  left: 50%;
+  top: 85%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 1.2rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.2vw, 1.15rem);
+  letter-spacing: 0.18em;
+  pointer-events: auto; /* <-- CRITICAL: Allows clicks inside #game-title */
+  z-index: 10;
+}
+
+.gt-ctrls a {
+  position: relative; /* <-- CRITICAL: Gives ::before anchor space */
+  display: inline-flex;
+  align-items: center;
+  padding-left: 1.1em; /* <-- CRITICAL: Leaves room for the arrow */
+  text-decoration: none;
+  color: #aab3d6;
+  font: var(--font-arcade);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 0.15s ease, transform 0.15s ease;
+  white-space: nowrap;
+  /* Arcade marquee gold, cut out from any background by a hard dark outline —
+     the retro-game answer to gold text over a gold planet. No box: a chip
+     here read as UI chrome, not a title screen. */
+  text-shadow:
+    0.12em 0 0 #0a0c2c, -0.12em 0 0 #0a0c2c, 0 0.12em 0 #0a0c2c, 0 -0.12em 0 #0a0c2c,
+    0.12em 0.12em 0 #0a0c2c, -0.12em 0.12em 0 #0a0c2c,
+    0.12em -0.12em 0 #0a0c2c, -0.12em -0.12em 0 #0a0c2c,
+    0.18em 0.2em 0 rgba(10, 12, 44, 0.95),
+
+  /* Classic press-start blink: hard on/off, no fade. */
+}
+
+.gt-ctrls a:hover {
+  transform: translateY(-2px);
 }
 
 @keyframes gt-blink {
@@ -2649,7 +2694,7 @@ body:not(.intro-done) #topbar {
   flex: none;
 }
 
-.go-menu a::before {
+.go-menu a::before, .gt-ctrls a::before {
   content: '\25B8';
   position: absolute;
   left: 0;
@@ -2664,13 +2709,17 @@ body:not(.intro-done) #topbar {
 }
 
 .go-menu a:hover,
-.go-menu a:focus-visible {
+.go-menu a:focus-visible,
+.gt-ctrls a:hover,
+.gt-ctrls a:focus-visible {
   color: #fff;
   outline: none;
 }
 
 .go-menu a:hover::before,
-.go-menu a:focus-visible::before {
+.go-menu a:focus-visible::before,
+.gt-ctrls a:hover::before,
+.gt-ctrls a:focus-visible::before {
   opacity: 1;
 }
 
@@ -2686,6 +2735,7 @@ body:not(.intro-done) #topbar {
     font-size: min(0.92rem, 4vw);
   }
 }
+
 
 /* --- content below the fold --------------------------------------------- */
 
