@@ -73,20 +73,12 @@ interface PlanetSpec {
  * Saturn, the construction-gold hard hat.
  */
 const PLANETS: PlanetSpec[] = [
-  // First body you see, high on the right. Kept cool — the title card's pink
-  // chrome sits over this frame, and a warm planet fought it for the eye.
-  { t: 0.08, side: 30, lift: 4, radius: 13, color: SPACE.teal, detail: 1, ring: true },
-  { t: 0.15, side: -24, lift: -10, radius: 8, color: SPACE.amber, detail: 0 },
-  // Large body low on the left at the opening.
-  // Lateral offset is a trade, not a free dial: too close and it fills the frame
-  // at the flyby, too far and the frustum crops it for its whole window. This
-  // sits where it reads at full size through the approach.
+
+  { t: 0.08, side: 30, lift: 4, radius: 13, color: SPACE.rose, detail: 1, ring: true },
+  { t: 0.15, side: -24, lift: -10, radius: 8, color: SPACE.teal, detail: 0 },
   { t: 0.23, side: -46, lift: 14, radius: 18, color: SPACE.magenta, detail: 1 },
-  // Beside the large sphere on the right. The cursor leads the shaped bodies:
-  // the nameplates introduce the pilot in a deliberate order — online first,
-  // bookworm second, engineer last — so the cursor and the book swapped slots.
   { t: 0.33, side: 26, lift: -12, radius: 19, color: PALETTE.soft, shape: 'cursor' },
-  { t: 0.41, side: 50, lift: 20, radius: 26, color: SPACE.gold, detail: 2 },
+  { t: 0.41, side: 50, lift: 20, radius: 26, color: SPACE.violet, detail: 2 },
   { t: 0.49, side: -28, lift: 4, radius: 13, color: SPACE.rose, detail: 0 },
   { t: 0.57, side: 46, lift: 8, radius: 16, color: SPACE.violet, shape: 'book', yawOffset: 0.3 },
   // Deep enough in the flight that it is well past the opening frame.

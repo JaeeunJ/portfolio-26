@@ -61,33 +61,7 @@ export function createUfoCat(radius = 1.0): THREE.Group {
   dome.position.y = 0.03
   ufoGroup.add(dome)
 
-  // 3. Cat Silhouette
-  const catShape = new THREE.Shape()
-  const w = radius * 0.35
-  const h = radius * 0.45
   
-  catShape.moveTo(-w * 0.8, 0)
-  catShape.lineTo(-w * 0.9, h * 0.35)
-  catShape.lineTo(-w * 0.7, h * 0.7)
-  catShape.lineTo(-w * 0.45, h * 1.0)
-  catShape.lineTo(-w * 0.2, h * 0.75)
-  catShape.lineTo(w * 0.2, h * 0.75)
-  catShape.lineTo(w * 0.45, h * 1.0)
-  catShape.lineTo(w * 0.7, h * 0.7)
-  catShape.lineTo(w * 0.9, h * 0.35)
-  catShape.lineTo(w * 0.8, 0)
-  catShape.closePath()
-
-  const catGeo = new THREE.ExtrudeGeometry(catShape, {
-    depth: 0.05,
-    bevelEnabled: false,
-  })
-  const catMat = new THREE.MeshBasicMaterial({
-    color: 0x020202, // Pure black so it punches through the glowing dome
-  })
-  const catMesh = new THREE.Mesh(catGeo, catMat)
-  catMesh.position.set(0, 0.04, -0.025)
-  ufoGroup.add(catMesh)
 
   return ufoGroup
 }
