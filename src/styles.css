@@ -151,7 +151,7 @@ body.intro-done #game-title {
   font-weight: 600;
   font-size: min(max(4rem, 7vw), 8.5vw, 8.5rem);
   line-height: 5rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.0025em;
   white-space: nowrap;
   background: linear-gradient(
     180deg,
@@ -176,7 +176,7 @@ body.intro-done #game-title {
 
 .gt-name-below {
   color: black;
-  text-shadow: rgb(28, 6, 39) 0.075em 0 0, rgb(28, 6, 39) -0.05em 0 0, rgb(28, 6, 39) 0 0.075em 0, rgb(28, 6, 39) 0 -0.05em 0;
+  text-shadow: rgb(28, 6, 39) 0.05em 0 0, rgb(28, 6, 39) -0.05em 0 0, rgb(28, 6, 39) 0 0.05em 0, rgb(28, 6, 39) 0 -0.05em 0;
 }
 
 .gt-sub {
@@ -1438,20 +1438,10 @@ body:not(.intro-done) #topbar {
 
 /* --- section banners ------------------------------------------------------ */
 
-/*
- * Ghost section labels: large display type that fades out toward its own
- * baseline. The gradient is clipped to the glyphs, so the fade is made of the
- * letters themselves rather than a scrim laid over them.
- */
 .section-banner {
   margin: 0;
-  /* The wordmark face. Heavy and instantly legible where the arcade face made
-     the reader decode the label — a section marker has one job. */
   font-family: var(--font-heavy);
   font-weight: 900;
-  /* The 10.2vw ceiling is the phone fit: the banner is nowrap, and below
-     ~404px the 2.6rem floor sets a line wider than the screen — which on
-     mobile doesn't clip, it stretches the whole layout viewport. */
   font-size: min(max(2.6rem, 6.5vw), 10.2vw, 5.6rem);
   line-height: 1;
   letter-spacing: -0.02em;
@@ -1463,7 +1453,7 @@ body:not(.intro-done) #topbar {
   background: linear-gradient(
     180deg,
     rgba(162, 180, 254, 0.42) 0%,
-    rgba(162, 180, 254, 0.14) 62%,
+    rgba(162, 180, 254, 0.14) 75%,
     rgba(162, 180, 254, 0) 100%
   );
   -webkit-background-clip: text;
