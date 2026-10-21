@@ -45,8 +45,8 @@
     </div>
 
     <div id="game-title">
-      <p class="gt-name-below">charissa ships<br>cool designs</p>
-      <p class="gt-name">charissa ships<br>cool designs</p>
+      <p class="gt-name-below">Rissy ships<br>cool designs</p>
+      <p class="gt-name">Rissy ships<br>cool designs</p>
 
       <p class="gt-sub">SCROLL TO START</p>
 
@@ -99,33 +99,13 @@
 
       <div id="hero-pin">
         <section id="hero">
-
-          <!-- Holds the break-orbit control and nothing else. The landing goes
-               straight into the work below. -->
           <div class="statement">
           </div>
         </section>
       </div>
-
-      <!--
-        Project showcase. The section is tall on purpose — one viewport of scroll
-        per project — and everything you see is the sticky pane inside it, so
-        scrolling advances the exhibit rather than moving past it.
-
-        The device is a single element that morphs between phone and desktop
-        proportions rather than two elements swapping places: the reshaping *is*
-        the transition, and a crossfade between two frames would read as a cut.
-      -->
       <section id="work" class="showcase">
         <div class="showcase-inner">
           <h2 class="section-banner sc-banner">Selected work</h2>
-
-          <!--
-            Bento, not a reel: all six projects on screen at once, weighted by
-            grid area instead of revealed in sequence — the flagship gets the
-            2x2, the two with tall art get columns, and nothing needs six
-            viewports of scrolling to be seen.
-          -->
           <ul class="bento">
             <li class="bento-card bento--tempo">
               <a href="tempo.html">
@@ -270,16 +250,7 @@
 
       <footer id="earth">
         <div class="earth-surface">
-          <!--
-            The run's end screen — the whole footer now. One heart left, two
-            spent, the invitation where GAME OVER would sit, the contact links,
-            and the name as the closing wordmark, Discord-style. Shift+R (or the
-            prompt itself) restarts the run.
-          -->
           <div class="go-screen">
-            <!-- Arcade menu is the headline — the actions that actually matter.
-                 Each row carries a pixel icon; the selector arrow appears on
-                 the hovered one. -->
             <ul class="go-menu">
               <li><a href="mailto:c5jeong@uwaterloo.ca">
                 <svg class="go-ico" viewBox="0 0 12 9" aria-hidden="true"><path fill="currentColor" shape-rendering="crispEdges" d="M0 0h12v1H0zM0 1h1v7H0zM11 1h1v7h-1zM0 8h12v1H0zM1 1h1v1H1zM10 1h1v1h-1zM2 2h1v1H2zM9 2h1v1H9zM3 3h1v1H3zM8 3h1v1H8zM4 4h1v1H4zM7 4h1v1H7zM5 5h2v1H5z"/></svg>
@@ -291,13 +262,10 @@
                 <svg class="go-ico" viewBox="0 0 10 12" aria-hidden="true"><path fill="currentColor" shape-rendering="crispEdges" d="M0 0h10v1H0zM0 11h10v1H0zM0 1h1v10H0zM9 1h1v10H9zM2 3h6v1H2zM2 5h6v1H2zM2 7h4v1H2z"/></svg>
                 Resume</a></li>
             </ul>
-            <!-- The name as the closing wordmark. -->
             <div class="go-end">
               <p class="go-wordmark" aria-hidden="true">CHARISSA JEONG</p>
             </div>
 
-            <!-- The way back in, after the sign-off: the run is over, the name
-                 has landed, and this is the footnote under it. -->
             <button type="button" class="go-title" id="play-again">
               Press <kbd>Shift</kbd>+<kbd>R</kbd> to play again
             </button>
@@ -306,19 +274,6 @@
       </footer>
     </div>
 
-    <!--
-      Deep space, behind the whole document. Empty on purpose: the intro's own
-      renderer mounts its canvas here the first time the page is pulled past the
-      bottom, so a reader who never overscrolls never builds it.
-    -->
-    <!--
-      The way back into the flight, sitting in the strip of deep space that opens
-      when you push up past the top of the page.
-
-      Outside #page on purpose: #page is what translates to open that strip, so a
-      button inside it would ride down with the content and never appear in the
-      gap it is supposed to occupy.
-    -->
     <button id="break-orbit" type="button">
               <span class="bo-glyph" aria-hidden="true">
                 <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"
@@ -329,20 +284,6 @@
               Break orbit
             </button>
 
-    <!--
-      The reticle cursor and its ASCII wake. Above everything, including the
-      white-out — the pointer is the one thing that belongs to the reader rather
-      than to the page, so nothing the page does should paint over it.
-    -->
-    <!--
-      Thin masthead: identity left, section links centred, outbound links right.
-
-      A direct child of <body> and fixed, not sticky inside the hero. Sticky only
-      sticks within its own containing block, and the hero is a short band — so it
-      stuck for the hero's ~160px and then scrolled away with it. Out here it has
-      the whole document to stick to. It is hidden until the intro hands over,
-      which is the job the hero's opacity used to do for it.
-    -->
     <header id="topbar">
             <a class="topbar-name" href="#work">Charissa Jeong</a>
             <nav class="topbar-nav" aria-label="Sections">

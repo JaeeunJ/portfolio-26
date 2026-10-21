@@ -149,9 +149,9 @@ body.intro-done #game-title {
   margin: 0;
   font-family: var(--font-arcade-title);
   font-weight: 600;
-  font-size: min(max(4rem, 7vw), 8.5vw, 8.5rem);
-  line-height: 5rem;
-  letter-spacing: 0.0025em;
+  font-size: min(max(4rem, 7vw), 32vw, 8.5rem);
+  line-height: min(max(4rem, 7vw), 12vw, 5rem);
+  letter-spacing: -0.02em;
   white-space: nowrap;
   background: linear-gradient(
     180deg,
